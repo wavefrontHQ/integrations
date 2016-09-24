@@ -1,12 +1,12 @@
 {
   "name": "Kubernetes",
-  "description": null,
+  "description": "",
   "eventFilterType": "BYCHART",
   "url": "K8s",
   "displayDescription": false,
   "displaySectionTableOfContents": true,
-  "displayQueryParameters": false,
-  "chartTitleScalar": null,
+  "displayQueryParameters": true,
+  "chartTitleScalar": 0,
   "chartTitleColor": null,
   "chartTitleBgColor": null,
   "sections": [
@@ -191,7 +191,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"heapster.memory.usage\", type=node and cluster=${cluster}))",
+                  "query": "count(ts(\"*memory.usage\", type=node and cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -274,7 +274,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"heapster.memory.usage\", type=ns and cluster=${cluster}))",
+                  "query": "count(ts(\"*memory.usage\", type=ns and cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -357,7 +357,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(lag(30s,ts(\"heapster.memory.usage\", type=pod and cluster=${cluster})))",
+                  "query": "count(lag(30s,ts(\"*memory.usage\", type=pod and cluster=${cluster})))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -447,7 +447,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(lag(1m,ts(\"heapster.uptime\", type=pod_container and cluster=${cluster})))",
+                  "query": "count(lag(1m,ts(\"*uptime\", type=pod_container and cluster=${cluster})))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -542,7 +542,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "avg(ts(\"heapster.memory.node_utilization\", type=node and cluster=${cluster})) * 100",
+                  "query": "avg(ts(\"*memory.node_utilization\", type=node and cluster=${cluster})) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -632,7 +632,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.memory.usage\", type=cluster and cluster=${cluster})",
+                  "query": "ts(\"*memory.usage\", type=cluster and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -722,7 +722,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "avg(ts(\"heapster.cpu.node_utilization\", type=node and cluster=${cluster})) * 100",
+                  "query": "avg(ts(\"*cpu.node_utilization\", type=node and cluster=${cluster})) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -812,7 +812,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.filesystem.usage\", type=node and cluster=${cluster}) / ts(\"heapster.filesystem.limit\", type=node and cluster=${cluster})",
+                  "query": "ts(\"*filesystem.usage\", type=node and cluster=${cluster}) / ts(\"*filesystem.limit\", type=node and cluster=${cluster})",
                   "disabled": true,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -922,7 +922,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"heapster.uptime\", type=pod and cluster=${cluster}), pod_namespace)",
+                  "query": "count(ts(\"*uptime\", type=pod and cluster=${cluster}), pod_namespace)",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1008,7 +1008,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"heapster.uptime\", type=pod_container and cluster=${cluster}), pod_namespace)",
+                  "query": "count(ts(\"*uptime\", type=pod_container and cluster=${cluster}), pod_namespace)",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1094,7 +1094,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.memory.usage\", type=ns and cluster=${cluster})",
+                  "query": "ts(\"*memory.usage\", type=ns and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1190,7 +1190,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.cpu.node_utilization\", type=\"node\" and cluster=${cluster}) * 100",
+                  "query": "ts(\"*cpu.node_utilization\", type=\"node\" and cluster=${cluster}) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1200,7 +1200,7 @@
                 },
                 {
                   "name": "New Query",
-                  "query": "rate(ts(\"heapster.cpu.usage\", type=node and cluster=${cluster}))",
+                  "query": "rate(ts(\"*cpu.usage\", type=node and cluster=${cluster}))",
                   "disabled": true,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1285,7 +1285,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.cpu.node_utilization\", type=\"node\") * 100",
+                  "query": "ts(\"*cpu.node_utilization\", type=\"node\") * 100",
                   "disabled": true,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1295,7 +1295,7 @@
                 },
                 {
                   "name": "New Query",
-                  "query": "rate(ts(\"heapster.cpu.usage\", type=node and cluster=${cluster}))",
+                  "query": "rate(ts(\"*cpu.usage\", type=node and cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1380,7 +1380,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.memory.node_utilization\", type=\"node\" and cluster=${cluster}) * 100",
+                  "query": "ts(\"*memory.node_utilization\", type=\"node\" and cluster=${cluster}) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1465,7 +1465,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.memory.usage\", type=\"node\" and cluster=${cluster})",
+                  "query": "ts(\"*memory.usage\", type=\"node\" and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1555,7 +1555,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"heapster.network.rx\", type=node and cluster=${cluster}))",
+                  "query": "rate(ts(\"*network.rx\", type=node and cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1638,7 +1638,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"heapster.network.rx_errors\", type=node and cluster=${cluster}))",
+                  "query": "rate(ts(\"*network.rx_errors\", type=node and cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1648,7 +1648,7 @@
                 },
                 {
                   "name": "New Query",
-                  "query": "rate(ts(\"heapster.network.tx_errors\", type=node and cluster=${cluster}))",
+                  "query": "rate(ts(\"*network.tx_errors\", type=node and cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1731,7 +1731,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"heapster.network.tx\", type=node and cluster=${cluster}))",
+                  "query": "rate(ts(\"*network.tx\", type=node and cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1814,7 +1814,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.uptime\", type=node and cluster=${cluster}) / 10000000",
+                  "query": "ts(\"*uptime\", type=node and cluster=${cluster}) / 10000000",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1902,7 +1902,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.filesystem.usage\", type=node and cluster=${cluster})",
+                  "query": "ts(\"*filesystem.usage\", type=node and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1985,7 +1985,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.filesystem.limit\", type=node and cluster=${cluster}) - ts(\"heapster.filesystem.usage\", type=node and cluster=${cluster})",
+                  "query": "ts(\"*filesystem.limit\", type=node and cluster=${cluster}) - ts(\"*filesystem.usage\", type=node and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2068,7 +2068,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.filesystem.usage\", type=node and cluster=${cluster})  / ts(\"heapster.filesystem.limit\", type=node and cluster=${cluster}) * 100",
+                  "query": "ts(\"*filesystem.usage\", type=node and cluster=${cluster})  / ts(\"*filesystem.limit\", type=node and cluster=${cluster}) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2161,7 +2161,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.cpu.usage_rate\", type=pod and cluster=${cluster})",
+                  "query": "ts(\"*cpu.usage_rate\", type=pod and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2244,7 +2244,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.memory.usage\", type=\"pod\" and cluster=${cluster})",
+                  "query": "ts(\"*memory.usage\", type=\"pod\" and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2336,7 +2336,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.memory.page_faults_rate\", type=pod and cluster=${cluster})",
+                  "query": "ts(\"*memory.page_faults_rate\", type=pod and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2419,7 +2419,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"heapster.network.rx\", type=pod and cluster=${cluster}))",
+                  "query": "rate(ts(\"*network.rx\", type=pod and cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2502,7 +2502,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"heapster.network.tx\", type=pod and cluster=${cluster}))",
+                  "query": "rate(ts(\"*network.tx\", type=pod and cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2585,7 +2585,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"heapster.network.rx_errors\", type=pod and cluster=${cluster}))",
+                  "query": "rate(ts(\"*network.rx_errors\", type=pod and cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2595,7 +2595,7 @@
                 },
                 {
                   "name": "New Query",
-                  "query": "rate(ts(\"heapster.network.tx_errors\", type=pod and cluster=${cluster}))",
+                  "query": "rate(ts(\"*network.tx_errors\", type=pod and cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2683,21 +2683,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.filesystem.usage\", type=pod)",
+                  "query": "ts(\"*filesystem.usage\", type=pod and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": null,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
               "units": "Bytes",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
-              "interpolatePoints": false,
+              "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "table",
                 "max": null,
@@ -2781,7 +2781,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.cpu.usage_rate\", type=pod_container and cluster=${cluster})",
+                  "query": "ts(\"*cpu.usage_rate\", type=pod_container and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2864,7 +2864,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.memory.usage\", type=\"pod_container\" and cluster=${cluster})",
+                  "query": "ts(\"*memory.usage\", type=\"pod_container\" and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2957,7 +2957,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.memory.page_faults_rate\", type=pod_container and cluster=${cluster})",
+                  "query": "ts(\"*memory.page_faults_rate\", type=pod_container and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -3040,7 +3040,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.filesystem.usage\", type=pod_container and cluster=${cluster})",
+                  "query": "ts(\"*filesystem.usage\", type=pod_container and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -3134,7 +3134,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.uptime\", type=pod_container and cluster=${cluster}) / 10000000",
+                  "query": "ts(\"*uptime\", type=pod_container and cluster=${cluster}) / 10000000",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -3222,7 +3222,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"heapster.filesystem.usage\", type=pod and cluster=${cluster})",
+                  "query": "ts(\"*filesystem.usage\", type=pod and cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -3317,15 +3317,15 @@
       "description": null,
       "allowAll": null,
       "tagKey": null,
-      "queryValue": "ts(\"heapster.cpu.usage_rate\", type=\"cluster\")",
+      "queryValue": "ts(\"*cpu.usage_rate\", type=\"cluster\")",
       "dynamicFieldType": "SOURCE",
       "parameterType": "DYNAMIC",
       "label": "Cluster",
-      "defaultValue": "defaultQuery",
+      "defaultValue": "Label",
       "valuesToReadableStrings": {
-        "defaultQuery": "k8s-cluster"
+        "Label": "k8s-cluster"
       },
-      "selectedLabel": "defaultQuery",
+      "selectedLabel": "Label",
       "value": "k8s-cluster"
     }
   }
