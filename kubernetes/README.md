@@ -20,4 +20,4 @@ This line can be changed to pass additional options to the Wavefront sink:
 - `clusterName` - Defaults to _k8s-cluster_ - The name of your K8s cluster. The value is added as a tag called _cluster_ on all metrics.
 - `prefix` - Defaults to _heapster._ - The prefix to add to metrics sent by Heapster.
 - `includeLabels` - Defaults to _false_ - When set to true, this will add any kubernetes labels as point tags to your metrics.
-- `includeContainers` - Defaults to _true_ - When set to false, it will exclude collecting metrics on containers. It will still collect and aggregate metrics about any running pods, but it will skip the child containers.
+- `includeContainers` - Defaults to _true_ - When set to false, it will exclude sending metrics about containers. It will still collect and aggregate any data needed from containers in order to calculate pod level stats.
