@@ -13,7 +13,8 @@ Many of the applications listed in this repository contain example dashboards in
 ### Example
 ```
 curl -O https://raw.githubusercontent.com/wavefrontHQ/integrations/master/kubernetes/dashboards/K8s.json
-curl -vX POST https://metrics.wavefront.com/api/dashboard -d @K8s.json -H "Content-Type: application/json" -H 'X-AUTH-TOKEN: YOUR_API_TOKEN'
+curl -vX POST https://metrics.wavefront.com/api/dashboard -d @K8s.json \
+  -H "Content-Type: application/json" -H 'X-AUTH-TOKEN: YOUR_API_TOKEN'
 ```
 
 Just be sure to update _YOUR_API_TOKEN_ and the URL to your Wavefront cluster (if needed).
