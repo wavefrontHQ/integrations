@@ -68,7 +68,7 @@ sudo docker run \
   --publish=8080:8080 \
   --detach=true \
   --name=cadvisor \
-  google/cadvisor:latest \
+  wavefronthq/cadvisor:latest \
   -storage_driver=wavefront \
   -storage_driver_wf_source=$(hostname) \
   -storage_driver_wf_proxy_host=YOUR_PROXY_HOST:2878
@@ -79,7 +79,7 @@ sudo docker run \
 ```
 cadvisor:
   container_name: cadvisor
-  image: google/cadvisor:latest
+  image: wavefronthq/cadvisor:latest
   command: -storage_driver=wavefront -storage_driver_wf_source=$(hostname) -storage_driver_wf_proxy_host=YOUR_PROXY_HOST:2878
   restart: always
   ports:
