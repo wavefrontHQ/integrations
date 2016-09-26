@@ -18,3 +18,7 @@ curl -vX POST https://metrics.wavefront.com/api/dashboard -d @K8s.json \
 ```
 
 Just be sure to update _YOUR_API_TOKEN_ and the URL to your Wavefront cluster (if needed).
+
+# Contributing
+
+We welcome pull requests! If you have created a dashboard and/or integration recipe that you would like to share with our community, you can either submit a pull request directly or contact support@wavefront.com.
