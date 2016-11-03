@@ -110,7 +110,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"cassandraClientRequest_Latency_Count\", source=*, scope=\"Read\"))",
+                  "query": "count(ts(\"cassandra.cassandraClientRequest.Latency.Count\", ${filter}, scope=\"Read\"))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -130,11 +130,11 @@
                 }
               ],
               "units": "",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": true,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "sparkline",
                 "max": null,
@@ -208,7 +208,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "lag(1m,rate(sum(ts(\"cassandraClientRequest_Latency_Count\", ${filter}, scope=\"Read\"))))",
+                  "query": "lag(1m,rate(sum(ts(\"cassandra.cassandraClientRequest.Latency.Count\", ${filter}, scope=\"Read\"))))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -308,7 +308,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "lag(1m,rate(sum(ts(\"cassandraClientRequest_Latency_Count\", ${filter}, scope=\"Write\"))))",
+                  "query": "lag(1m,rate(sum(ts(\"cassandra.cassandraClientRequest.Latency.Count\", ${filter}, scope=\"Write\"))))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -418,7 +418,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandraClientRequest_Latency_99thPercentile\", ${filter}, scope=\"Read\")",
+                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.99thPercentile\", ${filter}, scope=\"Read\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -501,7 +501,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandraClientRequest_Latency_Mean\", ${filter}, scope=\"Read\")",
+                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.Mean\", ${filter}, scope=\"Read\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -584,7 +584,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandraClientRequest_Latency_FiveMinuteRate\", ${filter}, scope=\"Read\")",
+                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.FiveMinuteRate\", ${filter}, scope=\"Read\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -672,21 +672,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandraCache_Requests_Count\", ${filter}, scope=\"KeyCache\"))",
+                  "query": "rate(ts(\"cassandra.cassandraCache.Requests.Count\", ${filter}, scope=\"KeyCache\"))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "hits",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -755,7 +755,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandraCache_Requests_FiveMinuteRate\", ${filter}, scope=\"KeyCache\"))",
+                  "query": "rate(ts(\"cassandra.cassandraCache.Requests.FiveMinuteRate\", ${filter}, scope=\"KeyCache\"))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -843,21 +843,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandraCache_Requests_Count\", ${filter}, scope=\"KeyCache\"))",
+                  "query": "rate(ts(\"cassandra.cassandraCache.Requests.Count\", ${filter}, scope=\"KeyCache\"))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "hits",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -936,7 +936,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandraClientRequest_Latency_99thPercentile\", ${filter}, scope=\"Write\")",
+                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.99thPercentile\", ${filter}, scope=\"Write\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1019,7 +1019,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandraClientRequest_Latency_MeanRate\", ${filter}, scope=\"Write\")",
+                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.MeanRate\", ${filter}, scope=\"Write\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1102,7 +1102,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandraClientRequest_Latency_FiveMinuteRate\", ${filter}, scope=\"Write\")",
+                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.FiveMinuteRate\", ${filter}, scope=\"Write\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1195,21 +1195,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandraStorage_Exceptions_Count\", ${filter}))",
+                  "query": "rate(ts(\"cassandra.cassandraStorage.Exceptions.Count\", ${filter}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "exceptions per second",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -1278,21 +1278,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandraCompaction_BytesCompacted_Count\", ${filter}))",
+                  "query": "rate(ts(\"cassandra.cassandraCompaction.BytesCompacted.Count\", ${filter}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "bytes per second",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -1366,7 +1366,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandraStorage_Load_Count\", ${filter}, mname=Load) / 1000000",
+                  "query": "ts(\"cassandra.cassandraStorage.Load.Count\", ${filter}, mname=Load) / 1000000",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1449,7 +1449,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"disk_used_percent\", ${filter})",
+                  "query": "ts(\"disk.used.percent\", ${filter})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1459,11 +1459,11 @@
                 }
               ],
               "units": "%",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "table",
                 "max": null,
@@ -1537,21 +1537,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandraCompaction_PendingTasks_Value\", ${filter})",
+                  "query": "ts(\"cassandra.cassandraCompaction.PendingTasks.Value\", ${filter})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "tasks",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -1620,21 +1620,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "sum(ts(\"cassandraTable_TotalDiskSpaceUsed_Count\", ${filter}, mname=TotalDiskSpaceUsed), keyspace)",
+                  "query": "sum(ts(\"cassandra.cassandraTable.TotalDiskSpaceUsed.Count\", ${filter}, mname=TotalDiskSpaceUsed), keyspace)",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "bytes",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "table",
                 "max": null,
@@ -1703,7 +1703,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "sum(ts(\"cassandraTable_TotalDiskSpaceUsed_Count\", ${filter}, mname=TotalDiskSpaceUsed), scope)",
+                  "query": "sum(ts(\"cassandra.cassandraTable.TotalDiskSpaceUsed.Count\", ${filter}, mname=TotalDiskSpaceUsed), scope)",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1713,11 +1713,11 @@
                 }
               ],
               "units": "bytes",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "table",
                 "max": null,
@@ -1796,21 +1796,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"javaGarbageCollector_CollectionCount\", ${filter}, mname=ParNew))",
+                  "query": "rate(ts(\"cassandra.javaGarbageCollector.CollectionCount\", ${filter}, mname=ParNew))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "tasks per second",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -1879,21 +1879,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"javaGarbageCollector_CollectionTime\", ${filter}, mname=ParNew)",
+                  "query": "ts(\"cassandra.javaGarbageCollector.CollectionTime\", ${filter}, mname=ParNew)",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "milliseconds",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -1967,21 +1967,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"javaGarbageCollector_CollectionCount\", ${filter}, mname=ConcurrentMarkSweep))",
+                  "query": "rate(ts(\"cassandra.javaGarbageCollector.CollectionCount\", ${filter}, mname=ConcurrentMarkSweep))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "tasks per second",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -2050,21 +2050,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"javaGarbageCollector_CollectionTime\", ${filter}, mname=ConcurrentMarkSweep))",
+                  "query": "rate(ts(\"cassandra.javaGarbageCollector.CollectionTime\", ${filter}, mname=ConcurrentMarkSweep))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "elapsed time",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -2143,7 +2143,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandraClientRequest_Timeouts_Count\", ${filter}, scope=Read))",
+                  "query": "rate(ts(\"cassandra.cassandraClientRequest.Timeouts.Count\", ${filter}, scope=Read))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2153,11 +2153,11 @@
                 }
               ],
               "units": "timeouts per second",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -2226,21 +2226,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandraClientRequest_Timeouts_Count\", ${filter}, scope=Write))",
+                  "query": "rate(ts(\"cassandra.cassandraClientRequest.Timeouts.Count\", ${filter}, scope=Write))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "timeouts per second",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -2314,7 +2314,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandraClientRequest_Unavailables_Count\", ${filter}, scope=Read))",
+                  "query": "rate(ts(\"cassandra.cassandraClientRequest.Unavailables.Count\", ${filter}, scope=Read))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2324,11 +2324,11 @@
                 }
               ],
               "units": "unavailables per second",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -2397,21 +2397,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandraClientRequest_Unavailables_Count\", ${filter}, scope=Write))",
+                  "query": "rate(ts(\"cassandra.cassandraClientRequest.Unavailables.Count\", ${filter}, scope=Write))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "unavailables per second",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -2485,7 +2485,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandraThreadPools_*Blocked*\", ${filter})",
+                  "query": "ts(\"cassandra.cassandraThreadPools.*Blocked*\", ${filter})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2568,21 +2568,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandraThreadPools_*Pending*\", ${filter})",
+                  "query": "ts(\"cassandra.cassandraThreadPools.*Pending*\", ${filter})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "tasks",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -2664,10 +2664,10 @@
       "label": "Filter",
       "defaultValue": "Label",
       "valuesToReadableStrings": {
-        "Label": "source=cassandra*"
+        "Label": "source=*"
       },
       "selectedLabel": "Label",
-      "value": "source=cassandra*"
+      "value": "source=*"
     }
   }
 }
