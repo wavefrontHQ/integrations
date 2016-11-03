@@ -2,7 +2,7 @@
   "name": "Telegraf Host Metrics",
   "description": "This INTRO dashboard displays examples of data from a standard collectd installation.  The data is SAMPLE-only.",
   "eventFilterType": "BYCHART",
-  "url": "telegraf-host",
+  "url": "telegraf-host-metrics",
   "displayDescription": false,
   "displaySectionTableOfContents": true,
   "displayQueryParameters": true,
@@ -191,7 +191,7 @@
               "sources": [
                 {
                   "name": "used_percent",
-                  "query": "ts(\"mem.available.percent\", source=${host})",
+                  "query": "ts(\"mem.used.percent\", source=${host})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -201,7 +201,7 @@
                 }
               ],
               "units": "%",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -1511,7 +1511,7 @@
               "sources": [
                 {
                   "name": "New Query",
-                  "query": "ts(\"mem.*\" and not \"mem*percent\" and not mem_total, source=${host})",
+                  "query": "ts(\"mem.*\" and not \"mem*percent\" and not mem.total, source=${host})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1521,7 +1521,7 @@
                 }
               ],
               "units": "bytes",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -2405,17 +2405,17 @@
               "sources": [
                 {
                   "name": "bytes sent",
-                  "query": "rate(ts(\"net.bytes.sent*\"))",
+                  "query": "rate(ts(\"net.bytes.sent*\", source=${host}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "Octets",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -2752,17 +2752,17 @@
               "sources": [
                 {
                   "name": "Processes Zombies",
-                  "query": "ts(\"processes*\", source=${host} and not \"processes.total\")",
+                  "query": "ts(\"processes*\", source=${host} and not \"processes.total*\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "#",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -2830,6 +2830,177 @@
               },
               "summarization": "MEAN"
             },
+            {
+              "name": "Total Processes",
+              "sources": [
+                {
+                  "name": "Source",
+                  "query": "ts(\"processes.total\", source=${host})",
+                  "disabled": null,
+                  "scatterPlotSource": "Y",
+                  "querybuilderSerialization": null,
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": null,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "sparkline",
+                "max": null,
+                "min": null,
+                "lineType": "linear",
+                "stackType": null,
+                "expectedDataSpacing": null,
+                "windowing": "full",
+                "windowSize": null,
+                "showHosts": null,
+                "showLabels": null,
+                "showRawValues": null,
+                "autoColumnTags": false,
+                "columnTags": null,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "groupBySource": null,
+                "sortValuesDescending": null,
+                "y1Max": null,
+                "y1Min": null,
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "invertDynamicLegendHoverControl": null,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT",
+                "fixedLegendHideLabel": null,
+                "xMax": null,
+                "xMin": null,
+                "yMax": null,
+                "yMin": null,
+                "timeBasedColoring": null,
+                "markdownContent": null,
+                "sparklineDisplayValueType": "VALUE",
+                "sparklineDisplayColor": "",
+                "sparklineDisplayVerticalPosition": null,
+                "sparklineDisplayHorizontalPosition": "MIDDLE",
+                "sparklineDisplayFontSize": "100",
+                "sparklineDisplayPrefix": null,
+                "sparklineDisplayPostfix": null,
+                "sparklineSize": "BOTTOM",
+                "sparklineLineColor": null,
+                "sparklineFillColor": null,
+                "sparklineValueColorMapColors": null,
+                "sparklineValueColorMapValuesV2": null,
+                "sparklineValueColorMapValues": null,
+                "sparklineValueColorMapApplyTo": "TEXT",
+                "sparklineDecimalPrecision": 0,
+                "sparklineValueTextMapText": null,
+                "sparklineValueTextMapThresholds": null
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Total Threads",
+              "sources": [
+                {
+                  "name": "Source",
+                  "query": "ts(\"processes.total.threads\", source=${host})",
+                  "disabled": null,
+                  "scatterPlotSource": "Y",
+                  "querybuilderSerialization": null,
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": null,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "sparkline",
+                "max": null,
+                "min": null,
+                "lineType": "linear",
+                "stackType": null,
+                "expectedDataSpacing": null,
+                "windowing": "full",
+                "windowSize": null,
+                "showHosts": null,
+                "showLabels": null,
+                "showRawValues": null,
+                "autoColumnTags": false,
+                "columnTags": null,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "groupBySource": null,
+                "sortValuesDescending": null,
+                "y1Max": null,
+                "y1Min": null,
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "invertDynamicLegendHoverControl": null,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT",
+                "fixedLegendHideLabel": null,
+                "xMax": null,
+                "xMin": null,
+                "yMax": null,
+                "yMin": null,
+                "timeBasedColoring": null,
+                "markdownContent": null,
+                "sparklineDisplayValueType": "VALUE",
+                "sparklineDisplayColor": "",
+                "sparklineDisplayVerticalPosition": null,
+                "sparklineDisplayHorizontalPosition": "MIDDLE",
+                "sparklineDisplayFontSize": "100",
+                "sparklineDisplayPrefix": null,
+                "sparklineDisplayPostfix": null,
+                "sparklineSize": "BOTTOM",
+                "sparklineLineColor": null,
+                "sparklineFillColor": null,
+                "sparklineValueColorMapColors": null,
+                "sparklineValueColorMapValuesV2": null,
+                "sparklineValueColorMapValues": null,
+                "sparklineValueColorMapApplyTo": "TEXT",
+                "sparklineDecimalPrecision": 0,
+                "sparklineValueTextMapText": null,
+                "sparklineValueTextMapThresholds": null
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 100
+        },
+        {
+          "charts": [
             {
               "name": "System Uptime",
               "sources": [
@@ -3012,12 +3183,12 @@
       "dynamicFieldType": "SOURCE",
       "parameterType": "DYNAMIC",
       "label": "Host",
-      "defaultValue": "defaultQuery",
+      "defaultValue": "Label",
       "valuesToReadableStrings": {
-        "defaultQuery": "wfse01mbpro.local"
+        "Label": "ip-172-31-12-254"
       },
-      "selectedLabel": "defaultQuery",
-      "value": "wfse01mbpro.local"
+      "selectedLabel": "Label",
+      "value": "ip-172-31-12-254"
     }
   }
 }
