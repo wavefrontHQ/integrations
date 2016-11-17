@@ -110,7 +110,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"cassandra.cassandraClientRequest.Latency.Count\", ${filter}, scope=\"Read\"))",
+                  "query": "count(ts(\"cassandra.cassandraClientRequest.Latency.Count\", ${filter} and scope=\"Read\"))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -208,7 +208,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "lag(1m,rate(sum(ts(\"cassandra.cassandraClientRequest.Latency.Count\", ${filter}, scope=\"Read\"))))",
+                  "query": "lag(1m,rate(sum(ts(\"cassandra.cassandraClientRequest.Latency.Count\", ${filter} and scope=\"Read\"))))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -308,7 +308,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "lag(1m,rate(sum(ts(\"cassandra.cassandraClientRequest.Latency.Count\", ${filter}, scope=\"Write\"))))",
+                  "query": "lag(1m,rate(sum(ts(\"cassandra.cassandraClientRequest.Latency.Count\", ${filter} and scope=\"Write\"))))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -418,7 +418,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.99thPercentile\", ${filter}, scope=\"Read\")",
+                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.99thPercentile\", ${filter} and scope=\"Read\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -501,7 +501,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.Mean\", ${filter}, scope=\"Read\")",
+                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.Mean\", ${filter} and scope=\"Read\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -584,7 +584,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.FiveMinuteRate\", ${filter}, scope=\"Read\")",
+                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.FiveMinuteRate\", ${filter} and scope=\"Read\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -672,7 +672,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandra.cassandraCache.Requests.Count\", ${filter}, scope=\"KeyCache\"))",
+                  "query": "rate(ts(\"cassandra.cassandraCache.Requests.Count\", ${filter} and scope=\"KeyCache\"))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -755,7 +755,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandra.cassandraCache.Requests.FiveMinuteRate\", ${filter}, scope=\"KeyCache\"))",
+                  "query": "rate(ts(\"cassandra.cassandraCache.Requests.FiveMinuteRate\", ${filter} and scope=\"KeyCache\"))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -843,7 +843,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandra.cassandraCache.Requests.Count\", ${filter}, scope=\"KeyCache\"))",
+                  "query": "rate(ts(\"cassandra.cassandraCache.Requests.Count\", ${filter} and scope=\"KeyCache\"))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -936,7 +936,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.99thPercentile\", ${filter}, scope=\"Write\")",
+                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.99thPercentile\", ${filter} and scope=\"Write\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1019,7 +1019,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.MeanRate\", ${filter}, scope=\"Write\")",
+                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.MeanRate\", ${filter} and scope=\"Write\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1102,7 +1102,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.FiveMinuteRate\", ${filter}, scope=\"Write\")",
+                  "query": "ts(\"cassandra.cassandraClientRequest.Latency.FiveMinuteRate\", ${filter} and scope=\"Write\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1366,7 +1366,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandra.cassandraStorage.Load.Count\", ${filter}, mname=Load) / 1000000",
+                  "query": "ts(\"cassandra.cassandraStorage.Load.Count\", ${filter} and mname=Load) / 1000000",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1620,7 +1620,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "sum(ts(\"cassandra.cassandraTable.TotalDiskSpaceUsed.Count\", ${filter}, mname=TotalDiskSpaceUsed), keyspace)",
+                  "query": "sum(ts(\"cassandra.cassandraTable.TotalDiskSpaceUsed.Count\", ${filter} and mname=TotalDiskSpaceUsed), keyspace)",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1703,7 +1703,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "sum(ts(\"cassandra.cassandraTable.TotalDiskSpaceUsed.Count\", ${filter}, mname=TotalDiskSpaceUsed), scope)",
+                  "query": "sum(ts(\"cassandra.cassandraTable.TotalDiskSpaceUsed.Count\", ${filter} and mname=TotalDiskSpaceUsed), scope)",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1796,7 +1796,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandra.javaGarbageCollector.CollectionCount\", ${filter}, mname=ParNew))",
+                  "query": "rate(ts(\"cassandra.javaGarbageCollector.CollectionCount\", ${filter} and mname=ParNew))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1879,7 +1879,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cassandra.javaGarbageCollector.CollectionTime\", ${filter}, mname=ParNew)",
+                  "query": "ts(\"cassandra.javaGarbageCollector.CollectionTime\", ${filter} and mname=ParNew)",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1967,7 +1967,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandra.javaGarbageCollector.CollectionCount\", ${filter}, mname=ConcurrentMarkSweep))",
+                  "query": "rate(ts(\"cassandra.javaGarbageCollector.CollectionCount\", ${filter} and mname=ConcurrentMarkSweep))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2050,7 +2050,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandra.javaGarbageCollector.CollectionTime\", ${filter}, mname=ConcurrentMarkSweep))",
+                  "query": "rate(ts(\"cassandra.javaGarbageCollector.CollectionTime\", ${filter} and mname=ConcurrentMarkSweep))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2143,7 +2143,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandra.cassandraClientRequest.Timeouts.Count\", ${filter}, scope=Read))",
+                  "query": "rate(ts(\"cassandra.cassandraClientRequest.Timeouts.Count\", ${filter} and scope=Read))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2226,7 +2226,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandra.cassandraClientRequest.Timeouts.Count\", ${filter}, scope=Write))",
+                  "query": "rate(ts(\"cassandra.cassandraClientRequest.Timeouts.Count\", ${filter} and scope=Write))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2314,7 +2314,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandra.cassandraClientRequest.Unavailables.Count\", ${filter}, scope=Read))",
+                  "query": "rate(ts(\"cassandra.cassandraClientRequest.Unavailables.Count\", ${filter} and scope=Read))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2397,7 +2397,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cassandra.cassandraClientRequest.Unavailables.Count\", ${filter}, scope=Write))",
+                  "query": "rate(ts(\"cassandra.cassandraClientRequest.Unavailables.Count\", ${filter} and scope=Write))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
