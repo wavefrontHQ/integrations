@@ -2,7 +2,7 @@
   "name": "Telegraf Host Metrics",
   "description": "This INTRO dashboard displays examples of data from a standard collectd installation.  The data is SAMPLE-only.",
   "eventFilterType": "BYCHART",
-  "url": "telegraf-host-metrics",
+  "url": "telegraf-host",
   "displayDescription": false,
   "displaySectionTableOfContents": true,
   "displayQueryParameters": true,
