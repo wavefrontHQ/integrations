@@ -1,6 +1,6 @@
 {
   "name": "Telegraf Host Metrics",
-  "description": "This INTRO dashboard displays examples of data from a standard collectd installation.  The data is SAMPLE-only.",
+  "description": "This dashboard displays metrics from hosts where Telegraf is being used for system metric collection with Wavefront's output plugin.",
   "eventFilterType": "BYCHART",
   "url": "telegraf-host",
   "displayDescription": false,
