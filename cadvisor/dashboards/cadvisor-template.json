@@ -110,21 +110,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cadvisor.cpu_cumulative_usage\", source=${chost} and container=\"/\")) / 100000000",
+                  "query": "rate(ts(\"cadvisor.cpu_cumulative_usage\", source=${chost} and container=\"/\")) / 10000000",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "%",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "sparkline",
                 "max": null,
@@ -533,7 +533,7 @@
                 }
               ],
               "units": "Percent",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": true,
@@ -1338,7 +1338,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cadvisor.fs_usage\", container=\"*\")",
+                  "query": "ts(\"cadvisor.fs_usage\", container=\"*\" and source=${chost})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1434,10 +1434,10 @@
       "label": "Filter",
       "defaultValue": "Label",
       "valuesToReadableStrings": {
-        "Label": "source=${chost} and not container=\"/user/*\" and not container=\"/\" and not container=\"/docker\" and not container=\"/user\""
+        "Label": "source=${chost} and not container=\"/user/*\" and not container=\"/\" and not container=\"/docker\" and not container=\"/user\" and not container=\"/init.*\""
       },
       "selectedLabel": "Label",
-      "value": "source=${chost} and not container=\"/user/*\" and not container=\"/\" and not container=\"/docker\" and not container=\"/user\""
+      "value": "source=${chost} and not container=\"/user/*\" and not container=\"/\" and not container=\"/docker\" and not container=\"/user\" and not container=\"/init.*\""
     },
     "chost": {
       "hideFromView": false,
@@ -1448,12 +1448,12 @@
       "dynamicFieldType": "SOURCE",
       "parameterType": "DYNAMIC",
       "label": "Container Host",
-      "defaultValue": "defaultQuery",
+      "defaultValue": "Label_2",
       "valuesToReadableStrings": {
-        "defaultQuery": "internal-2a-onebox2"
+        "Label_2": "cadvisor1"
       },
-      "selectedLabel": "defaultQuery",
-      "value": "internal-2a-onebox2"
+      "selectedLabel": "Label_2",
+      "value": "cadvisor1"
     }
   }
 }
