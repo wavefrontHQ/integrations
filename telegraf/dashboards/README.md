@@ -1,4 +1,4 @@
-To deploy the Telegraf dashabord on your Wavefront instance:
+To deploy the Telegraf dashboard on your Wavefront instance:
 
 ```
 curl -O https://raw.githubusercontent.com/wavefrontHQ/integrations/master/telegraf/dashboards/telegraf-host.json
