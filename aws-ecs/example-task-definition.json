@@ -1,0 +1,108 @@
+{
+    "networkMode": "bridge",
+    "taskRoleArn": null,
+    "containerDefinitions": [
+        {
+            "volumesFrom": [],
+            "memory": 150,
+            "extraHosts": null,
+            "dnsServers": null,
+            "disableNetworking": null,
+            "dnsSearchDomains": null,
+            "portMappings": [
+                {
+                    "hostPort": 8080,
+                    "containerPort": 8080,
+                    "protocol": "tcp"
+                }
+            ],
+            "hostname": null,
+            "essential": true,
+            "entryPoint": null,
+            "mountPoints": [
+                {
+                    "containerPath": "/rootfs",
+                    "sourceVolume": "root",
+                    "readOnly": true
+                },
+                {
+                    "containerPath": "/var/run",
+                    "sourceVolume": "var_run",
+                    "readOnly": false
+                },
+                {
+                    "containerPath": "/sys",
+                    "sourceVolume": "sys",
+                    "readOnly": true
+                },
+                {
+                    "containerPath": "/var/lib/docker",
+                    "sourceVolume": "var_lib_docker",
+                    "readOnly": true
+                },
+                {
+                    "containerPath": "/sys/fs/cgroup",
+                    "sourceVolume": "cgroup",
+                    "readOnly": true
+                }
+            ],
+            "name": "wavefront-cadvisor",
+            "ulimits": null,
+            "dockerSecurityOptions": null,
+            "environment": [],
+            "links": null,
+            "workingDirectory": null,
+            "readonlyRootFilesystem": null,
+            "image": "wavefronthq/cadvisor:v0.24.1-2",
+            "command": [
+                "-storage_driver=wavefront",
+                "-storage_driver_wf_proxy_host=YOUR_WAVEFRONT_PROXY_ADDRESS:2878",
+                "--storage_driver_wf_prefix=cadvisor.",
+                "-storage_driver_wf_interval=60",
+                "-storage_driver_wf_taggify_labels=true",
+                "-storage_driver_wf_source=\"\"",
+                "-storage_driver_wf_add_tags=tag1=val1 tag2=val2"
+            ],
+            "user": null,
+            "dockerLabels": null,
+            "logConfiguration": null,
+            "cpu": 10,
+            "privileged": null,
+            "memoryReservation": null
+        }
+    ],
+    "placementConstraints": [],
+    "volumes": [
+        {
+            "host": {
+                "sourcePath": "/"
+            },
+            "name": "root"
+        },
+        {
+            "host": {
+                "sourcePath": "/var/run"
+            },
+            "name": "var_run"
+        },
+        {
+            "host": {
+                "sourcePath": "/sys"
+            },
+            "name": "sys"
+        },
+        {
+            "host": {
+                "sourcePath": "/var/lib/docker/"
+            },
+            "name": "var_lib_docker"
+        },
+        {
+            "host": {
+                "sourcePath": "/cgroup/"
+            },
+            "name": "cgroup"
+        }
+    ],
+    "family": "wavefront-cadvisor"
+}
