@@ -395,7 +395,7 @@
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": "https://metrics.wavefront.com/dashboard/collectd-host",
+              "description": "Total CPU Usage",
               "chartSettings": {
                 "type": "stacked-area",
                 "max": null,
