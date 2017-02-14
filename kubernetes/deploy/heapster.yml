@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: heapster
-        image: wavefronthq/heapster-amd64:v1.3.0-beta.1
+        image: wavefronthq/heapster-amd64:latest
         imagePullPolicy: Always
         command:
         - /heapster
