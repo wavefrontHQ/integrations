@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: wavefront-proxy
-        image: wavefronthq/proxy:3.24-1-v2
+        image: wavefronthq/proxy:latest
         imagePullPolicy: Always
         env:
         - name: WAVEFRONT_URL
