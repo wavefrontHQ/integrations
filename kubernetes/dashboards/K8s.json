@@ -182,7 +182,7 @@
               "summarization": "MEAN"
             }
           ],
-          "heightFactor": 100
+          "heightFactor": 101
         },
         {
           "charts": [
@@ -191,21 +191,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"*memory.usage\", type=node and cluster=${cluster}))",
+                  "query": "count(ts(\"*node.memory.usage\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": null,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
               "units": " ",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": null,
+              "description": "",
               "chartSettings": {
                 "type": "sparkline",
                 "max": null,
@@ -274,7 +274,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"*memory.usage\", type=ns and cluster=${cluster}))",
+                  "query": "count(ts(\"*.ns.memory.usage\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -284,7 +284,7 @@
                 }
               ],
               "units": " ",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -357,7 +357,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(lag(30s,ts(\"*memory.usage\", type=pod and cluster=${cluster})))",
+                  "query": "count(lag(30s,ts(\"*.pod.memory.usage\", cluster=${cluster})))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -367,7 +367,7 @@
                 }
               ],
               "units": " ",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -447,7 +447,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(lag(1m,ts(\"*uptime\", type=pod_container and cluster=${cluster})))",
+                  "query": "count(lag(1m,ts(\"*.pod_container.uptime\", cluster=${cluster})))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -457,7 +457,7 @@
                 }
               ],
               "units": " ",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -533,7 +533,7 @@
               "summarization": "MEAN"
             }
           ],
-          "heightFactor": 100
+          "heightFactor": 67
         },
         {
           "charts": [
@@ -542,17 +542,17 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "avg(ts(\"*memory.node_utilization\", type=node and cluster=${cluster})) * 100",
+                  "query": "avg(ts(\"*.node.memory.node_utilization\", cluster=${cluster})) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": null,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
               "units": "%",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -632,7 +632,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*memory.usage\", type=cluster and cluster=${cluster})",
+                  "query": "ts(\"*.cluster.memory.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -642,7 +642,7 @@
                 }
               ],
               "units": " ",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -722,17 +722,17 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "avg(ts(\"*cpu.node_utilization\", type=node and cluster=${cluster})) * 100",
+                  "query": "avg(ts(\"*.node.cpu.node_utilization\", cluster=${cluster})) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": null,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
               "units": "%",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -812,13 +812,13 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*filesystem.usage\", type=node and cluster=${cluster}) / ts(\"*filesystem.limit\", type=node and cluster=${cluster})",
+                  "query": "ts(\"*.node.filesystem.usage\", cluster=${cluster}) / ts(\"*.node.filesystem.limit\", cluster=${cluster})",
                   "disabled": true,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": null,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 },
                 {
                   "name": "New Query",
@@ -828,11 +828,11 @@
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": null,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
               "units": "%",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -908,7 +908,7 @@
               "summarization": "MEAN"
             }
           ],
-          "heightFactor": 100
+          "heightFactor": 67
         }
       ]
     },
@@ -922,7 +922,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"*uptime\", type=pod and cluster=${cluster}), pod_namespace)",
+                  "query": "count(ts(\"*pod.uptime\", cluster=${cluster}), pod_namespace)",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -931,12 +931,12 @@
                   "sourceDescription": ""
                 }
               ],
-              "units": "bytes",
-              "base": 0,
+              "units": "running containers",
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": null,
+              "description": "",
               "chartSettings": {
                 "type": "stacked-area",
                 "max": null,
@@ -1008,7 +1008,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"*uptime\", type=pod_container and cluster=${cluster}), pod_namespace)",
+                  "query": "count(ts(\"*.pod_container.uptime\", cluster=${cluster}), pod_namespace)",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1017,12 +1017,12 @@
                   "sourceDescription": ""
                 }
               ],
-              "units": "bytes",
-              "base": 0,
+              "units": "running containers",
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": null,
+              "description": "",
               "chartSettings": {
                 "type": "stacked-area",
                 "max": null,
@@ -1094,7 +1094,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*memory.usage\", type=ns and cluster=${cluster})",
+                  "query": "ts(\"*.ns.memory.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1104,7 +1104,7 @@
                 }
               ],
               "units": "bytes",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -1190,27 +1190,27 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*cpu.node_utilization\", type=\"node\" and cluster=${cluster}) * 100",
+                  "query": "ts(\"*.node.cpu.node_utilization\", cluster=${cluster}) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": null,
+                  "secondaryAxis": false,
                   "sourceDescription": ""
                 },
                 {
                   "name": "New Query",
-                  "query": "rate(ts(\"*cpu.usage\", type=node and cluster=${cluster}))",
+                  "query": "rate(ts(\"*.node.cpu.usage\", cluster=${cluster}))",
                   "disabled": true,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": null,
+                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
               "units": "%",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -1284,27 +1284,17 @@
               "name": "CPU Usage Rate by Node",
               "sources": [
                 {
-                  "name": "Source",
-                  "query": "ts(\"*cpu.node_utilization\", type=\"node\") * 100",
-                  "disabled": true,
-                  "scatterPlotSource": "Y",
-                  "querybuilderSerialization": null,
-                  "querybuilderEnabled": false,
-                  "secondaryAxis": false,
-                  "sourceDescription": null
-                },
-                {
                   "name": "New Query",
-                  "query": "rate(ts(\"*cpu.usage\", type=node and cluster=${cluster}))",
+                  "query": "ts(\"heapster.node.cpu.usage_rate\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": false,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
-              "units": "%",
+              "units": "usage rate",
               "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
@@ -1380,17 +1370,17 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*memory.node_utilization\", type=\"node\" and cluster=${cluster}) * 100",
+                  "query": "ts(\"*.node.memory.node_utilization\", cluster=${cluster}) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": null,
+                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
               "units": "Percent",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -1465,7 +1455,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*memory.usage\", type=\"node\" and cluster=${cluster})",
+                  "query": "ts(\"*.node.memory.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1555,13 +1545,13 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"*network.rx\", type=node and cluster=${cluster}))",
+                  "query": "rate(ts(\"*.node.network.rx\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": false,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
               "units": "Bytes",
@@ -1638,26 +1628,26 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"*network.rx_errors\", type=node and cluster=${cluster}))",
+                  "query": "rate(ts(\"*.node.network.rx_errors\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": false,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 },
                 {
                   "name": "New Query",
-                  "query": "rate(ts(\"*network.tx_errors\", type=node and cluster=${cluster}))",
+                  "query": "rate(ts(\"*.node.network.tx_errors\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": false,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
-              "units": "Units",
+              "units": "error rate",
               "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
@@ -1731,13 +1721,13 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"*network.tx\", type=node and cluster=${cluster}))",
+                  "query": "rate(ts(\"*.node.network.tx\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": false,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
               "units": "Bytes",
@@ -1814,21 +1804,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*uptime\", type=node and cluster=${cluster}) / 10000000",
+                  "query": "ts(\"*.node.uptime\", cluster=${cluster}) / 60000",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": null,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
-              "units": "Hours",
-              "base": 0,
+              "units": "Minutes",
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": null,
+              "description": "",
               "chartSettings": {
                 "type": "table",
                 "max": null,
@@ -1843,11 +1833,13 @@
                 "showRawValues": false,
                 "autoColumnTags": false,
                 "columnTags": null,
-                "tagMode": "all",
+                "tagMode": "custom",
                 "numTags": 4,
-                "customTags": [],
+                "customTags": [
+                  "nodename"
+                ],
                 "groupBySource": false,
-                "sortValuesDescending": null,
+                "sortValuesDescending": false,
                 "y1Max": null,
                 "y1Min": null,
                 "y1Units": "",
@@ -1902,21 +1894,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*filesystem.usage\", type=node and cluster=${cluster})",
+                  "query": "ts(\"*.node.filesystem.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": null,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
               "units": "Bytes",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": null,
+              "description": "",
               "chartSettings": {
                 "type": "table",
                 "max": null,
@@ -1931,11 +1923,14 @@
                 "showRawValues": false,
                 "autoColumnTags": false,
                 "columnTags": null,
-                "tagMode": "all",
+                "tagMode": "custom",
                 "numTags": 4,
-                "customTags": [],
+                "customTags": [
+                  "nodename",
+                  "resource_id"
+                ],
                 "groupBySource": false,
-                "sortValuesDescending": null,
+                "sortValuesDescending": false,
                 "y1Max": null,
                 "y1Min": null,
                 "y1Units": "",
@@ -1985,21 +1980,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*filesystem.limit\", type=node and cluster=${cluster}) - ts(\"*filesystem.usage\", type=node and cluster=${cluster})",
+                  "query": "ts(\"*.node.filesystem.limit\", cluster=${cluster}) - ts(\"*.node.filesystem.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": null,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
               "units": "Bytes",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": null,
+              "description": "",
               "chartSettings": {
                 "type": "table",
                 "max": null,
@@ -2014,11 +2009,14 @@
                 "showRawValues": false,
                 "autoColumnTags": false,
                 "columnTags": null,
-                "tagMode": "all",
+                "tagMode": "custom",
                 "numTags": 4,
-                "customTags": [],
+                "customTags": [
+                  "nodename",
+                  "resource_id"
+                ],
                 "groupBySource": false,
-                "sortValuesDescending": null,
+                "sortValuesDescending": false,
                 "y1Max": null,
                 "y1Min": null,
                 "y1Units": "",
@@ -2068,21 +2066,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*filesystem.usage\", type=node and cluster=${cluster})  / ts(\"*filesystem.limit\", type=node and cluster=${cluster}) * 100",
+                  "query": "ts(\"*node.filesystem.usage\", cluster=${cluster})  / ts(\"*node.filesystem.limit\", cluster=${cluster}) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": null,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
               "units": "%",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": null,
+              "description": "",
               "chartSettings": {
                 "type": "table",
                 "max": null,
@@ -2097,11 +2095,14 @@
                 "showRawValues": false,
                 "autoColumnTags": false,
                 "columnTags": null,
-                "tagMode": "all",
+                "tagMode": "custom",
                 "numTags": 4,
-                "customTags": [],
+                "customTags": [
+                  "nodename",
+                  "resource_id"
+                ],
                 "groupBySource": false,
-                "sortValuesDescending": null,
+                "sortValuesDescending": false,
                 "y1Max": null,
                 "y1Min": null,
                 "y1Units": "",
@@ -2161,17 +2162,17 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*cpu.usage_rate\", type=pod and cluster=${cluster})",
+                  "query": "ts(\"*.pod.cpu.usage_rate\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": null,
+                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
               "units": "Units",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -2244,7 +2245,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*memory.usage\", type=\"pod\" and cluster=${cluster})",
+                  "query": "ts(\"*.pod.memory.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2254,7 +2255,7 @@
                 }
               ],
               "units": "Bytes",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
@@ -2336,17 +2337,17 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*memory.page_faults_rate\", type=pod and cluster=${cluster})",
+                  "query": "ts(\"*.pod.memory.page_faults_rate\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": null,
+                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
               "units": "Units",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -2419,17 +2420,17 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"*network.rx\", type=pod and cluster=${cluster}))",
+                  "query": "rate(ts(\"*.pod.network.rx\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": null,
+                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
               "units": "Bytes",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -2502,17 +2503,17 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"*network.tx\", type=pod and cluster=${cluster}))",
+                  "query": "rate(ts(\"*pod.network.tx\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": null,
+                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
               "units": "Bytes",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -2585,27 +2586,27 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"*network.rx_errors\", type=pod and cluster=${cluster}))",
+                  "query": "rate(ts(\"*.pod.network.rx_errors\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": null,
+                  "secondaryAxis": false,
                   "sourceDescription": ""
                 },
                 {
                   "name": "New Query",
-                  "query": "rate(ts(\"*network.tx_errors\", type=pod and cluster=${cluster}))",
+                  "query": "rate(ts(\"*.pod.network.tx_errors\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": null,
+                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
               "units": "Units",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -2683,7 +2684,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*filesystem.usage\", type=pod and cluster=${cluster})",
+                  "query": "ts(\"*.pod.filesystem.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2693,7 +2694,7 @@
                 }
               ],
               "units": "Bytes",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
@@ -2781,21 +2782,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*cpu.usage_rate\", type=pod_container and cluster=${cluster})",
+                  "query": "ts(\"*.pod_container.cpu.usage_rate\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": null,
+                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
-              "units": "Units",
-              "base": 0,
+              "units": "",
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": null,
+              "description": "",
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -2864,7 +2865,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*memory.usage\", type=\"pod_container\" and cluster=${cluster})",
+                  "query": "ts(\"*.pod_container.memory.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2874,7 +2875,7 @@
                 }
               ],
               "units": "Bytes",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
@@ -2957,21 +2958,21 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*memory.page_faults_rate\", type=pod_container and cluster=${cluster})",
+                  "query": "ts(\"*.pod_container.memory.page_faults_rate\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": null,
+                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
-              "units": "Units",
-              "base": 0,
+              "units": "page fault rate",
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": null,
+              "description": "",
               "chartSettings": {
                 "type": "line",
                 "max": null,
@@ -3040,7 +3041,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*filesystem.usage\", type=pod_container and cluster=${cluster})",
+                  "query": "ts(\"*.pod_container.filesystem.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -3050,7 +3051,7 @@
                 }
               ],
               "units": "Bytes",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
@@ -3134,7 +3135,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*uptime\", type=pod_container and cluster=${cluster}) / 10000000",
+                  "query": "ts(\"*.pod_container.uptime\", cluster=${cluster}) / 60000",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -3143,12 +3144,12 @@
                   "sourceDescription": ""
                 }
               ],
-              "units": "Hours",
-              "base": 0,
+              "units": "minutes",
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": null,
+              "description": "",
               "chartSettings": {
                 "type": "table",
                 "max": null,
@@ -3172,7 +3173,7 @@
                   "pod_name"
                 ],
                 "groupBySource": false,
-                "sortValuesDescending": null,
+                "sortValuesDescending": false,
                 "y1Max": null,
                 "y1Min": null,
                 "y1Units": "",
@@ -3222,7 +3223,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*filesystem.usage\", type=pod and cluster=${cluster})",
+                  "query": "ts(\"*.pod.filesystem.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -3232,7 +3233,7 @@
                 }
               ],
               "units": "Bytes",
-              "base": 0,
+              "base": 1,
               "noDefaultEvents": false,
               "interpolatePoints": true,
               "includeObsoleteMetrics": false,
@@ -3317,16 +3318,16 @@
       "description": null,
       "allowAll": null,
       "tagKey": null,
-      "queryValue": "ts(\"*cpu.usage_rate\", type=\"cluster\")",
+      "queryValue": "ts(\"*.cluster.cpu.usage_rate\")",
       "dynamicFieldType": "SOURCE",
       "parameterType": "DYNAMIC",
       "label": "Cluster",
-      "defaultValue": "Label",
+      "defaultValue": "Label_3",
       "valuesToReadableStrings": {
-        "Label": "k8s-cluster"
+        "Label_3": "heapster-dev"
       },
-      "selectedLabel": "Label",
-      "value": "k8s-cluster"
+      "selectedLabel": "Label_3",
+      "value": "heapster-dev"
     }
   }
 }
