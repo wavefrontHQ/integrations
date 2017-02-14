@@ -3322,12 +3322,12 @@
       "dynamicFieldType": "SOURCE",
       "parameterType": "DYNAMIC",
       "label": "Cluster",
-      "defaultValue": "Label_3",
+      "defaultValue": "Label",
       "valuesToReadableStrings": {
-        "Label_3": "heapster-dev"
+        "Label": "k8s-cluster"
       },
-      "selectedLabel": "Label_3",
-      "value": "heapster-dev"
+      "selectedLabel": "Label",
+      "value": "k8s-cluster"
     }
   }
 }
