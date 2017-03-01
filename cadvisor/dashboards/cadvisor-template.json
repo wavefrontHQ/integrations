@@ -2,6 +2,7 @@
   "name": "cAdvisor Template Dashboard",
   "description": "",
   "eventFilterType": "BYCHART",
+  "eventQuery": null,
   "url": "cadvisor-template",
   "displayDescription": false,
   "displaySectionTableOfContents": true,
@@ -30,11 +31,11 @@
                 }
               ],
               "units": " ",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "sparkline",
                 "max": null,
@@ -110,7 +111,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"cadvisor.cpu_cumulative_usage\", source=${chost} and container=\"/\")) / 10000000",
+                  "query": "rate(ts(\"cadvisor.cpu_cumulative_usage\", source=\"${chost}\" and container=\"/\")) / 10000000",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -200,22 +201,22 @@
               "sources": [
                 {
                   "name": "Usage",
-                  "query": "sum(ts(\"cadvisor.fs_usage\", source=${chost} and container=\"/\"))",
+                  "query": "sum(ts(\"cadvisor.fs_usage\", source=\"${chost}\" and container=\"/\"))",
                   "disabled": true,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 },
                 {
                   "name": "Limit",
-                  "query": "sum(ts(\"cadvisor.fs_limit\", source=${chost} and container=\"/\"))",
+                  "query": "sum(ts(\"cadvisor.fs_limit\", source=\"${chost}\" and container=\"/\"))",
                   "disabled": true,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 },
                 {
@@ -225,16 +226,16 @@
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "%",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "sparkline",
                 "max": null,
@@ -310,7 +311,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cadvisor.memory_usage\", container=\"/\", source=${chost})",
+                  "query": "ts(\"cadvisor.memory_usage\", container=\"/\", source=\"${chost}\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -320,11 +321,11 @@
                 }
               ],
               "units": "",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "sparkline",
                 "max": null,
@@ -408,12 +409,12 @@
               "sources": [
                 {
                   "name": "overall",
-                  "query": "rate(align(1m,ts(\"cadvisor.cpu_cumulative_usage\", container=\"/docker\", source=${chost})))",
+                  "query": "rate(align(1m,ts(\"cadvisor.cpu_cumulative_usage\", container=\"/docker\", source=\"${chost}\")))",
                   "disabled": true,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 },
                 {
@@ -423,7 +424,7 @@
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 },
                 {
@@ -433,16 +434,16 @@
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
+                  "secondaryAxis": null,
                   "sourceDescription": ""
                 }
               ],
               "units": "%",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
-              "interpolatePoints": false,
+              "interpolatePoints": true,
               "includeObsoleteMetrics": true,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "table",
                 "max": null,
@@ -513,7 +514,7 @@
               "sources": [
                 {
                   "name": "overall",
-                  "query": "rate(ts(\"cadvisor.cpu_cumulative_usage\", container=\"/\", source=${chost}))",
+                  "query": "rate(ts(\"cadvisor.cpu_cumulative_usage\", container=\"/\", source=\"${chost}\"))",
                   "disabled": true,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -533,7 +534,7 @@
                 }
               ],
               "units": "Percent",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": true,
@@ -606,7 +607,7 @@
               "sources": [
                 {
                   "name": "System CPU",
-                  "query": "rate(ts(\"cadvisor.cpu_cumulative_usage\", container=\"/\", source=${chost})) / 100000000",
+                  "query": "rate(ts(\"cadvisor.cpu_cumulative_usage\", container=\"/\", source=\"${chost}\")) / 100000000",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -616,7 +617,7 @@
                 },
                 {
                   "name": "Docker CPU",
-                  "query": "rate(ts(\"cadvisor.cpu_cumulative_usage\", container=\"/docker\", source=${chost})) / 100000000",
+                  "query": "rate(ts(\"cadvisor.cpu_cumulative_usage\", container=\"/docker\", source=\"${chost}\")) / 100000000",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -709,7 +710,7 @@
               "sources": [
                 {
                   "name": "Container Usage",
-                  "query": "ts(\"cadvisor.memory_usage\", ${filter}, source=${chost})",
+                  "query": "ts(\"cadvisor.memory_usage\", ${filter}, source=\"${chost}\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -719,11 +720,11 @@
                 }
               ],
               "units": "bytes",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
-              "interpolatePoints": false,
+              "interpolatePoints": true,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "table",
                 "max": null,
@@ -794,7 +795,7 @@
               "sources": [
                 {
                   "name": "System Usage",
-                  "query": "ts(\"cadvisor.memory_usage\", container=\"/\", source=${chost})",
+                  "query": "ts(\"cadvisor.memory_usage\", container=\"/\", source=\"${chost}\")",
                   "disabled": true,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -814,7 +815,7 @@
                 }
               ],
               "units": "%",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -887,7 +888,7 @@
               "sources": [
                 {
                   "name": "Container Usage",
-                  "query": "ts(\"cadvisor.memory_usage\", ${filter}, source=${chost})",
+                  "query": "ts(\"cadvisor.memory_usage\", ${filter}, source=\"${chost}\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -897,11 +898,11 @@
                 }
               ],
               "units": "bytes",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "stacked-area",
                 "max": null,
@@ -1245,31 +1246,31 @@
               "sources": [
                 {
                   "name": "used",
-                  "query": "ts(\"cadvisor.fs_summary.fs_usage\", container=\"/\", source=${chost})",
+                  "query": "ts(\"cadvisor.fs_summary.fs_usage\", container=\"/\", source=\"${chost}\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": null,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 },
                 {
                   "name": "free",
-                  "query": "ts(\"cadvisor.fs_summary.fs_limit\", container=\"/\", source=${chost}) - ${used}",
+                  "query": "ts(\"cadvisor.fs_summary.fs_limit\", container=\"/\", source=\"${chost}\") - ${used}",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
                   "querybuilderEnabled": false,
                   "secondaryAxis": null,
-                  "sourceDescription": null
+                  "sourceDescription": ""
                 }
               ],
               "units": "bytes",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": "",
+              "description": null,
               "chartSettings": {
                 "type": "stacked-area",
                 "max": null,
@@ -1338,7 +1339,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"cadvisor.fs_usage\", container=\"*\" and source=${chost})",
+                  "query": "ts(\"cadvisor.fs_usage\", container=\"*\" and source=\"${chost}\")",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1348,7 +1349,7 @@
                 }
               ],
               "units": "bytes",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -1423,6 +1424,22 @@
     }
   ],
   "parameterDetails": {
+    "chost": {
+      "hideFromView": false,
+      "description": null,
+      "allowAll": null,
+      "tagKey": null,
+      "queryValue": "ts(\"cadvisor.cpu_cumulative_usage\")",
+      "dynamicFieldType": "SOURCE",
+      "parameterType": "DYNAMIC",
+      "label": "Container Host",
+      "defaultValue": "Label",
+      "valuesToReadableStrings": {
+        "Label": "3bb78d92a0a9"
+      },
+      "selectedLabel": "Label",
+      "value": "3bb78d92a0a9"
+    },
     "filter": {
       "hideFromView": true,
       "description": null,
@@ -1434,26 +1451,10 @@
       "label": "Filter",
       "defaultValue": "Label",
       "valuesToReadableStrings": {
-        "Label": "source=${chost} and not container=\"/user/*\" and not container=\"/\" and not container=\"/docker\" and not container=\"/user\" and not container=\"/init.*\""
+        "Label": "source=\"${chost}\" and not container=\"/user/*\" and not container=\"/\" and not container=\"/docker\" and not container=\"/user\" and not container=\"/init.*\""
       },
       "selectedLabel": "Label",
-      "value": "source=${chost} and not container=\"/user/*\" and not container=\"/\" and not container=\"/docker\" and not container=\"/user\" and not container=\"/init.*\""
-    },
-    "chost": {
-      "hideFromView": false,
-      "description": null,
-      "allowAll": null,
-      "tagKey": null,
-      "queryValue": "ts(\"cadvisor.cpu_cumulative_usage\")",
-      "dynamicFieldType": "SOURCE",
-      "parameterType": "DYNAMIC",
-      "label": "Container Host",
-      "defaultValue": "Label_2",
-      "valuesToReadableStrings": {
-        "Label_2": "cadvisor1"
-      },
-      "selectedLabel": "Label_2",
-      "value": "cadvisor1"
+      "value": "source=\"${chost}\" and not container=\"/user/*\" and not container=\"/\" and not container=\"/docker\" and not container=\"/user\" and not container=\"/init.*\""
     }
   }
 }
