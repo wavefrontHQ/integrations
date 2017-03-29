@@ -1,12 +1,11 @@
-# Docker Integration (cAdvisor)
-
-This directory contains resources for monitoring Docker with Wavefront using Google cAdvisor. Please see https://community.wavefront.com/docs/DOC-1208 for more instructions on using.
+This integration contains resources for monitoring Docker with Wavefront using Google cAdvisor. See [Docker (cAdvisor) Integration](https://community.wavefront.com/docs/DOC-1208) for more instructions.
 
 ## Exporting cAdvisor Stats to Wavefront
 
-cAdvisor supports exporting stats to Wavefront (https://wavefront.com). Below are the additional command line arguments needed to tell cAdvisor to export stats to your local Wavefront proxy.
+cAdvisor supports exporting stats to [Wavefront](https://wavefront.com). Below are the additional command line arguments needed to tell cAdvisor to export stats to your local Wavefront proxy.
 
-### What You'll Need
+### Requirements
+
 1. A Wavefront account.
 2. A Wavefront proxy installed on your network.
 
@@ -16,7 +15,7 @@ Set the storage driver to Wavefront.
  -storage_driver=wavefront
 ```
 
-Additional Arguments
+### Additional Arguments
 
 #### Required: The *ip:port* of your Wavefront proxy
 
@@ -55,11 +54,11 @@ Defaults to true. Determines whether docker labels should be added as point tags
 `-storage_driver_wf_taggify_labels=true`
 
 
-# Examples
+## Examples
 
-## Docker Run
+### Docker Run
 
-```
+```shell
 sudo docker run \
   --volume=/:/rootfs:ro \
   --volume=/var/run:/var/run:rw \
@@ -74,9 +73,9 @@ sudo docker run \
   -storage_driver_wf_proxy_host=YOUR_PROXY_HOST:2878
 ```
 
-## Docker Compose
+### Docker Compose
 
-```
+```yaml
 cadvisor:
   container_name: cadvisor
   image: wavefronthq/cadvisor:latest
