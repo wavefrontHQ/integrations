@@ -1,11 +1,9 @@
-This integration contains resources for monitoring Docker with Wavefront using Google cAdvisor. See [Docker (cAdvisor) Integration](https://community.wavefront.com/docs/DOC-1208) for more instructions.
 
-## Exporting cAdvisor Stats to Wavefront
+# Exporting cAdvisor Stats to Wavefront
 
-cAdvisor supports exporting stats to [Wavefront](https://wavefront.com). Below are the additional command line arguments needed to tell cAdvisor to export stats to your local Wavefront proxy.
+cAdvisor supports exporting stats to Wavefront (https://wavefront.com). Below are the additional command line arguments needed to tell cAdvisor to export stats to your local Wavefront proxy.
 
-### Requirements
-
+### What You'll Need
 1. A Wavefront account.
 2. A Wavefront proxy installed on your network.
 
@@ -15,7 +13,7 @@ Set the storage driver to Wavefront.
  -storage_driver=wavefront
 ```
 
-### Additional Arguments
+Additional Arguments
 
 #### Required: The *ip:port* of your Wavefront proxy
 
@@ -25,9 +23,17 @@ The proxy should be installed on your network and accessible by the Docker host 
 
 #### Required: Source
 
-Source tag value for metrics collected by this cAdvisor instance. We usually recommend setting this to the hostname of the docker host (not the container hostname)
+Source tag value for metrics collected by this cAdvisor instance. We usually recommend setting this to the hostname of the docker host (not the container hostname). On some environments
+(AWS ECS for example) it is not possible or inconvenient (sans hacks) to retrieve the hostname of the Docker host when launching cAdvisor. As a solution to this you can use a docker label
+as part of the source name. The storage driver will automatically suffix the name with cAdvisor's container ID (hostname). For example, if you are running a service in Docker compose called "web",
+the source name will become `web-xxxxxxx` where `xxxxxxx` is cAdvisor's container ID. We recommend choosing a label that does not have high cardinality across hosts.
+This is the best compromise between flexibility in source naming while still maintaining reasonable cardinality of sources.
 
 `-storage_driver_wf_source=mydockerhost`
+
+or, with Docker Compose for example:
+
+`-storage_driver_wf_source=`
 
 #### Optional: Metric Prefix
 
@@ -53,12 +59,17 @@ Defaults to true. Determines whether docker labels should be added as point tags
 
 `-storage_driver_wf_taggify_labels=true`
 
+#### Optional: Label Filter
 
-## Examples
+`-storage_driver_wf_label_filter=com.docker.compose.service,com.docker.compose.project`
 
-### Docker Run
+Pass a comma separated list of docker label keys that should be added as tags to metrics.
 
-```shell
+# Examples
+
+## Docker Run
+
+```
 sudo docker run \
   --volume=/:/rootfs:ro \
   --volume=/var/run:/var/run:rw \
@@ -67,18 +78,18 @@ sudo docker run \
   --publish=8080:8080 \
   --detach=true \
   --name=cadvisor \
-  wavefronthq/cadvisor:latest \
+  google/cadvisor:latest \
   -storage_driver=wavefront \
   -storage_driver_wf_source=$(hostname) \
   -storage_driver_wf_proxy_host=YOUR_PROXY_HOST:2878
 ```
 
-### Docker Compose
+## Docker Compose
 
-```yaml
+```
 cadvisor:
   container_name: cadvisor
-  image: wavefronthq/cadvisor:latest
+  image: google/cadvisor:latest
   command: -storage_driver=wavefront -storage_driver_wf_source=$(hostname) -storage_driver_wf_proxy_host=YOUR_PROXY_HOST:2878
   restart: always
   ports:
