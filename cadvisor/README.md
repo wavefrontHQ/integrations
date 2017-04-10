@@ -33,7 +33,7 @@ This is the best compromise between flexibility in source naming while still mai
 
 or, with Docker Compose for example:
 
-`-storage_driver_wf_source=`
+`-storage_driver_wf_source=$(hostname)`
 
 #### Optional: Metric Prefix
 
