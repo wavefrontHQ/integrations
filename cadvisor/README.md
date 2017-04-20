@@ -1,5 +1,5 @@
 
-# Exporting cAdvisor Stats to Wavefront
+## Exporting cAdvisor Stats to Wavefront
 
 cAdvisor supports exporting stats to Wavefront (https://wavefront.com). Below are the additional command line arguments needed to tell cAdvisor to export stats to your local Wavefront proxy.
 
@@ -9,11 +9,9 @@ cAdvisor supports exporting stats to Wavefront (https://wavefront.com). Below ar
 
 Set the storage driver to Wavefront.
 
-```
- -storage_driver=wavefront
-```
+` -storage_driver=wavefront`
 
-Additional Arguments
+### Additional Arguments
 
 #### Required: The *ip:port* of your Wavefront proxy
 
@@ -25,7 +23,7 @@ The proxy should be installed on your network and accessible by the Docker host 
 
 Source tag value for metrics collected by this cAdvisor instance. We usually recommend setting this to the hostname of the docker host (not the container hostname). On some environments
 (AWS ECS for example) it is not possible or inconvenient (sans hacks) to retrieve the hostname of the Docker host when launching cAdvisor. As a solution to this you can use a docker label
-as part of the source name. The storage driver will automatically suffix the name with cAdvisor's container ID (hostname). For example, if you are running a service in Docker compose called "web",
+as part of the source name. The storage driver will automatically suffix the name with cAdvisor's container ID (hostname). For example, if you are running a service in Docker Compose called "web",
 the source name will become `web-xxxxxxx` where `xxxxxxx` is cAdvisor's container ID. We recommend choosing a label that does not have high cardinality across hosts.
 This is the best compromise between flexibility in source naming while still maintaining reasonable cardinality of sources.
 
@@ -65,11 +63,11 @@ Defaults to true. Determines whether docker labels should be added as point tags
 
 Pass a comma separated list of docker label keys that should be added as tags to metrics.
 
-# Examples
+## Examples
 
-## Docker Run
+### Docker Run
 
-```
+```shell
 sudo docker run \
   --volume=/:/rootfs:ro \
   --volume=/var/run:/var/run:rw \
@@ -84,9 +82,9 @@ sudo docker run \
   -storage_driver_wf_proxy_host=YOUR_PROXY_HOST:2878
 ```
 
-## Docker Compose
+### Docker Compose
 
-```
+```yaml
 cadvisor:
   container_name: cadvisor
   image: google/cadvisor:latest
