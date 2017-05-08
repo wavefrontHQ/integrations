@@ -57,7 +57,7 @@
             "command": [
                 "-storage_driver=wavefront",
                 "-storage_driver_wf_proxy_host=YOUR_PROXY_ADDRESS",
-                "--storage_driver_wf_prefix=cadvisor.",
+                "-storage_driver_wf_prefix=cadvisor.",
                 "-storage_driver_wf_interval=10",
                 "-storage_driver_wf_taggify_labels=true",
                 "-storage_driver_wf_source={com.amazonaws.ecs.task-definition-family}",
