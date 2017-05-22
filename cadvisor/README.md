@@ -22,14 +22,22 @@ The proxy should be installed on your network and accessible by the Docker host 
 #### Required: Source
 
 Source tag value for metrics collected by this cAdvisor instance. We usually recommend setting this to the hostname of the docker host (not the container hostname). On some environments
-(AWS ECS for example) it is not possible or inconvenient (sans hacks) to retrieve the hostname of the Docker host when launching cAdvisor. As a solution to this you can use a docker label
+(AWS ECS for example) it is not possible or inconvenient (sans ugly hacks) to retrieve the hostname of the Docker host when launching cAdvisor. As a solution to this you can use a docker label
 as part of the source name. The storage driver will automatically suffix the name with cAdvisor's container ID (hostname). For example, if you are running a service in Docker Compose called "web",
 the source name will become `web-xxxxxxx` where `xxxxxxx` is cAdvisor's container ID. We recommend choosing a label that does not have high cardinality across hosts.
 This is the best compromise between flexibility in source naming while still maintaining reasonable cardinality of sources.
 
+To include a Docker label in the source name (example):
+
+`-storage_driver_wf_source={com.amazonaws.ecs.task-definition-family}`
+
+In this example, assume the value of the `com.amazon.ecs.task-definition-family` label for a container is "web" and the hostname of the cAdvisor container is "cadvisor01". The source name for metrics emitted from this container would be `web-cadvisor01`
+
+If you just want to use a static value for the source (example):
+
 `-storage_driver_wf_source=mydockerhost`
 
-or, with Docker Compose for example:
+or, if you're starting containers from the command line using Docker run command, set the source to the hostname of the Docker host machine:
 
 `-storage_driver_wf_source=$(hostname)`
 
