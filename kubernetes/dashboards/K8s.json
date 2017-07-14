@@ -2,6 +2,10 @@
   "name": "Kubernetes",
   "description": "",
   "eventFilterType": "BYCHART",
+  "eventQuery": null,
+  "defaultTimeWindow": null,
+  "defaultStartTime": null,
+  "defaultEndTime": null,
   "url": "K8s",
   "displayDescription": false,
   "displaySectionTableOfContents": true,
@@ -191,7 +195,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"*node.memory.usage\", cluster=${cluster}))",
+                  "query": "count(align(1m, ts(\"${namespace}.node.memory.usage\", cluster=${cluster})))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -235,13 +239,11 @@
                 "invertDynamicLegendHoverControl": null,
                 "fixedLegendEnabled": false,
                 "fixedLegendUseRawStats": false,
-                "fixedLegendPosition": "RIGHT",
-                "fixedLegendDisplayStats": [
-                  "CURRENT"
-                ],
-                "fixedLegendFilterSort": "TOP",
+                "fixedLegendPosition": "TOP",
+                "fixedLegendDisplayStats": [],
+                "fixedLegendFilterSort": "BOTTOM",
                 "fixedLegendFilterLimit": 5,
-                "fixedLegendFilterField": "CURRENT",
+                "fixedLegendFilterField": "COUNT",
                 "fixedLegendHideLabel": null,
                 "xMax": null,
                 "xMin": null,
@@ -274,7 +276,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"*.ns.memory.usage\", cluster=${cluster}))",
+                  "query": "count(align(1m, ts(\"${namespace}.ns.memory.usage\", cluster=${cluster})))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -357,7 +359,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(lag(30s,ts(\"*.pod.memory.usage\", cluster=${cluster})))",
+                  "query": "count(align(1m, lag(1m, ts(\"${namespace}.pod.memory.usage\", cluster=${cluster}))))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -447,7 +449,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(lag(1m,ts(\"*.pod_container.uptime\", cluster=${cluster})))",
+                  "query": "count(align(1m, lag(1m, ts(\"${namespace}.pod_container.uptime\", cluster=${cluster}))))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -542,7 +544,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "avg(ts(\"*.node.memory.node_utilization\", cluster=${cluster})) * 100",
+                  "query": "avg(ts(\"${namespace}.node.memory.node_utilization\", cluster=${cluster})) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -632,7 +634,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.cluster.memory.usage\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.cluster.memory.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -722,7 +724,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "avg(ts(\"*.node.cpu.node_utilization\", cluster=${cluster})) * 100",
+                  "query": "avg(ts(\"${namespace}.node.cpu.node_utilization\", cluster=${cluster})) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -812,7 +814,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.node.filesystem.usage\", cluster=${cluster}) / ts(\"*.node.filesystem.limit\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.node.filesystem.usage\", cluster=${cluster}) / ts(\"${namespace}.node.filesystem.limit\", cluster=${cluster})",
                   "disabled": true,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -922,7 +924,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"*pod.uptime\", cluster=${cluster}), pod_namespace)",
+                  "query": "count(align(1m, ts(\"${namespace}.pod.uptime\", cluster=${cluster})), pod_namespace)",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1008,7 +1010,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "count(ts(\"*.pod_container.uptime\", cluster=${cluster}), pod_namespace)",
+                  "query": "count(align(1m, ts(\"${namespace}.pod_container.uptime\", cluster=${cluster})), pod_namespace)",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1094,7 +1096,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.ns.memory.usage\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.ns.memory.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1190,7 +1192,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.node.cpu.node_utilization\", cluster=${cluster}) * 100",
+                  "query": "ts(\"${namespace}.node.cpu.node_utilization\", cluster=${cluster}) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1200,7 +1202,7 @@
                 },
                 {
                   "name": "New Query",
-                  "query": "rate(ts(\"*.node.cpu.usage\", cluster=${cluster}))",
+                  "query": "rate(ts(\"${namespace}.node.cpu.usage\", cluster=${cluster}))",
                   "disabled": true,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1370,7 +1372,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.node.memory.node_utilization\", cluster=${cluster}) * 100",
+                  "query": "ts(\"${namespace}.node.memory.node_utilization\", cluster=${cluster}) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1455,7 +1457,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.node.memory.usage\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.node.memory.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1545,7 +1547,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"*.node.network.rx\", cluster=${cluster}))",
+                  "query": "rate(ts(\"${namespace}.node.network.rx\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1628,7 +1630,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"*.node.network.rx_errors\", cluster=${cluster}))",
+                  "query": "rate(ts(\"${namespace}.node.network.rx_errors\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1638,7 +1640,7 @@
                 },
                 {
                   "name": "New Query",
-                  "query": "rate(ts(\"*.node.network.tx_errors\", cluster=${cluster}))",
+                  "query": "rate(ts(\"${namespace}.node.network.tx_errors\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1721,7 +1723,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"*.node.network.tx\", cluster=${cluster}))",
+                  "query": "rate(ts(\"${namespace}.node.network.tx\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1804,7 +1806,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.node.uptime\", cluster=${cluster}) / 60000",
+                  "query": "ts(\"${namespace}.node.uptime\", cluster=${cluster}) / 60000",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1894,7 +1896,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.node.filesystem.usage\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.node.filesystem.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -1980,7 +1982,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.node.filesystem.limit\", cluster=${cluster}) - ts(\"*.node.filesystem.usage\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.node.filesystem.limit\", cluster=${cluster}) - ts(\"${namespace}.node.filesystem.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2066,7 +2068,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*node.filesystem.usage\", cluster=${cluster})  / ts(\"*node.filesystem.limit\", cluster=${cluster}) * 100",
+                  "query": "ts(\"${namespace}.node.filesystem.usage\", cluster=${cluster})  / ts(\"${namespace}.node.filesystem.limit\", cluster=${cluster}) * 100",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2162,7 +2164,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.pod.cpu.usage_rate\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.pod.cpu.usage_rate\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2245,7 +2247,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.pod.memory.usage\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.pod.memory.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2337,7 +2339,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.pod.memory.page_faults_rate\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.pod.memory.page_faults_rate\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2420,7 +2422,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"*.pod.network.rx\", cluster=${cluster}))",
+                  "query": "rate(ts(\"${namespace}.pod.network.rx\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2503,7 +2505,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"*pod.network.tx\", cluster=${cluster}))",
+                  "query": "rate(ts(\"${namespace}.pod.network.tx\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2586,7 +2588,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "rate(ts(\"*.pod.network.rx_errors\", cluster=${cluster}))",
+                  "query": "rate(ts(\"${namespace}.pod.network.rx_errors\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2596,7 +2598,7 @@
                 },
                 {
                   "name": "New Query",
-                  "query": "rate(ts(\"*.pod.network.tx_errors\", cluster=${cluster}))",
+                  "query": "rate(ts(\"${namespace}.pod.network.tx_errors\", cluster=${cluster}))",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2684,7 +2686,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.pod.filesystem.usage\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.pod.filesystem.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2782,7 +2784,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.pod_container.cpu.usage_rate\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.pod_container.cpu.usage_rate\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2865,7 +2867,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.pod_container.memory.usage\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.pod_container.memory.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -2958,7 +2960,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.pod_container.memory.page_faults_rate\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.pod_container.memory.page_faults_rate\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -3041,7 +3043,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.pod_container.filesystem.usage\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.pod_container.filesystem.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -3135,7 +3137,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.pod_container.uptime\", cluster=${cluster}) / 60000",
+                  "query": "ts(\"${namespace}.pod_container.uptime\", cluster=${cluster}) / 60000",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -3223,7 +3225,7 @@
               "sources": [
                 {
                   "name": "Source",
-                  "query": "ts(\"*.pod.filesystem.usage\", cluster=${cluster})",
+                  "query": "ts(\"${namespace}.pod.filesystem.usage\", cluster=${cluster})",
                   "disabled": null,
                   "scatterPlotSource": "Y",
                   "querybuilderSerialization": null,
@@ -3318,16 +3320,32 @@
       "description": null,
       "allowAll": null,
       "tagKey": null,
-      "queryValue": "ts(\"*.cluster.cpu.usage_rate\")",
+      "queryValue": "ts(\"${namespace}.cluster.cpu.usage_rate\")",
       "dynamicFieldType": "SOURCE",
       "parameterType": "DYNAMIC",
       "label": "Cluster",
+      "defaultValue": "Label_2",
+      "valuesToReadableStrings": {
+        "Label_2": "k8s-cluster"
+      },
+      "selectedLabel": "Label_2",
+      "value": "k8s-cluster"
+    },
+    "namespace": {
+      "hideFromView": true,
+      "description": null,
+      "allowAll": null,
+      "tagKey": null,
+      "queryValue": null,
+      "dynamicFieldType": null,
+      "parameterType": "SIMPLE",
+      "label": "Metric namespace",
       "defaultValue": "Label",
       "valuesToReadableStrings": {
-        "Label": "k8s-cluster"
+        "Label": "heapster"
       },
       "selectedLabel": "Label",
-      "value": "k8s-cluster"
+      "value": "heapster"
     }
   }
 }
