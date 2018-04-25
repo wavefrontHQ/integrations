@@ -5,14 +5,14 @@
 ```
 define contact{
 	name                            wf-generic-contact
-  register                        0
+	register                        0
 
 	service_notification_period     24x7
 	service_notification_options    w,u,c,r,f,s
 	service_notification_commands   nagios-to-wavefront-service
 
-  host_notification_period        24x7
-  host_notification_options       d,u,r,f,s
+	host_notification_period        24x7
+	host_notification_options       d,u,r,f,s
 	host_notification_commands      nagios-to-wavefront-host
 }
 
