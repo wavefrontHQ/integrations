@@ -32,11 +32,11 @@ define contactgroup{
 
 define command{
 	command_name nagios-to-wavefront-service
-	command_line /opt/nagios/etc/wf/nagios-wf.py -S --type '$NOTIFICATIONTYPE$' --host '$HOSTNAME$' --service '$SERVICEDISPLAYNAME$' --time '$TIMET$' --msg '$SERVICEOUTPUT$\n$NOTIFICATIONAUTHOR$\n$NOTIFICATIONCOMMENT$' https://nimba.wavefront.com 6490a634-ca7d-47c1-bb04-4629f53fc98b
+	command_line /opt/nagios/etc/wf/nagios-wf.py -S --type '$NOTIFICATIONTYPE$' --host '$HOSTNAME$' --service '$SERVICEDISPLAYNAME$' --time '$TIMET$' --msg '$SERVICEOUTPUT$\n$NOTIFICATIONAUTHOR$\n$NOTIFICATIONCOMMENT$' [WAVEFRONT_URL] [WAVEFRONT_TOKEN]
 }
 
 define command{
 	command_name nagios-to-wavefront-host
-	command_line /opt/nagios/etc/wf/nagios-wf.py --type '$NOTIFICATIONTYPE$' --host '$HOSTNAME$' --time '$TIMET$' --msg '$HOSTOUTPUT$' https://nimba.wavefront.com 6490a634-ca7d-47c1-bb04-4629f53fc98b
+	command_line /opt/nagios/etc/wf/nagios-wf.py --type '$NOTIFICATIONTYPE$' --host '$HOSTNAME$' --time '$TIMET$' --msg '$HOSTOUTPUT$' [WAVEFRONT_URL] [WAVEFRONT_TOKEN]
 }
 ```
