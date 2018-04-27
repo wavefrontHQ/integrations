@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# ./nagios-wf.py -S --type 'RECOVERY' --host 'localhost' --service 'file test' --time $(date +%s) --msg 'OK : /opt/nagios/etc/test/flag Does NOT exists' https://nimba.wavefront.com 6490a634-ca7d-47c1-bb04-4629f53fc98b
+# ./nagios-wf.py -S --type 'RECOVERY' --host 'localhost' --service 'file test' --time $(date +%s) --msg 'OK : /opt/nagios/etc/test/flag Does NOT exists' WAVEFRONT_URL WAVEFRONT_TOKEN
 import os
 import argparse
 import urllib2
