@@ -9,18 +9,20 @@ import argparse
 convox = []
 rack_list = []
 app_list = []
+org_list = []
 
 parser = argparse.ArgumentParser(description='Collects monitoring data from convox.')
 parser.add_argument('-a', '--convox-api-key', help='The Convox Api Key', required=True)
 
 
-def set_global_parameters(api_key):
+def set_global_parameters(secret_key):
     global header_dict
     global api_dict
+    global api_key
+    api_key = secret_key
 
     header_dict = {"Content-Type": "application/x-www-form-urlencoded",
-                   "Accept": "application/json",
-                   "Authorization": "Basic " + api_key}
+                   "Accept": "application/json"}
 
     api_dict = {"base": "https://console.convox.com/"}
 
@@ -37,12 +39,12 @@ def add_app_level_tags(metrics_dict, app):
 
 def call_api(api, request_headers):
     base_req = api_dict.get("base") + api
-    response = requests.get(base_req, headers=request_headers)
+    response = requests.get(base_req, headers=request_headers, auth=requests.auth.HTTPBasicAuth('', api_key))
 
     if response.status_code == 200:
         return response.json()
     else:
-        print "API [" + base_req + "] failed to execute with error code [" + str(response.status_code) + "]."
+        #print "API [" + base_req + "] failed to execute with error code [" + str(response.status_code) + "]."
 
         return None
 
@@ -58,9 +60,11 @@ def get_racks():
             else:
                 mini_convox["rack_status"] = 0
 
-            mini_convox["organization"] = data.get("organization").get("name")
+            org = data.get("organization").get("name")
+            mini_convox["organization"] = org
             mini_convox["rack"] = data.get("name")
             rack_list.append(mini_convox)
+            org_list.append(org)
             convox.append(mini_convox)
 
 
@@ -202,6 +206,11 @@ def get_system_capacity():
         convox.append(system_info)
 
 
+def get_organization():
+    org_count = {"organization_count": len(set(org_list))}
+    convox.append(org_count)
+
+
 if __name__ == "__main__":
     set_global_parameters(parser.parse_args().convox_api_key)
     get_racks()
@@ -212,5 +221,6 @@ if __name__ == "__main__":
     get_app_process()
     get_services()
     get_system_capacity()
+    get_organization()
 
     print json.dumps(convox)
