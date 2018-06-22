@@ -107,6 +107,7 @@ def get_test_latest_result(test_details):
               # request_result = str(request['result'])
               service_metric['service_url'] = service_url[:240]
               check_and_add(service_metric,'request_result',request['result'])
+              check_and_add(service_metric,'request_uuid',request['uuid'])
               check_and_add(service_metric,'test_name',test['test_name'])
               check_and_add(service_metric,'test_bucket_name',test['test_bucket_name'])
               check_and_add(service_metric,'region',response['data']['region'])
