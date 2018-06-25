@@ -26,47 +26,42 @@ class Pingdom:
 
         if response.status_code == 200:
             return response.json()
-
         else:
             self.handle_error("API [" + base_api + "] failed to execute with error code [" + str(response.status_code) + "].")
-            return None
 
     def get_checks(self):
         response = self.call_api('checks')
 
-        if None != response:
-            data = response.get("checks")
-            counts = response.get("counts")
-            up_count = 0
-            down_count = 0
-            unconfirmed_down_count = 0
-            unknown_count = 0
-            paused_count = 0
+        data = response.get("checks")
+        counts = response.get("counts")
+        up_count = 0
+        down_count = 0
+        unconfirmed_down_count = 0
+        unknown_count = 0
+        paused_count = 0
 
-            for x in data:
-                status = x.get("status")
-                if status == "up":
-                    up_count = up_count + 1
-                elif status == "down":
-                    down_count == down_count + 1
-                elif status == "unconfirmed_down":
-                    unconfirmed_down_count = unconfirmed_down_count + 1
-                elif status == "unknown":
-                    unknown_count = unknown_count + 1
-                elif status == "paused":
-                    paused_count = paused_count + 1
+        for x in data:
+            status = x.get("status")
+            if status == "up":
+                up_count = up_count + 1
+            elif status == "down":
+                down_count == down_count + 1
+            elif status == "unconfirmed_down":
+                unconfirmed_down_count = unconfirmed_down_count + 1
+            elif status == "unknown":
+                unknown_count = unknown_count + 1
+            elif status == "paused":
+                paused_count = paused_count + 1
 
-            counts["up_count"] = up_count
-            counts["down_count"] = down_count
-            counts["unconfirmed_down"] = unconfirmed_down_count
-            counts["unknown"] = unknown_count
-            counts["paused"] = paused_count
+        counts["up"] = up_count
+        counts["down"] = down_count
+        counts["unconfirmed_down"] = unconfirmed_down_count
+        counts["unknown"] = unknown_count
+        counts["paused"] = paused_count
 
-            data.append(counts)
+        data.append(counts)
 
-            print(json.dumps(data))
-        else:
-            print(json.dumps([]))
+        print(json.dumps(data))
 
 if __name__ == "__main__":
     try:
