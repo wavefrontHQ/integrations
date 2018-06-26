@@ -91,9 +91,12 @@ def get_test_details(test_bucket_list):
             test_details.append(test_meta_info)
     return test_details
 
-def check_and_add(dest_dict,dest_k,val):
+def build_metric_dict(dest_dict,dest_k,input_dict,first_key,second_key=None):
+    val = input_dict.get(first_key,None)
+    if val is not None and second_key:
+        val = val.get(second_key,None)
     if val is not None:
-       dest_dict[dest_k] = val
+        dest_dict[dest_k] = val
 
 def get_test_latest_result(test_details):
     uber_result = []
@@ -106,27 +109,27 @@ def get_test_latest_result(test_details):
                #Need to check on the tag length         
               # request_result = str(request['result'])
               service_metric['service_url'] = service_url[:240]
-              check_and_add(service_metric,'request_result',request['result'])
-              check_and_add(service_metric,'request_uuid',request['uuid'])
-              check_and_add(service_metric,'test_name',test['test_name'])
-              check_and_add(service_metric,'test_bucket_name',test['test_bucket_name'])
-              check_and_add(service_metric,'region',response['data']['region'])
-              check_and_add(service_metric,'method',request['method'])
-              check_and_add(service_metric,'assertions_defined',request['assertions_defined'])
-              check_and_add(service_metric,'assertions_failed',request['assertions_failed'])
-              check_and_add(service_metric,'assertions_passed',request['assertions_passed'])
-              check_and_add(service_metric,'scripts_defined',request['scripts_defined'])
-              check_and_add(service_metric,'scripts_failed',request['scripts_failed'])
-              check_and_add(service_metric,'scripts_passed',request['scripts_passed'])
-              check_and_add(service_metric,'variables_defined',request['variables_defined'])
-              check_and_add(service_metric,'variables_failed',request['variables_failed'])
-              check_and_add(service_metric,'variables_passed',request['variables_passed'])
-              check_and_add(service_metric,'timings_dns_lookup_ms',request['timings']['dns_lookup_ms'])
-              check_and_add(service_metric,'timings_dial_ms',request['timings']['dial_ms'])
-              check_and_add(service_metric,'timings_send_headers_ms',request['timings']['send_headers_ms'])
-              check_and_add(service_metric,'timings_send_body_ms',request['timings']['send_body_ms'])
-              check_and_add(service_metric,'timings_wait_for_response_ms',request['timings']['wait_for_response_ms'])
-              check_and_add(service_metric,'timings_receive_response_ms',request['timings']['receive_response_ms'])
+              build_metric_dict(service_metric,'request_result',request,'result')
+              build_metric_dict(service_metric,'request_uuid',request,'uuid')
+              build_metric_dict(service_metric,'test_name',test,'test_name')
+              build_metric_dict(service_metric,'test_bucket_name',test,'test_bucket_name')
+              build_metric_dict(service_metric,'region',response,'data','region')
+              build_metric_dict(service_metric,'method',request,'method')
+              build_metric_dict(service_metric,'assertions_defined',request,'assertions_defined')
+              build_metric_dict(service_metric,'assertions_failed',request,'assertions_failed')
+              build_metric_dict(service_metric,'assertions_passed',request,'assertions_passed')
+              build_metric_dict(service_metric,'scripts_defined',request,'scripts_defined')
+              build_metric_dict(service_metric,'scripts_failed',request,'scripts_failed')
+              build_metric_dict(service_metric,'scripts_passed',request,'scripts_passed')
+              build_metric_dict(service_metric,'variables_defined',request,'variables_defined')
+              build_metric_dict(service_metric,'variables_failed',request,'variables_failed')
+              build_metric_dict(service_metric,'variables_passed',request,'variables_passed')
+              build_metric_dict(service_metric,'timings_dns_lookup_ms',request,'timings','dns_lookup_ms')
+              build_metric_dict(service_metric,'timings_dial_ms',request,'timings','dial_ms')
+              build_metric_dict(service_metric,'timings_send_headers_ms',request,'timings','send_headers_ms')
+              build_metric_dict(service_metric,'timings_send_body_ms',request,'timings','send_body_ms')
+              build_metric_dict(service_metric,'timings_wait_for_response_ms',request,'timings','wait_for_response_ms')
+              build_metric_dict(service_metric,'timings_receive_response_ms',request,'timings','receive_response_ms')
               uber_result.append(service_metric) 
     if len(uber_result) > 0:
         return uber_result
