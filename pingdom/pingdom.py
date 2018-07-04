@@ -2,6 +2,7 @@ import sys
 import requests
 import json
 import argparse
+import time
 
 parser = argparse.ArgumentParser(description='Collects monitoring data from Pingdom.')
 parser.add_argument('-u', '--pingdom-user-name', help='The Pingdom User Name', required=True)
@@ -12,7 +13,8 @@ class Pingdom:
     def __init__(self, api_key, user_name, password):
         self.api_key = api_key,
         self.user_name = user_name,
-        self.password = password
+        self.password = password,
+        self.jsonData = []
 
     def handle_error(self, error_message):
         sys.stderr.write("ERROR:|Pingdom| " + error_message)
@@ -20,9 +22,8 @@ class Pingdom:
 
     def call_api(self, api):
         headers = {'App-Key': self.api_key[0]}
-
         base_api = 'https://api.pingdom.com/api/2.0/' + api
-        response = requests.get(base_api, headers=headers, auth=requests.auth.HTTPBasicAuth(self.user_name[0], self.password))
+        response = requests.get(base_api, headers=headers, auth=requests.auth.HTTPBasicAuth(self.user_name[0], self.password[0]))
 
         if response.status_code == 200:
             return response.json()
@@ -61,12 +62,35 @@ class Pingdom:
 
         data.append(counts)
 
-        print(json.dumps(data))
+        self.jsonData = data
+
+    def get_credits(self):
+        response = self.call_api('credits')
+        self.jsonData.append(response)
+
+    def get_maintenance(self):
+        response = self.call_api('maintenance')
+
+        if response.get('maintenance'):
+            for mw in response.get('maintenance'):
+                window = {}
+                window["description"] = mw.get("description")
+                window["recurrencetype"] = mw.get("recurrencetype")
+                window["repeatevery"] = mw.get("repeatevery")
+                window["from"] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(mw.get("from")))
+                window["to"] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(mw.get("to")))
+                window["window"] = 1
+
+                self.jsonData.append(window)
 
 if __name__ == "__main__":
     try:
         args = parser.parse_args()
         pingdom = Pingdom(args.pingdom_api_key, args.pingdom_user_name, args.pingdom_password)
         pingdom.get_checks()
+        pingdom.get_credits()
+        pingdom.get_maintenance()
+        print(json.dumps(pingdom.jsonData))
+
     except Exception as e:
         pingdom.handle_error(e.message)
