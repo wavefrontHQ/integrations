@@ -28,7 +28,8 @@ def parse_metrics(all_metrics):
             prefix = item.get("id")
             prefix = prefix[5:]
             for m in metrics_list:
-                name = "{}.{}".format(prefix, m.get("name"))
+                name = "{}.{}".format(prefix, m.get("name").
+                                      replace("_kudu", ""))
                 val = m.get("value")
                 if val is not None:
                     metrics[name] = val
@@ -61,7 +62,8 @@ def parse_metrics(all_metrics):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('server', type=str, nargs='*', help='Kudu Tablet Server or Master address')
+    parser.add_argument('server', type=str, nargs='*',
+                        help='Kudu Tablet Server or Master address')
 
     args = parser.parse_args()
 
