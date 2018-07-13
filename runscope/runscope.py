@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
      
 runscope_service_url = "https://api.runscope.com/buckets"
 cache_expiry_min = 60
-cache_file = "test_meta_info.txt"
+cache_file = "/tmp/test_meta_info.txt"
 
 try:
     to_unicode = unicode
