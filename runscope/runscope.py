@@ -4,11 +4,12 @@ import json
 import sys
 import requests
 import io
+import tempfile
 from datetime import datetime, timedelta
      
 runscope_service_url = "https://api.runscope.com/buckets"
 cache_expiry_min = 60
-cache_file = "/tmp/test_meta_info.txt"
+cache_file = os.path.join(tempfile.gettempdir(),'test_meta_info.txt')
 
 try:
     to_unicode = unicode
