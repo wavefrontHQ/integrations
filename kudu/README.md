@@ -6,8 +6,9 @@ Tablet metrics will have a point tag, `table`, which contains the table's name.
 
 ### Setup
 
-Copy the script onto each Kudu node.
-This script uses the Requests library so ensure that it is installed on each node.
+- Copy the script onto each Kudu node.
+- This script uses the Requests library. Ensure that it is installed on each node:
+`pip install requests`
 
 ### Usage:
 
