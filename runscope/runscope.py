@@ -1,4 +1,5 @@
 import os
+import platform
 import argparse
 import json
 import sys
@@ -9,7 +10,8 @@ from datetime import datetime, timedelta
      
 runscope_service_url = "https://api.runscope.com/buckets"
 cache_expiry_min = 60
-cache_file = os.path.join(tempfile.gettempdir(),'test_meta_info.txt')
+cache_dir = '/tmp' if platform.system() == 'Darwin' else tempfile.gettempdir()
+cache_file = os.path.join(cache_dir,'test_meta_info.txt')
 
 try:
     to_unicode = unicode
