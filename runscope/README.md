@@ -1,12 +1,10 @@
-#Runscope API test results collector
+# Runscope API test results collector
 
 This script collects the API test results from Runscope.
 
-#Prerequisite: 
-This script needs `requests` python package, install this package using `pip install requests`.
+## Prerequisite: 
+- Python v2.7 or Python 3.x
+- Install the python requests package: `pip install requests`.
 
-#Supported Version:
-Python 2.7 and Python 3.x
-
-Usage:
-python runscope.py runscope-api-key
+## Usage
+python runscope.py <runscope-api-key>
