@@ -7,4 +7,4 @@ This script collects the API test results from Runscope.
 - Install the python requests package: `pip install requests`.
 
 ## Usage
-python runscope.py <runscope-api-key>
+python runscope.py runscope-api-key
