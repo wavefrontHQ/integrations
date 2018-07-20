@@ -76,10 +76,11 @@ def get_test_bucket_details():
     test_bucket_details = []
     response = get_runscope_api_response(runscope_service_url)
     for data in response['data']:
-        test_bucket_meta_info = {}
-        test_bucket_meta_info['bucket_name'] = data['name']
-        test_bucket_meta_info['tests_url'] = data['tests_url']
-        test_bucket_details.append(test_bucket_meta_info)
+        if data['name'] is not None and data['tests_url'] is not None:
+           test_bucket_meta_info = {}
+           test_bucket_meta_info['bucket_name'] = data['name']
+           test_bucket_meta_info['tests_url'] = data['tests_url']
+           test_bucket_details.append(test_bucket_meta_info)
     return test_bucket_details
 
 def get_test_details(test_bucket_list):
@@ -88,10 +89,15 @@ def get_test_details(test_bucket_list):
         response = get_runscope_api_response(bucket['tests_url'])
         for test in response['data']:
             test_meta_info = {}
-            test_meta_info['latest_result_url'] = bucket['tests_url'] + "/{}/results/latest".format(test['last_run']['test_uuid'])
-            test_meta_info['test_name'] = test['name']
-            test_meta_info['test_bucket_name'] = bucket['bucket_name']
-            test_details.append(test_meta_info)
+            test_uuid = ""
+            if test['last_run'] is not None:
+               test_uuid = test['last_run']['test_uuid']
+          
+            if test_uuid is not None and len(test_uuid) > 0:
+              test_meta_info['latest_result_url'] = bucket['tests_url'] + "/{}/results/latest".format(test_uuid)
+              test_meta_info['test_name'] = test['name']
+              test_meta_info['test_bucket_name'] = bucket['bucket_name']
+              test_details.append(test_meta_info)
     return test_details
 
 def build_metric_dict(dest_dict,dest_k,input_dict,first_key,second_key=None):
