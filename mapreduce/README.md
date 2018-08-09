@@ -1,6 +1,8 @@
-#Mapreduce data collector
+# wavefront-hadoop
 
-This script collects the data from hadoop mapreduce.
+This python script connects to a Hadoop Yarn cluster and extracts statistics about applications that are running or have finished in the last 5 minutes.
 
-Usage:
+# usage
+```
 python mapreduce.py [-h] [--username [USERNAME]] [--password [PASSWORD]] [server]
+```
