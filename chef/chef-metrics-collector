@@ -35,7 +35,7 @@ begin
 
   services.map! { |service| service.chomp('*') }
 
-rescue Exception => msg
+rescue StandardError => msg
   handle_error msg
 end
 
@@ -251,6 +251,6 @@ begin
   puts JSON.pretty_generate(output)
 
   exit 0
-rescue  Exception => msg
+rescue  StandardError => msg
   handle_error msg
 end
