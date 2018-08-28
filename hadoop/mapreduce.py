@@ -32,7 +32,7 @@ def valid(finishedTime):
     return True
 
 def handle_error(error_message):
-    sys.stderr.write("ERROR:|MapReduce| " + error_message)
+    sys.stderr.write("ERROR|" + error_message)
     sys.exit(1)
 
 if __name__ == "__main__":
