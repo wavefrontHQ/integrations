@@ -250,7 +250,8 @@ begin
 
   puts JSON.pretty_generate(output)
 
-  exit 0
 rescue  StandardError => msg
   handle_error msg
 end
+
+exit 0
