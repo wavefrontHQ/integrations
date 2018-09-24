@@ -1,3 +1,4 @@
+import httplib
 import argparse
 import urllib2
 import json
@@ -8,6 +9,18 @@ def doMain():
     url = '%s/ws/v1/cluster/apps/' % args.server
     try:
         response = urllib2.urlopen(url)
+
+        data = json.loads(response.read())
+
+        if "apps" in data:
+            apps = []
+            if data.get("apps").get("app") != None:
+                for app in data["apps"]["app"]:
+                    if "finishedTime" in app or len(app["finishedTime"]) != 0 :
+                        if valid(int(app["finishedTime"]/1000.0)) :
+                            apps.append(app)
+            print(json.dumps(apps, ensure_ascii=False))
+
     except urllib2.HTTPError as e :
        handle_error( "HTTPError " + str(e))
     except urllib2.URLError as e:
@@ -16,14 +29,7 @@ def doMain():
         handle_error( "HTTPException " + str(e))
     except Exception as e :
         handle_error( "Generic Exception " + str(e))
-    else:
-        data = json.loads(response.read())
-        if "apps" in data:
-            apps = []
-            for app in data["apps"]["app"]:
-                if valid(int(app["finishedTime"]/1000.0)) :
-                    apps.append(app)
-            print(json.dumps(apps, ensure_ascii=False))
+
 
 def valid(finishedTime):
     seconds = (datetime.datetime.now() - datetime.datetime.fromtimestamp(finishedTime)).seconds
