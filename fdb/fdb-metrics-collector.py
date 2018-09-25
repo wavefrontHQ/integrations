@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-import json
-import subprocess
 import sys
+import json
+import fdb
 
 
 def tags_to_influx(tags):
@@ -49,19 +49,14 @@ def json_to_influxdb(payload, path='', tags=None):
 
 
 def main(cluster_file):
-
-    results = subprocess.Popen(
-        [
-            "fdbcli",
-            "-C", cluster_file,
-            "--exec", "status json"
-        ],
-        stdout=subprocess.PIPE
-    )
-    payload = results.stdout.read()
-
     try:
-        fdb_status = json.loads(payload)
+        fdb.api_version(520)
+        db = fdb.open(cluster_file)
+
+        # Get the FDB Cluster status in the json format
+        results = db.get("\xff\xff/status/json")
+        
+        fdb_status = json.loads(results)
  
         coordinator_health = fdb_status.get('client', {}).get('coordinators', {})
         quorum_reachable = coordinator_health.get('quorum_reachable', False)

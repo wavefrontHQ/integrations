@@ -1,10 +1,21 @@
-# FoundationDB data collector
+# FoundationDB metrics collector
 
-This script collects the data from FoundationDB, and outputs in influx format. This is used together with Telegraf's Exec Input plugin.
+This script collects the metrics from FoundationDB and outputs in influx format. This is used together with Telegraf's exec Input plugin.
 
-Usage:
-- Copy the script onto the Foundation DB Node and execute the below command.
-- python fdb.py  `FoundationDB Cluster File Path`
+##### Setup:
+- ###### Install FoundationDB Client
+    - Download the FoundationDB client rmp `foundationdb-clients-*.el7.x86_64.rpm`form [here](https://apple.github.io/foundationdb/downloads.html).
+    - Install the download rpm.
 
-Example:
-python fdb.py  /etc/foundationdb/fdb.cluster
+- ###### Install FoundationDB python API library
+    - Download the FoundationDB python API library `foundationdb-*.tar.gz`form [here](https://apple.github.io/foundationdb/downloads.html).
+    - Untar the download file.
+    - Install the download library by executing the setup.py.
+    - Test the installation by just importing the `fdb`.
+    - Download the [FoundationDB Data Collector]([fdb-metrics-collector](https://raw.githubusercontent.com/wavefrontHQ/integrations/master/fdb/fdb-metrics-collector.py).
+
+##### Usage:
+- python fdb-metrics-collector.py  `FoundationDB Cluster File Path`
+
+##### Example:
+- python fdb-metrics-collector.py  /etc/foundationdb/fdb.cluster
