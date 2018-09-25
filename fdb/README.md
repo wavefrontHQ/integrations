@@ -12,7 +12,7 @@ This script collects the metrics from FoundationDB and outputs in influx format.
     - Untar the download file.
     - Install the download library by executing the setup.py.
     - Test the installation by just importing the `fdb`.
-    - Download the [FoundationDB Data Collector]([fdb-metrics-collector](https://raw.githubusercontent.com/wavefrontHQ/integrations/master/fdb/fdb-metrics-collector.py).
+    - Download the [FoundationDB Metrics Collector]((https://raw.githubusercontent.com/wavefrontHQ/integrations/master/fdb/fdb-metrics-collector.py).
 
 ##### Usage:
 - python fdb-metrics-collector.py  `FoundationDB Cluster File Path`
