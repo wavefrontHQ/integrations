@@ -25,18 +25,22 @@ def json_to_influxdb(payload, path='', tags=None):
         elif isinstance(item, list) or isinstance(item, tuple):
             for _ in item:
                 port = ''
-                if isinstance(_, dict) and path == 'cluster' and key in ['processes', 'machines']:
-                    ptags = {
-                        'address': _.pop('address'),
-                        'machine_id': _.pop('machine_id'),
-                        'excluded': _.pop('excluded'),
-                    }
-                    if key == 'processes':
-                        ptags['process_id'] = _.pop('process')
-                        address, port = ptags['address'].split(':')
-                        ptags['address'] = address
-                        port = separator + port
-                    json_to_influxdb(_, path + separator + key + port, ptags)
+                if isinstance(_, dict):
+                    if path == 'cluster' and key in ['processes', 'machines']:
+                        ptags = {
+                            'address': _.pop('address'),
+                            'machine_id': _.pop('machine_id'),
+                            'excluded': _.pop('excluded'),
+                        }
+                        if key == 'processes':
+                            ptags['process_id'] = _.pop('process')
+                            address, port = ptags['address'].split(':')
+                            ptags['address'] = address
+                            port = separator + port
+                        json_to_influxdb(_, path + separator + key + port, ptags)
+                    elif path == 'client.coordinators' and key == 'coordinators':
+                        ptags = {'address': _.pop('address')}
+                        json_to_influxdb(_, path + separator + key, ptags)
         else:
             try:
                 output_value = float(item)
@@ -90,7 +94,8 @@ def main(cluster_file):
             'total': total_coordinators,
             'reachable': reachable,
             'quorum_reachable': 1 if quorum_reachable else 0,
-        }
+            'coordinators': coordinators,
+        } 
 
         fdb_status['client']['coordinators'] = telemetry_friendly
     except Exception as ex:
