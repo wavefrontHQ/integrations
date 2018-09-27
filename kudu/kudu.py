@@ -87,11 +87,14 @@ def parse_metrics(all_metrics):
     return metrics_to_return
 
 
+<<<<<<< HEAD
 def handle_error(msg):
     sys.stderr.write("ERROR|" + msg)
     sys.exit(1)
 
 
+=======
+>>>>>>> 561ea88e03d4fa80ff659ee78a52f68caf9b8fcc
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('server', type=str, nargs='*',
