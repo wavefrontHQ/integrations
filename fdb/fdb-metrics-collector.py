@@ -27,9 +27,9 @@ def json_to_influxdb(payload, path='', tags=None):
                 port = ''
                 if isinstance(_, dict):
                     if path == 'cluster' and key in ['processes', 'machines']:
+                        _.pop('machine_id')
                         ptags = {
                             'address': _.pop('address'),
-                            'machine_id': _.pop('machine_id'),
                             'excluded': _.pop('excluded'),
                         }
                         if key == 'processes':
