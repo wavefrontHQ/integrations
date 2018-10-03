@@ -16,14 +16,13 @@ def main(servers):
                 metrics_to_append = parse_metrics(data)
                 metrics.extend(metrics_to_append)
         except requests.exceptions.InvalidSchema as e:
-            print("Verify server URL. Ensure http or https is specified.")
-            sys.exit(1)
+            handle_error(
+                "URLError: Verify server URL. Ensure http or https is specified.")
         except requests.exceptions.ConnectionError as e:
-            print("Cannot connect to this server URL: '{}'".format(server))
-            sys.exit(1)
+            handle_error(
+                "ConnectionError: Cannot connect to this server URL: '{}'".format(server))
         except Exception as e:
-            print(e)
-            sys.exit(1)
+            handle_error("Exception " + str(e))
 
     if not metrics:
         raise Exception("No metrics available")
@@ -86,6 +85,11 @@ def parse_metrics(all_metrics):
                     metrics_to_return.append(tablets)
 
     return metrics_to_return
+
+
+def handle_error(msg):
+    sys.stderr.write("ERROR|" + msg)
+    sys.exit(1)
 
 
 if __name__ == "__main__":
