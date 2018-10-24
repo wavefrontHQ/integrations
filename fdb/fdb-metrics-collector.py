@@ -41,6 +41,12 @@ def json_to_influxdb(payload, path='', tags=None):
                     elif path == 'client.coordinators' and key == 'coordinators':
                         ptags = {'address': _.pop('address')}
                         json_to_influxdb(_, path + separator + key, ptags)
+		    elif 'cluster.processes.' in path and key == 'roles':
+                        role = _.pop('role')
+                        tags['role'] = role
+                        rolek = separator + role
+                        _['assigned'] = 1
+                        json_to_influxdb(_, path + separator + key + rolek, tags)    
         else:
             try:
                 output_value = float(item)
@@ -49,7 +55,6 @@ def json_to_influxdb(payload, path='', tags=None):
                     print path + tags_to_influx(tags) + ' ' + key + "={:.9f}".format(output_value)
             except:
                 pass
-
 
 
 def main(cluster_file):
@@ -98,6 +103,20 @@ def main(cluster_file):
         } 
 
         fdb_status['client']['coordinators'] = telemetry_friendly
+
+        '''
+                define fdb storage engine
+                0. None
+                1. memory
+                2. ssd
+        '''
+        storage_engine = fdb_status.get('cluster', {}).get('configuration', {}).get('storage_engine', 0)
+	if storage_engine:
+	    fdb_status['cluster']['configuration']['storage_engine'] = 1 if "memory" in storage_engine else 2
+	else:
+	    fdb_status['cluster']['configuration']['storage_engine'] = storage_engine
+
+
     except Exception as ex:
         handle_error(str(ex))
 
