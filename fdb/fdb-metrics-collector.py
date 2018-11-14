@@ -4,6 +4,7 @@ import sys
 import json
 import fdb
 
+global_tags = {}
 
 def tags_to_influx(tags):
     if tags:
@@ -50,6 +51,10 @@ def json_to_influxdb(payload, path='', tags=None):
         else:
             try:
                 output_value = float(item)
+                if tags:
+                    tags.update(global_tags)
+                else:
+                    tags = global_tags
 
                 if output_value != float('inf') and output_value != float('-inf'):
                     print path + tags_to_influx(tags) + ' ' + key + "={:.9f}".format(output_value)
@@ -104,19 +109,7 @@ def main(cluster_file):
 
         fdb_status['client']['coordinators'] = telemetry_friendly
 
-        '''
-                define fdb storage engine
-                0. None
-                1. memory
-                2. ssd
-        '''
-        storage_engine = fdb_status.get('cluster', {}).get('configuration', {}).get('storage_engine', 0)
-	if storage_engine:
-	    fdb_status['cluster']['configuration']['storage_engine'] = 1 if "memory" in storage_engine else 2
-	else:
-	    fdb_status['cluster']['configuration']['storage_engine'] = storage_engine
-
-
+        global_tags['storage_engine'] = fdb_status.get('cluster', {}).get('configuration', {}).get('storage_engine')
     except Exception as ex:
         handle_error(str(ex))
 
@@ -127,3 +120,4 @@ if __name__ == '__main__':
         handle_error("Please specify the FDB cluster file path.")
 
     main(sys.argv[1])
+
