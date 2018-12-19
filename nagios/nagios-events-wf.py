@@ -1,6 +1,5 @@
 #!/usr/bin/python
 
-# ./nagios-wf.py -S --type 'RECOVERY' --host 'localhost' --service 'file test' --time $(date +%s) --msg 'OK : /opt/nagios/etc/test/flag Does NOT exists' WAVEFRONT_URL WAVEFRONT_TOKEN
 import os
 import argparse
 import urllib2
