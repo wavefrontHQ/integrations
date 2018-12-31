@@ -53,7 +53,7 @@
             "links": null,
             "workingDirectory": null,
             "readonlyRootFilesystem": null,
-            "image": "wavefronthq/cadvisor:v0.25",
+            "image": "wavefronthq/cadvisor:latest",
             "command": [
                 "-storage_driver=wavefront",
                 "-storage_driver_wf_proxy_host=YOUR_PROXY_ADDRESS",
