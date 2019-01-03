@@ -21,3 +21,5 @@ The Wavefront Python library allows you to perform ts() queries in Python to ret
   	dataset = wfqueryvl(serverURL, wavefrontAccountToken, startTime, endTime, ts_query_vl, granularity)
 
   	All the parameters are same as above, except `ts_query_vl`. This param is a list of ts() queries which returns a dataset, a list of dataframes corresponding to each query.
+
+Refer to [Visualizing Metrics with Python](https://docs.wavefront.com/integrations_python.html) to learn how to use Python to visualize metrics in Wavefront.
