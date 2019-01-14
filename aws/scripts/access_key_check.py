@@ -1,5 +1,5 @@
 """
-Send AWS AMI User Access Key's expiration date / age to WF as metrics
+Send AWS IAM User Access Key's expiration date / age to WF as metrics
 """
 
 import logging
@@ -9,8 +9,10 @@ import json
 import boto3
 from botocore.vendored import requests
 
-AWS_PROFILE = '<aws profile>'
-AWS_REGION = '<aws region>' # region should be same as in "~/.aws/config" file
+
+# The AWS_PROFILES must also exist in your ~/.aws/credentials file
+AWS_PROFILES = [] # List of aws profiles, to fetch IAM Users Key Age per profile
+PROFILE = ''
 MAX_KEY_AGE = 180 # max allowed key age
 WAVEFRONT_API_TOKEN = '<wavefront api token>'
 WAVEFRONT_URL = '<wavefront url>' # the cluster where the key age metric to be pushed
@@ -71,17 +73,16 @@ def send_metric_to_wf(items):
     """
     Sends metric to Wavefront via Direct Ingestion API.
     Example in Wavefront data format:
-    aws.iam.accessKey 123 source="AWS" name="mon" key="ZX3Vk" status="Active"
-                                profile="wavefront-dev" region="us-west-2"
+    aws.iam.accessKey 123 source="AWS" name="abc" key="ZX3Vk" status="Active"
+                          profile="profile1"
     """
     for item in items:
         metric_name = "aws.iam.accessKey"
         point = 'source="AWS" name="{}" key="{}" status="{}" ' \
-                'profile="{}" region="{}"'.format(item['UserName'],
+                'profile="{}"'.format(item['UserName'],
                                                   item['AccessKeyId'],
                                                   item['AccessKeyStatus'],
-                                                  AWS_PROFILE,
-                                                  AWS_REGION)
+                                                  PROFILE)
         data = ('%s %s %s' % (metric_name, item['KeyAge'], point))
         headers = {
             'Authorization': 'Bearer ' + WAVEFRONT_API_TOKEN,
@@ -128,5 +129,8 @@ def handler():
 
 
 if __name__ == "__main__":
-    metric_data = handler()
-    send_metric_to_wf(metric_data)
+    for PROFILE in AWS_PROFILES:
+        # Setup session for all AWS_PROFILES to get all IAM Users key age 
+        boto3.setup_default_session(profile_name=PROFILE)
+        metric_data = handler()
+        send_metric_to_wf(metric_data)
