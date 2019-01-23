@@ -32,7 +32,7 @@ def process(line):
 
 	metrics = info["SERVICEPERFDATA"] if args.service else info["HOSTPERFDATA"]
 	for metirc,value in extractValues(metrics).items():
-		metricName = "pp.nagios."
+		metricName = "nagios."
 		metricName += ("service" if args.service else "host") + "."
 		metricName += (info["SERVICEDESC"]+".") if args.service else ""
 		metricName +=  metirc
