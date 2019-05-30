@@ -58,8 +58,7 @@ def json_to_influxdb(payload, path='', tags=None, timestamp=None):
                     tags = global_tags
 
                 if output_value != float('inf') and output_value != float('-inf'):
-                    timein_nano = timestamp * 1000000
-                    print path + tags_to_influx(tags) + ' ' + key + "={:.9f}".format(output_value) + ' ' + timein_nano
+                    print path + tags_to_influx(tags) + ' ' + key + "={:.9f}".format(output_value) + ' ' + timestamp
             except:
                 pass
 
