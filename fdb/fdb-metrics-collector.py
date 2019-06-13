@@ -3,7 +3,6 @@
 import sys
 import json
 import fdb
-import time
 
 global_tags = {}
 
@@ -17,13 +16,13 @@ def handle_error(error_message):
     sys.stderr.write("ERROR|" + error_message)
     sys.exit(1)
 
-def json_to_influxdb(payload, path='', tags=None, timestamp=None):
+def json_to_influxdb(payload, path='', tags=None):
     separator = '.'
     path = path[1:] if path.startswith(separator) else path
     for key, item in payload.items():
         key = key.strip()
         if isinstance(item, dict):
-            json_to_influxdb(item, path + separator + key, tags, timestamp)
+            json_to_influxdb(item, path + separator + key, tags)
         elif isinstance(item, list) or isinstance(item, tuple):
             for _ in item:
                 port = ''
@@ -39,16 +38,16 @@ def json_to_influxdb(payload, path='', tags=None, timestamp=None):
                             address, port = ptags['address'].split(':')
                             ptags['address'] = address
                             port = separator + port
-                        json_to_influxdb(_, path + separator + key + port, ptags, timestamp)
+                        json_to_influxdb(_, path + separator + key + port, ptags)
                     elif path == 'client.coordinators' and key == 'coordinators':
                         ptags = {'address': _.pop('address')}
-                        json_to_influxdb(_, path + separator + key, ptags, timestamp)
+                        json_to_influxdb(_, path + separator + key, ptags)
 		    elif 'cluster.processes.' in path and key == 'roles':
                         role = _.pop('role')
                         tags['role'] = role
                         rolek = separator + role
                         _['assigned'] = 1
-                        json_to_influxdb(_, path + separator + key + rolek, tags, timestamp)    
+                        json_to_influxdb(_, path + separator + key + rolek, tags)    
         else:
             try:
                 output_value = float(item)
@@ -58,7 +57,7 @@ def json_to_influxdb(payload, path='', tags=None, timestamp=None):
                     tags = global_tags
 
                 if output_value != float('inf') and output_value != float('-inf'):
-                    print path + tags_to_influx(tags) + ' ' + key + "={:.9f}".format(output_value) + ' ' + timestamp
+                    print path + tags_to_influx(tags) + ' ' + key + "={:.9f}".format(output_value)
             except:
                 pass
 
@@ -113,8 +112,8 @@ def main(cluster_file):
         global_tags['storage_engine'] = fdb_status.get('cluster', {}).get('configuration', {}).get('storage_engine')
     except Exception as ex:
         handle_error(str(ex))
-    timestamp = fdb_status['client'].pop('timestamp', time.time())
-    json_to_influxdb(fdb_status, timestamp=float(timestamp))
+
+    json_to_influxdb(fdb_status)
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
