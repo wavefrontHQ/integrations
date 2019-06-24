@@ -16,7 +16,7 @@
             }, 
 			{
                 "name": "fargate-metrics-collector",
-                "image": "wavefronthq/wavefront-fargate-collector:0.9.0",
+                "image": "wavefronthq/wavefront-fargate-collector:latest",
                 "essential": true,
                 "environment": [],
 				"portMappings": [
