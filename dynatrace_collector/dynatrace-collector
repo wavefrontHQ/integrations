@@ -1,0 +1,79 @@
+#!/bin/bash
+# The init.d script for the wavefront collector tools.
+
+PID=/Users/ykurmi/etc/wavefront/dynatrace/pid/dcollector.pid
+OUT=/Users/ykurmi/etc/wavefront/dynatrace/log/dynatrace.log
+STATUS_LOG_LINES=10
+NAME="Dynatrace Collector"
+
+function start() {
+    # make sure we can write to the PID file directory
+    touch ${PID} > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo Unable to create PID file at ${PID}
+        exit 1
+    fi
+    rm -f ${PID}
+
+    # make sure we can write to the out file
+    touch ${OUT} > /dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo Unable to create OUT file at ${OUT}
+        exit 1
+    fi
+
+    wf-dynatrace run -d true
+}
+
+function status() {
+    if [ -f ${PID} ]; then
+        pid=$(cat ${PID})
+        if kill -0 ${pid}; then
+            echo "${NAME} is running (PID ${pid})"
+            if [ -f ${OUT} ]; then
+                echo "    *** Last ${STATUS_LOG_LINES} lines of ${OUT} ***"
+                tail -${STATUS_LOG_LINES} ${OUT} | sed 's/^/    /'
+            fi
+        else
+            echo ${NAME} is NOT running
+        fi
+    else
+        echo ${NAME} is NOT running
+    fi
+    return 0
+}
+
+function stop() {
+    # ASSUMPTION: if PID file does not exist it is not running
+    # better: check for the process too
+    if [ -f ${PID} ]; then
+        pid=$(cat ${PID})
+        /bin/echo -n "Killing ${NAME} (PID ${pid})"
+        kill ${pid}
+        while kill -0 ${pid} > /dev/null 2>&1; do
+            sleep 0.5
+            /bin/echo -n '.'
+        done
+        echo
+        return 0
+    else
+        echo ${NAME} is not running
+        return 0
+    fi
+}
+
+function restart() {
+    stop
+    start
+}
+
+case $1 in
+    start|stop|status|restart)
+        $1
+        ;;
+
+    *)
+        echo "Usage: $0 (start|status|stop|restart)"
+        exit 1
+        ;;
+esac

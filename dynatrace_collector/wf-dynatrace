@@ -1,0 +1,234 @@
+#!/usr/bin/env python
+# Usage:
+# python dynatrace.py -a dynatrace -api-key
+
+import daemon
+import daemon.pidfile
+import requests
+import json
+import argparse
+import threading
+import time
+import re
+import sys
+import py_compile
+import os
+import getpass
+import logging
+import socket
+from wavefront_sdk import WavefrontProxyClient
+
+base_dir="/Users/ykurmi/etc/wavefront/dynatrace/"
+
+logger = logging.getLogger('DynatraceCollector')
+logger.setLevel(logging.DEBUG)
+# create file handler which logs even debug messages
+fh = logging.FileHandler(base_dir + 'log/dynatrace.log')
+fh.setLevel(logging.DEBUG)
+logger.addHandler(fh)
+
+try:
+    import config as cfg
+except ImportError:
+    logger.warning("Run config command for configuration.")
+
+class DynatraceDataCollector(object):
+    pidfile = base_dir + "pid/dcollector.pid"
+    conf_dir = base_dir + "config/"
+    update_metric_def_interval = 5 #Min
+    push_metric_interval = 3 #Min
+
+    def __init__(self):
+        parser = argparse.ArgumentParser(
+            description='Collect data from dynatrace',
+            usage='''<command> [<args>]
+
+        Supported commands are:
+        config   Configure env to run the script
+        run      execute the script to get the metrics
+        '''
+        )
+        parser.add_argument('command', help='command args')
+        # parse_args defaults to [1:] for args, but you need to
+        # exclude the rest of the args too, or validation will fail
+        args = parser.parse_args(sys.argv[1:2])
+        if not hasattr(self, args.command):
+            logger.warning('Unrecognized command')
+            parser.print_help()
+            exit(1)
+        # use dispatch pattern to invoke method with same name
+        getattr(self, args.command)()
+
+    def config(self):
+        parser = argparse.ArgumentParser(
+            description='Configure environment to run the script')
+        parser.add_argument('config', help='Subcommand to run')
+        parser.add_argument('-b', '--dynatrace-base-url', help='The Dynatrace Base URL', required=True)
+        parser.add_argument('-a', '--dynatrace-api-key', help='The Dynatrace Api Key', required=True)
+        parser.add_argument('-s', '--wavefront-proxy-ip', help='Ip of the machine where wavefront proxy is running')
+        # now that we're inside a subcommand, ignore the first
+        # TWO argvs, ie the command (git) and the subcommand (commit)
+        dynatrace_base_url = parser.parse_args().dynatrace_base_url
+        dynatrace_api_key = parser.parse_args().dynatrace_api_key
+        wavefront_proxy_ip = parser.parse_args().wavefront_proxy_ip
+
+        cpath=os.path.abspath(__file__)
+        cwd = cpath[0:cpath.rfind("/")]
+
+        with open(cwd+"/config.py","w+") as conf:
+            data = 'config = {"dynatrace_base_url":"' + dynatrace_base_url +'", "dynatrace_api_key":"' +dynatrace_api_key+ '", "wavefront_proxy_ip":"' +wavefront_proxy_ip+ '"}'
+            conf.write(data)
+        py_compile.compile(cwd+"/config.py", cwd+"/config.pyc")
+ 
+        if os.path.exists(cwd+"/config.py"):
+            os.remove(cwd+"/config.py")
+        else:
+            logger.warning('The file does not exist')
+        
+        print('Configuration completed successfully')
+
+    def run(self):
+        parser = argparse.ArgumentParser(description='Execute the script to collect the metrics from Dynatrace.')
+        parser.add_argument('run', help='Subcommand to run')
+        parser.add_argument('-d', '--daemon', help='Run in the background as a daemon.', required=False)
+        if parser.parse_args().daemon:
+            with daemon.DaemonContext(
+                pidfile=daemon.pidfile.PIDLockFile(self.pidfile),
+                umask=0o002,
+                working_directory=base_dir,
+                files_preserve = [fh.stream,]):
+
+                self.get_metric_definitions()
+                self.get_metric_data_points()
+        else:
+            self.get_metric_definitions()
+            self.get_metric_data_points()   
+    
+    def call_api(self, api, params=None):
+        header_dict = {"Content-Type": "application/json",
+            "Authorization": "Api-Token " + cfg.config['dynatrace_api_key']}
+        base_url = cfg.config['dynatrace_base_url'] + "/api/v1/"
+
+        base_req = base_url + api
+        response = requests.get(base_req, headers = header_dict, params = params)
+
+        if response.status_code == 200:
+            return response.json()
+        else:
+            logger.error(response.content)
+            return None
+
+    def get_wavefront_client(self):
+        wavefront_sender = WavefrontProxyClient(
+            host=cfg.config['wavefront_proxy_ip'],
+            metrics_port=2878,
+            distribution_port=None,
+            tracing_port=None
+        )
+
+        return wavefront_sender
+
+    def get_metric_definitions(self):
+        logger.debug("Getting metric definitions")
+        try:
+            metric_definitions = self.call_api("timeseries")
+            if metric_definitions:
+                with open(self.conf_dir+'metric_definitions.json', 'w') as outfile:
+                    json.dump(metric_definitions, outfile)
+
+            timer = threading.Timer(self.update_metric_def_interval * 60.0, self.get_metric_definitions)
+            timer.daemon = True
+            timer.start()
+        except Exception as ex:
+            logger.error("Error while collecting metric definitions. Error: " + str(ex))
+
+    def update_point_tags(self, point_tags, key, dimensions, entities):
+        tags_string = key.split(',')
+
+        entitiyId = tags_string[0].strip()
+        for entity in entities:
+            if entitiyId == entity.get("entityId"):
+                point_tags.update({"entityId":entitiyId, "displayName": entity.get("displayName")})
+                break
+
+        count = 1
+        while count < len(dimensions):
+            tag_str = tags_string[count]
+            if "=" in tag_str:
+                tag_value = tag_str.split('=')[1].strip()
+                point_tags.update({dimensions[count]:tag_value})
+
+            count = count + 1
+
+    def collect_entity_data(self, metricDefinitions, client, config):
+        params = {"includeDetails":"true"}
+        entities = self.call_api(config.get("api"), params)
+        metric_params = {"includeData": "true", "relativeTime": "10mins"}
+        displayRegex = re.compile(config.get("displayNameRegexPattern"))
+
+        for source in config.get("detailedSources"):
+            for md in metricDefinitions:
+                if md.get("detailedSource") == source:
+                    #take that metric
+                    aggregation_types = md.get('aggregationTypes')
+                    if aggregation_types:
+                        metric_params.update({"aggregationType": md.get('aggregationTypes')[0]})
+                    response = self.call_api("timeseries/" + md.get('timeseriesId'), metric_params)
+                    if response:
+                        metric_name = "dynatrace." + md.get('timeseriesId').replace(":", ".")
+                        point_tags = {}
+                        data_points = response.get("dataResult").get("dataPoints")
+                        detailedSource = md.get('detailedSource')
+                        pluginId = md.get('pluginId')
+                        if detailedSource:
+                            point_tags.update({"detailedSource": detailedSource})
+                        if pluginId:
+                            point_tags.update({"pluginId": pluginId})
+                        
+                        dimensions = md.get('dimensions')
+                        if data_points:
+                            for key, values in data_points.items():
+                                self.update_point_tags(point_tags, key, dimensions, entities)
+                                displayName = point_tags.get("displayName")
+                                if displayName and re.match(displayRegex, point_tags.get("displayName")):
+                                    for value in values:
+                                        report_time = value[0]
+                                        point = value[1]
+                                        if point:
+                                            logger.info(metric_name + " " + str(point))
+                                            if metric_name == "dynatrace.com.dynatrace.builtin.host.availability":
+                                                if point == "AVAILABLE":
+                                                    point = 1
+                                                else:
+                                                    point = 0
+                                            if aggregation_types:
+                                                logger.info("Sending for - " + str(metric_name) + "-" + str(point) + "-" + str(report_time) + "-" + str(md.get('aggregationTypes')[0]))
+                                            else:
+                                                logger.info("Sending for - " + str(metric_name) + "-" + str(point) + "-" + str(report_time))
+                                           
+                                            client.send_metric(metric_name, point, report_time, socket.gethostname(), point_tags)
+                        else:
+                            logger.info("Data not found for - " + md.get('timeseriesId'))
+
+    def get_metric_data_points(self):
+        data = {}
+        with open(self.conf_dir+'metric_definitions.json') as json_file:
+            data = json.load(json_file)
+
+        config = {}
+        with open(self.conf_dir+'config.json') as json_file:
+            config = json.load(json_file)
+
+        try:
+            client = self.get_wavefront_client()
+            for item in config:
+                self.collect_entity_data(data, client, item)
+
+            timer = threading.Timer(self.push_metric_interval * 60.0, self.get_metric_data_points)
+            timer.daemon=True
+            timer.start()
+        except Exception as ex:
+            logger.error("Error while collecting metric data points. Error: " + str(ex))
+
+if __name__ == "__main__":
+    DynatraceDataCollector()
