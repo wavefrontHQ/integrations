@@ -18,7 +18,7 @@ import logging
 import socket
 from wavefront_sdk import WavefrontProxyClient
 
-base_dir="/Users/ykurmi/etc/wavefront/dynatrace/"
+base_dir="/etc/wavefront/dynatrace/"
 
 logger = logging.getLogger('DynatraceCollector')
 logger.setLevel(logging.DEBUG)

@@ -28,7 +28,7 @@ class PostInstallCommand(install):
 
   def run(self):
 
-    base_dir = '/Users/ykurmi/etc/wavefront/dynatrace/'
+    base_dir = '/etc/wavefront/dynatrace/'
     config_dir = base_dir + 'config/'
     log_dir = base_dir + 'log/'
     pid_dir = base_dir + 'pid/'

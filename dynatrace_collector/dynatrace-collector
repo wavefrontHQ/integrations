@@ -1,8 +1,8 @@
 #!/bin/bash
 # The init.d script for the wavefront collector tools.
 
-PID=/Users/ykurmi/etc/wavefront/dynatrace/pid/dcollector.pid
-OUT=/Users/ykurmi/etc/wavefront/dynatrace/log/dynatrace.log
+PID=/etc/wavefront/dynatrace/pid/dcollector.pid
+OUT=/etc/wavefront/dynatrace/log/dynatrace.log
 STATUS_LOG_LINES=10
 NAME="Dynatrace Collector"
 
