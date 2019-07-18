@@ -49,7 +49,7 @@ function stop() {
     if [ -f ${PID} ]; then
         pid=$(cat ${PID})
         /bin/echo -n "Killing ${NAME} (PID ${pid})"
-        kill ${pid}
+        kill -9 ${pid}
         while kill -0 ${pid} > /dev/null 2>&1; do
             sleep 0.5
             /bin/echo -n '.'

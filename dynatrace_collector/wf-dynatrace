@@ -36,6 +36,8 @@ class DynatraceDataCollector(object):
     pidfile = pid_dir + "dcollector.pid"
     update_metric_def_interval = 5 #Min
     push_metric_interval = 3 #Min
+    get_metric_definitions_task = None
+    get_metric_data_points_task = None
 
     def __init__(self):
         parser = argparse.ArgumentParser(
@@ -105,6 +107,9 @@ class DynatraceDataCollector(object):
 
                 self.get_metric_definitions()
                 self.get_metric_data_points()
+                self.get_metric_definitions_task.join()
+                self.get_metric_data_points_task.join()
+
         else:
             self.get_metric_definitions()
             self.get_metric_data_points()   
@@ -140,9 +145,8 @@ class DynatraceDataCollector(object):
             with open(conf_dir+'metric_definitions.json', 'w') as outfile:
                 json.dump(metric_definitions, outfile)
 
-            timer = threading.Timer(self.update_metric_def_interval * 60.0, self.get_metric_definitions)
-            timer.daemon = True
-            timer.start()
+            self.get_metric_definitions_task = threading.Timer(self.update_metric_def_interval * 60.0, self.get_metric_definitions)
+            self.get_metric_definitions_task.start()
 
     def update_point_tags(self, point_tags, key, dimensions, entities):
         tags_string = key.split(',')
@@ -203,10 +207,6 @@ class DynatraceDataCollector(object):
                                                     point = 1
                                                 else:
                                                     point = 0
-                                            if aggregation_types:
-                                                logger.info("Sending for - " + str(metric_name) + "-" + str(point) + "-" + str(report_time) + "-" + str(md.get('aggregationTypes')[0]))
-                                            else:
-                                                logger.info("Sending for - " + str(metric_name) + "-" + str(point) + "-" + str(report_time))
                                            
                                             client.send_metric(metric_name, point, report_time, socket.gethostname(), point_tags)
                         else:
@@ -226,9 +226,8 @@ class DynatraceDataCollector(object):
             for item in config:
                 self.collect_entity_data(data, client, item)
 
-            timer = threading.Timer(self.push_metric_interval * 60.0, self.get_metric_data_points)
-            timer.daemon=True
-            timer.start()
+            self.get_metric_data_points_task = threading.Timer(self.push_metric_interval * 60.0, self.get_metric_data_points)
+            self.get_metric_data_points_task.start()
         except Exception as ex:
             logger.error("Error while collecting metric data points. Error: " + str(ex))
 
