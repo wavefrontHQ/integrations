@@ -1,7 +1,4 @@
 #!/usr/bin/env python
-# Usage:
-# python dynatrace.py -a dynatrace -api-key
-
 import daemon
 import daemon.pidfile
 import requests
@@ -18,12 +15,15 @@ import logging
 import socket
 from wavefront_sdk import WavefrontProxyClient
 
-base_dir="/etc/wavefront/dynatrace/"
+base_dir = '/tmp/wavefront/dynatrace/'
+log_dir = '/tmp/wavefront/dynatrace/log/'
+pid_dir = '/tmp/wavefront/dynatrace/pid/'
+conf_dir = '/opt/wavefront/dynatrace/config/'
 
 logger = logging.getLogger('DynatraceCollector')
 logger.setLevel(logging.DEBUG)
 # create file handler which logs even debug messages
-fh = logging.FileHandler(base_dir + 'log/dynatrace.log')
+fh = logging.FileHandler(log_dir + 'dynatrace.log')
 fh.setLevel(logging.DEBUG)
 logger.addHandler(fh)
 
@@ -33,8 +33,7 @@ except ImportError:
     logger.warning("Run config command for configuration.")
 
 class DynatraceDataCollector(object):
-    pidfile = base_dir + "pid/dcollector.pid"
-    conf_dir = base_dir + "config/"
+    pidfile = pid_dir + "dcollector.pid"
     update_metric_def_interval = 5 #Min
     push_metric_interval = 3 #Min
 
@@ -65,18 +64,24 @@ class DynatraceDataCollector(object):
         parser.add_argument('config', help='Subcommand to run')
         parser.add_argument('-b', '--dynatrace-base-url', help='The Dynatrace Base URL', required=True)
         parser.add_argument('-a', '--dynatrace-api-key', help='The Dynatrace Api Key', required=True)
-        parser.add_argument('-s', '--wavefront-proxy-ip', help='Ip of the machine where wavefront proxy is running')
+        parser.add_argument('-s', '--wavefront-proxy-ip', help='Ip of the machine where wavefront proxy is running', required=True)
+        parser.add_argument('-p', '--wavefront-proxy-metric-port', help='Wavefront proxy metric port', required=False)
         # now that we're inside a subcommand, ignore the first
         # TWO argvs, ie the command (git) and the subcommand (commit)
         dynatrace_base_url = parser.parse_args().dynatrace_base_url
         dynatrace_api_key = parser.parse_args().dynatrace_api_key
         wavefront_proxy_ip = parser.parse_args().wavefront_proxy_ip
+        wavefront_proxy_metric_port = parser.parse_args().wavefront_proxy_metric_port
 
-        cpath=os.path.abspath(__file__)
-        cwd = cpath[0:cpath.rfind("/")]
+        if not wavefront_proxy_metric_port:
+            wavefront_proxy_metric_port = 2878
+
+        #cpath=os.path.abspath(__file__)
+        #cwd = cpath[0:cpath.rfind("/")]
+        cwd = os.path.dirname(os.path.realpath(__file__))
 
         with open(cwd+"/config.py","w+") as conf:
-            data = 'config = {"dynatrace_base_url":"' + dynatrace_base_url +'", "dynatrace_api_key":"' +dynatrace_api_key+ '", "wavefront_proxy_ip":"' +wavefront_proxy_ip+ '"}'
+            data = 'config = {"dynatrace_base_url":"' + dynatrace_base_url +'", "dynatrace_api_key":"' +dynatrace_api_key+ '", "wavefront_proxy_ip":"' +wavefront_proxy_ip+ '", "wavefront_proxy_metric_port":"' +str(wavefront_proxy_metric_port)+ '"}'
             conf.write(data)
         py_compile.compile(cwd+"/config.py", cwd+"/config.pyc")
  
@@ -121,7 +126,7 @@ class DynatraceDataCollector(object):
     def get_wavefront_client(self):
         wavefront_sender = WavefrontProxyClient(
             host=cfg.config['wavefront_proxy_ip'],
-            metrics_port=2878,
+            metrics_port=int(cfg.config['wavefront_proxy_metric_port']),
             distribution_port=None,
             tracing_port=None
         )
@@ -130,17 +135,14 @@ class DynatraceDataCollector(object):
 
     def get_metric_definitions(self):
         logger.debug("Getting metric definitions")
-        try:
-            metric_definitions = self.call_api("timeseries")
-            if metric_definitions:
-                with open(self.conf_dir+'metric_definitions.json', 'w') as outfile:
-                    json.dump(metric_definitions, outfile)
+        metric_definitions = self.call_api("timeseries")
+        if metric_definitions:
+            with open(conf_dir+'metric_definitions.json', 'w') as outfile:
+                json.dump(metric_definitions, outfile)
 
             timer = threading.Timer(self.update_metric_def_interval * 60.0, self.get_metric_definitions)
             timer.daemon = True
             timer.start()
-        except Exception as ex:
-            logger.error("Error while collecting metric definitions. Error: " + str(ex))
 
     def update_point_tags(self, point_tags, key, dimensions, entities):
         tags_string = key.split(',')
@@ -212,11 +214,11 @@ class DynatraceDataCollector(object):
 
     def get_metric_data_points(self):
         data = {}
-        with open(self.conf_dir+'metric_definitions.json') as json_file:
+        with open(conf_dir+'metric_definitions.json') as json_file:
             data = json.load(json_file)
 
         config = {}
-        with open(self.conf_dir+'config.json') as json_file:
+        with open(conf_dir+'config.json') as json_file:
             config = json.load(json_file)
 
         try:

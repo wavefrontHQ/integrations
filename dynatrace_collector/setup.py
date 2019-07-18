@@ -27,11 +27,9 @@ except (IOError, ImportError):
 class PostInstallCommand(install):
 
   def run(self):
-
-    base_dir = '/etc/wavefront/dynatrace/'
-    config_dir = base_dir + 'config/'
-    log_dir = base_dir + 'log/'
-    pid_dir = base_dir + 'pid/'
+    config_dir = '/opt/wavefront/dynatrace/config/'
+    log_dir = '/tmp/wavefront/dynatrace/log/'
+    pid_dir = '/tmp/wavefront/dynatrace/pid/'
 
     if not os.path.exists(config_dir):
         os.makedirs(config_dir)
