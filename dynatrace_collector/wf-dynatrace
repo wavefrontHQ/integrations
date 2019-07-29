@@ -34,10 +34,8 @@ except ImportError:
 
 class DynatraceDataCollector(object):
     pidfile = pid_dir + "dcollector.pid"
-    update_metric_def_interval = 5 #Min
-    push_metric_interval = 3 #Min
-    get_metric_definitions_task = None
-    get_metric_data_points_task = None
+    update_metric_def_interval = 60 #Min
+    push_metric_interval = 5 #Min
 
     def __init__(self):
         parser = argparse.ArgumentParser(
@@ -107,8 +105,9 @@ class DynatraceDataCollector(object):
 
                 self.get_metric_definitions()
                 self.get_metric_data_points()
-                self.get_metric_definitions_task.join()
-                self.get_metric_data_points_task.join()
+
+                while len(threading.enumerate()) >= 3:
+                    time.sleep(5)
 
         else:
             self.get_metric_definitions()
@@ -145,8 +144,7 @@ class DynatraceDataCollector(object):
             with open(conf_dir+'metric_definitions.json', 'w') as outfile:
                 json.dump(metric_definitions, outfile)
 
-            self.get_metric_definitions_task = threading.Timer(self.update_metric_def_interval * 60.0, self.get_metric_definitions)
-            self.get_metric_definitions_task.start()
+        threading.Timer(self.update_metric_def_interval * 60.0, self.get_metric_definitions).start()
 
     def update_point_tags(self, point_tags, key, dimensions, entities):
         tags_string = key.split(',')
@@ -225,11 +223,10 @@ class DynatraceDataCollector(object):
             client = self.get_wavefront_client()
             for item in config:
                 self.collect_entity_data(data, client, item)
-
-            self.get_metric_data_points_task = threading.Timer(self.push_metric_interval * 60.0, self.get_metric_data_points)
-            self.get_metric_data_points_task.start()
         except Exception as ex:
             logger.error("Error while collecting metric data points. Error: " + str(ex))
+
+        threading.Timer(self.push_metric_interval * 60.0, self.get_metric_data_points).start()
 
 if __name__ == "__main__":
     DynatraceDataCollector()
