@@ -22,9 +22,11 @@ conf_dir = '/opt/wavefront/dynatrace/config/'
 
 logger = logging.getLogger('DynatraceCollector')
 logger.setLevel(logging.DEBUG)
-# create file handler which logs even debug messages
+# create file handler
 fh = logging.FileHandler(log_dir + 'dynatrace.log')
+formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s","%Y-%m-%d %H:%M:%S")
 fh.setLevel(logging.DEBUG)
+fh.setFormatter(formatter)
 logger.addHandler(fh)
 
 try:
@@ -76,8 +78,6 @@ class DynatraceDataCollector(object):
         if not wavefront_proxy_metric_port:
             wavefront_proxy_metric_port = 2878
 
-        #cpath=os.path.abspath(__file__)
-        #cwd = cpath[0:cpath.rfind("/")]
         cwd = os.path.dirname(os.path.realpath(__file__))
 
         with open(cwd+"/config.py","w+") as conf:
@@ -124,7 +124,7 @@ class DynatraceDataCollector(object):
         if response.status_code == 200:
             return response.json()
         else:
-            logger.error(response.content)
+            logger.error("API " + str(api) + " Params " + str(params) + " Error " + str(response.content))
             return None
 
     def get_wavefront_client(self):
@@ -167,13 +167,12 @@ class DynatraceDataCollector(object):
     def collect_entity_data(self, metricDefinitions, client, config):
         params = {"includeDetails":"true"}
         entities = self.call_api(config.get("api"), params)
-        metric_params = {"includeData": "true", "relativeTime": "10mins"}
         displayRegex = re.compile(config.get("displayNameRegexPattern"))
 
         for source in config.get("detailedSources"):
             for md in metricDefinitions:
                 if md.get("detailedSource") == source:
-                    #take that metric
+                    metric_params = {"includeData": "true", "relativeTime": "10mins"}
                     aggregation_types = md.get('aggregationTypes')
                     if aggregation_types:
                         metric_params.update({"aggregationType": md.get('aggregationTypes')[0]})
@@ -199,7 +198,6 @@ class DynatraceDataCollector(object):
                                         report_time = value[0]
                                         point = value[1]
                                         if point:
-                                            logger.info(metric_name + " " + str(point))
                                             if metric_name == "dynatrace.com.dynatrace.builtin.host.availability":
                                                 if point == "AVAILABLE":
                                                     point = 1
