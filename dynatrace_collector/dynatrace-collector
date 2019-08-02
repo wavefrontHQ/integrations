@@ -7,6 +7,14 @@ STATUS_LOG_LINES=10
 NAME="Dynatrace Collector"
 
 function start() {
+   # do not start service if it is already running
+   if [ -f ${PID} ]; then
+       pid=$(cat ${PID})
+       if kill -0 ${pid}; then
+           echo "${NAME} is already running (PID ${pid})"
+           return 0
+       fi
+    fi
     # make sure we can write to the PID file directory
     touch ${PID} > /dev/null 2>&1
     if [ $? -ne 0 ]; then
@@ -54,6 +62,8 @@ function stop() {
             sleep 0.5
             /bin/echo -n '.'
         done
+        # Delete the file
+        rm -f ${PID}
         echo
         return 0
     else
