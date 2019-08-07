@@ -1,12 +1,17 @@
 ## Overview
 The Wavefront Dynatrace collector collects metrics from Dynatrace and pushes to the wavefront.
 
+## Prerequisites
+Install below packages:
+- gcc
+- python-devel
+
 ## Installation
 
 Install using the provided setup.py
 - Clone this repository.
 - Change directory to dynatrace_collector.
-- Run below command to install Dynatrace collector.
+- Run below command to install Dynatrace collector:
 
 ```
 pip install .

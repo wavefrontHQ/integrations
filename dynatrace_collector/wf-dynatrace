@@ -97,6 +97,8 @@ class DynatraceDataCollector(object):
         parser.add_argument('run', help='Subcommand to run')
         parser.add_argument('-d', '--daemon', help='Run in the background as a daemon.', required=False)
         if parser.parse_args().daemon:
+            if os.path.exists(self.pidfile):
+                os.remove(self.pidfile)
             with daemon.DaemonContext(
                 pidfile=daemon.pidfile.PIDLockFile(self.pidfile),
                 umask=0o002,
