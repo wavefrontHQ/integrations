@@ -92,6 +92,13 @@ class DynatraceDataCollector(object):
         
         print('Configuration completed successfully')
 
+    def start_job(self):
+        self.get_metric_definitions()
+        self.get_metric_data_points()
+
+        while len(threading.enumerate()) >= 3:
+            time.sleep(5)
+
     def run(self):
         parser = argparse.ArgumentParser(description='Execute the script to collect the metrics from Dynatrace.')
         parser.add_argument('run', help='Subcommand to run')
@@ -105,15 +112,9 @@ class DynatraceDataCollector(object):
                 working_directory=base_dir,
                 files_preserve = [fh.stream,]):
 
-                self.get_metric_definitions()
-                self.get_metric_data_points()
-
-                while len(threading.enumerate()) >= 3:
-                    time.sleep(5)
-
+                self.start_job()
         else:
-            self.get_metric_definitions()
-            self.get_metric_data_points()   
+            self.start_job()
     
     def call_api(self, api, params=None):
         header_dict = {"Content-Type": "application/json",
@@ -146,7 +147,9 @@ class DynatraceDataCollector(object):
             with open(conf_dir+'metric_definitions.json', 'w') as outfile:
                 json.dump(metric_definitions, outfile)
 
-        threading.Timer(self.update_metric_def_interval * 60.0, self.get_metric_definitions).start()
+        timer = threading.Timer(self.update_metric_def_interval * 60.0, self.get_metric_definitions)
+        timer.daemon = True
+        timer.start()
 
     def update_point_tags(self, point_tags, key, dimensions, entities):
         tags_string = key.split(',')
@@ -226,7 +229,9 @@ class DynatraceDataCollector(object):
         except Exception as ex:
             logger.error("Error while collecting metric data points. Error: " + str(ex))
 
-        threading.Timer(self.push_metric_interval * 60.0, self.get_metric_data_points).start()
+        timer = threading.Timer(self.push_metric_interval * 60.0, self.get_metric_data_points)
+        timer.daemon = True
+        timer.start()
 
 if __name__ == "__main__":
     DynatraceDataCollector()
