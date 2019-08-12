@@ -1,0 +1,2139 @@
+{
+  "name": "DB2 Integration",
+  "description": "",
+  "eventFilterType": "BYCHART",
+  "eventQuery": "",
+  "defaultTimeWindow": "2h",
+  "url": "db2-integration",
+  "displayDescription": false,
+  "displaySectionTableOfContents": true,
+  "displayQueryParameters": true,
+  "chartTitleScalar": 0,
+  "sections": [
+    {
+      "name": "Overview",
+      "rows": [
+        {
+          "charts": [
+            {
+              "name": "IBM DB2",
+              "sources": [
+                {
+                  "name": "New Query",
+                  "query": "",
+                  "scatterPlotSource": "Y",
+                  "querybuilderSerialization": "{\"_v\":1,\"metric\":\"\",\"filters\":[[],\"and\"],\"functions\":[]}",
+                  "querybuilderEnabled": true,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Units",
+              "base": 0,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "markdown-widget",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT",
+                "plainMarkdownContent": "![db2](https://electric-cloud.com/wp-content/uploads/IBM-DB2-plugin-electricflow-devops-platform.png)"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Database Name",
+              "sources": [
+                {
+                  "name": "New Query",
+                  "query": "",
+                  "scatterPlotSource": "Y",
+                  "querybuilderSerialization": "{\"_v\":1,\"metric\":\"\",\"filters\":[[],\"and\"],\"functions\":[]}",
+                  "querybuilderEnabled": true,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Units",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "markdown-widget",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT",
+                "plainMarkdownContent": "# Database: ${1_db} #\nThis Dashboard provides a real time metrics monitoring for IBM DB2 Relational Database.\n* ${0_productname}\n* Source: ${0_host}"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Database",
+              "sources": [
+                {
+                  "name": "active conn",
+                  "query": "at(\"end\", mcount(1m, ts(${prefix}.instance.total.connections ${condition})))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": " ",
+              "base": 1,
+              "noDefaultEvents": true,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "sparkline",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "TOP",
+                "fixedLegendDisplayStats": [],
+                "fixedLegendFilterSort": "BOTTOM",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "COUNT",
+                "sparklineDisplayValueType": "VALUE",
+                "sparklineDisplayColor": "",
+                "sparklineDisplayHorizontalPosition": "MIDDLE",
+                "sparklineDisplayFontSize": "100",
+                "sparklineSize": "NONE",
+                "sparklineValueColorMapColors": [
+                  "rgba(255,0,0,1)",
+                  "rgba(18,171,60,1)"
+                ],
+                "sparklineValueColorMapValuesV2": [
+                  1
+                ],
+                "sparklineValueColorMapApplyTo": "BACKGROUND",
+                "sparklineDecimalPrecision": 0,
+                "sparklineValueTextMapText": [
+                  "OFFLINE",
+                  "ONLINE"
+                ],
+                "sparklineValueTextMapThresholds": [
+                  1
+                ]
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 101
+        },
+        {
+          "charts": [
+            {
+              "name": "Active Connections",
+              "sources": [
+                {
+                  "name": "active conn",
+                  "query": "ts(${prefix}.instance.total.connections ${condition}) - 1",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": " ",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "sparkline",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT",
+                "sparklineDisplayValueType": "VALUE",
+                "sparklineDisplayColor": "",
+                "sparklineDisplayHorizontalPosition": "MIDDLE",
+                "sparklineDisplayFontSize": "100",
+                "sparklineSize": "BACKGROUND",
+                "sparklineValueColorMapApplyTo": "TEXT",
+                "sparklineDecimalPrecision": 0
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Max Simultaneous Connections",
+              "sources": [
+                {
+                  "name": "active conn",
+                  "query": "ts(${prefix}.database.connections.top ${condition})",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": " ",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "sparkline",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT",
+                "sparklineDisplayValueType": "VALUE",
+                "sparklineDisplayColor": "",
+                "sparklineDisplayHorizontalPosition": "MIDDLE",
+                "sparklineDisplayFontSize": "100",
+                "sparklineSize": "BACKGROUND",
+                "sparklineValueColorMapApplyTo": "TEXT",
+                "sparklineDecimalPrecision": 0
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Total Connections",
+              "sources": [
+                {
+                  "name": "active conn",
+                  "query": "mdiff(1m, ts(${prefix}.database.total.cons ${condition})) - 1",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": " ",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT",
+                "sparklineDisplayValueType": "VALUE",
+                "sparklineDisplayColor": "",
+                "sparklineDisplayHorizontalPosition": "MIDDLE",
+                "sparklineDisplayFontSize": "100",
+                "sparklineSize": "BACKGROUND",
+                "sparklineValueColorMapApplyTo": "TEXT",
+                "sparklineDecimalPrecision": 0
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 67
+        }
+      ]
+    },
+    {
+      "name": "Tablespace",
+      "rows": [
+        {
+          "charts": [
+            {
+              "name": "Tablespace size",
+              "sources": [
+                {
+                  "name": "tablespace size",
+                  "query": "aliasMetric(ts(${prefix}.tablespace.tbsp.page.size ${condition}) * ts(${prefix}.tablespace.tbsp.total.pages ${condition}), \"Tablespace Size\")",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "B",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "table",
+                "lineType": "linear",
+                "windowing": "full",
+                "showHosts": false,
+                "showLabels": false,
+                "showRawValues": false,
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "groupBySource": true,
+                "sortValuesDescending": true,
+                "y1Units": "",
+                "y0ScaleSIBy1024": true,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": true,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT",
+                "sparklineDisplayValueType": "VALUE",
+                "sparklineDisplayColor": "",
+                "sparklineDisplayHorizontalPosition": "MIDDLE",
+                "sparklineDisplayFontSize": "100",
+                "sparklineSize": "BACKGROUND",
+                "sparklineValueColorMapApplyTo": "TEXT",
+                "sparklineDecimalPrecision": 0
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Tablespace Used",
+              "sources": [
+                {
+                  "name": "tablespace size",
+                  "query": "aliasMetric(ts(${prefix}.tablespace.tbsp.page.size ${condition}) * ts(${prefix}.tablespace.tbsp.used.pages ${condition}), \"Tablespace Used\")",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "B",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "table",
+                "lineType": "linear",
+                "windowing": "full",
+                "showHosts": false,
+                "showLabels": false,
+                "showRawValues": false,
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "groupBySource": true,
+                "sortValuesDescending": true,
+                "y1Units": "",
+                "y0ScaleSIBy1024": true,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": true,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT",
+                "sparklineDisplayValueType": "VALUE",
+                "sparklineDisplayColor": "",
+                "sparklineDisplayHorizontalPosition": "MIDDLE",
+                "sparklineDisplayFontSize": "100",
+                "sparklineSize": "BACKGROUND",
+                "sparklineValueColorMapApplyTo": "TEXT",
+                "sparklineDecimalPrecision": 0
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 67
+        },
+        {
+          "charts": [
+            {
+              "name": "Tablespace Usable",
+              "sources": [
+                {
+                  "name": "tablespace size",
+                  "query": "aliasMetric(ts(${prefix}.tablespace.tbsp.page.size ${condition}) * ts(${prefix}.tablespace.tbsp.usable.pages ${condition}), \"Tablespace Usable\")",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "B",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "table",
+                "lineType": "linear",
+                "windowing": "full",
+                "showHosts": false,
+                "showLabels": false,
+                "showRawValues": false,
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "groupBySource": true,
+                "sortValuesDescending": true,
+                "y1Units": "",
+                "y0ScaleSIBy1024": true,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": true,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT",
+                "sparklineDisplayValueType": "VALUE",
+                "sparklineDisplayColor": "",
+                "sparklineDisplayHorizontalPosition": "MIDDLE",
+                "sparklineDisplayFontSize": "100",
+                "sparklineSize": "BACKGROUND",
+                "sparklineValueColorMapApplyTo": "TEXT",
+                "sparklineDecimalPrecision": 0
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Tablespace Utilized",
+              "sources": [
+                {
+                  "name": "tablespace size",
+                  "query": "aliasMetric(ts(${prefix}.tablespace.tbsp.used.pages ${condition}) / ts(${prefix}.tablespace.tbsp.usable.pages ${condition}) * 100, \"Tablespace Utilized\")",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "%",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "table",
+                "lineType": "linear",
+                "windowing": "full",
+                "showHosts": false,
+                "showLabels": false,
+                "showRawValues": false,
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "groupBySource": true,
+                "sortValuesDescending": true,
+                "y1Units": "",
+                "y0ScaleSIBy1024": true,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": true,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT",
+                "sparklineDisplayValueType": "VALUE",
+                "sparklineDisplayColor": "",
+                "sparklineDisplayHorizontalPosition": "MIDDLE",
+                "sparklineDisplayFontSize": "100",
+                "sparklineSize": "BACKGROUND",
+                "sparklineValueColorMapApplyTo": "TEXT",
+                "sparklineDecimalPrecision": 0
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 67
+        }
+      ]
+    },
+    {
+      "name": "Application",
+      "rows": [
+        {
+          "charts": [
+            {
+              "name": "Active Applications",
+              "sources": [
+                {
+                  "name": "active",
+                  "query": "ts(${prefix}.database.appls.cur.cons ${condition}) - 1",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Applications",
+              "base": 0,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Executing Applications",
+              "sources": [
+                {
+                  "name": "active",
+                  "query": "ts(${prefix}.database.appls.in.db2 ${condition})",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Applications",
+              "base": 0,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 67
+        }
+      ]
+    },
+    {
+      "name": "Buffer Pool",
+      "rows": [
+        {
+          "charts": [
+            {
+              "name": "Buffer Pool Reads Hit %",
+              "sources": [
+                {
+                  "name": "logical",
+                  "query": "sum(ts(${prefix}.buffer.pool.*l.reads ${condition}), BP_NAME)",
+                  "disabled": true,
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                },
+                {
+                  "name": "physical",
+                  "query": "sum(ts(${prefix}.buffer.pool.*p.reads ${condition}), BP_NAME)",
+                  "disabled": true,
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                },
+                {
+                  "name": "hit percentage",
+                  "query": "${logical} / if((${logical} + ${physical}) > 0, (${logical} + ${physical}), 1) * 100",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 0,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Buffer Pool Column Reads Hit %",
+              "sources": [
+                {
+                  "name": "logical",
+                  "query": "sum(ts(${prefix}.buffer.pool.col*l.reads ${condition}), BP_NAME)",
+                  "disabled": true,
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                },
+                {
+                  "name": "physical",
+                  "query": "sum(ts(${prefix}.buffer.pool.col*p.reads ${condition}), BP_NAME)",
+                  "disabled": true,
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                },
+                {
+                  "name": "hit percentage",
+                  "query": "${logical} / if((${logical} + ${physical}) > 0, (${logical} + ${physical}), 1) * 100",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Buffer Pool Data Reads Hit %",
+              "sources": [
+                {
+                  "name": "logical",
+                  "query": "sum(ts(${prefix}.buffer.pool.data*l.reads ${condition}), BP_NAME)",
+                  "disabled": true,
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                },
+                {
+                  "name": "physical",
+                  "query": "sum(ts(${prefix}.buffer.pool.data*p.reads ${condition}), BP_NAME)",
+                  "disabled": true,
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                },
+                {
+                  "name": "hit percentage",
+                  "query": "${logical} / if((${logical} + ${physical}) > 0, (${logical} + ${physical}), 1) * 100",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Buffer Pool XDA Reads Hit %",
+              "sources": [
+                {
+                  "name": "logical",
+                  "query": "sum(ts(${prefix}.buffer.pool.xda*l.reads ${condition}), BP_NAME)",
+                  "disabled": true,
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                },
+                {
+                  "name": "physical",
+                  "query": "sum(ts(${prefix}.buffer.pool.xda*p.reads ${condition}), BP_NAME)",
+                  "disabled": true,
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                },
+                {
+                  "name": "hit percentage",
+                  "query": "${logical} / if((${logical} + ${physical}) > 0, (${logical} + ${physical}), 1) * 100",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 67
+        },
+        {
+          "charts": [
+            {
+              "name": "Buffer Pool Logical Reads",
+              "sources": [
+                {
+                  "name": "buffpool",
+                  "query": "mdiff(1m, sum(ts(${prefix}.buffer.pool.*l.reads ${condition}), BP_NAME))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Buffer Pool Physical Reads",
+              "sources": [
+                {
+                  "name": "buffpool",
+                  "query": "mdiff(1m, sum(ts(${prefix}.buffer.pool.*p.reads ${condition}), BP_NAME))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Buffer Pool Pages Found",
+              "sources": [
+                {
+                  "name": "buffpool",
+                  "query": "mdiff(1m, sum(ts(${prefix}.buffer.pool.*.pages.found ${condition}), BP_NAME))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 1,
+              "noDefaultEvents": true,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "TOP",
+                "fixedLegendDisplayStats": [],
+                "fixedLegendFilterSort": "BOTTOM",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "COUNT"
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 67
+        }
+      ]
+    },
+    {
+      "name": "Rows",
+      "rows": [
+        {
+          "charts": [
+            {
+              "name": "Modified",
+              "sources": [
+                {
+                  "name": "Log",
+                  "query": "mdiff(1m, ts(${prefix}.database.rows.modified ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 0,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Reads",
+              "sources": [
+                {
+                  "name": "Log",
+                  "query": "mdiff(1m, ts(${prefix}.database.rows.read ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Returned",
+              "sources": [
+                {
+                  "name": "Log",
+                  "query": "mdiff(1m, ts(${prefix}.database.rows.returned ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 67
+        },
+        {
+          "charts": [
+            {
+              "name": "INSERTED",
+              "sources": [
+                {
+                  "name": "Log",
+                  "query": "mdiff(1m, ts(${prefix}.database.rows.inserted ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "UPDATED",
+              "sources": [
+                {
+                  "name": "Log",
+                  "query": "mdiff(1m, ts(${prefix}.database.rows.updated ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "DELETED",
+              "sources": [
+                {
+                  "name": "Log",
+                  "query": "mdiff(1m, ts(${prefix}.database.rows.deleted ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 67
+        }
+      ]
+    },
+    {
+      "name": "Table",
+      "rows": [
+        {
+          "charts": [
+            {
+              "name": "Table Inserted",
+              "sources": [
+                {
+                  "name": "table",
+                  "query": "mdiff(1m, ts(${prefix}.table.total.rows.inserted ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Units",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Table Updated",
+              "sources": [
+                {
+                  "name": "table",
+                  "query": "mdiff(1m, ts(${prefix}.table.total.rows.updated ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Units",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Table Read",
+              "sources": [
+                {
+                  "name": "table",
+                  "query": "mdiff(1m, ts(${prefix}.table.total.rows.read ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Units",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Table Deleted",
+              "sources": [
+                {
+                  "name": "table",
+                  "query": "mdiff(1m, ts(${prefix}.table.total.rows.deleted ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Units",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 67
+        }
+      ]
+    },
+    {
+      "name": "Lock",
+      "rows": [
+        {
+          "charts": [
+            {
+              "name": "Active locks",
+              "sources": [
+                {
+                  "name": "lock",
+                  "query": "ts(${prefix}.database.num.locks.held ${condition})",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Total",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Deadlocks",
+              "sources": [
+                {
+                  "name": "lock",
+                  "query": "rate(ts(${prefix}.database.deadlocks ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Total",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Lock List in Use",
+              "sources": [
+                {
+                  "name": "lock",
+                  "query": "mdiff(1m, ts(${prefix}.database.lock.list.in.use ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "B",
+              "base": 0,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": true,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": true,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Lock timeouts",
+              "sources": [
+                {
+                  "name": "lock",
+                  "query": "ts(${prefix}.database.lock.timeouts ${condition})",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Total",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 67
+        },
+        {
+          "charts": [
+            {
+              "name": "Lock waits",
+              "sources": [
+                {
+                  "name": "lock",
+                  "query": "ts(${prefix}.database.lock.waits ${condition})",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Total",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Lock waiting",
+              "sources": [
+                {
+                  "name": "lock",
+                  "query": "ts(${prefix}.database.num.locks.waiting ${condition})",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Total",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 67
+        }
+      ]
+    },
+    {
+      "name": "Log",
+      "rows": [
+        {
+          "charts": [
+            {
+              "name": "Available",
+              "sources": [
+                {
+                  "name": "Log",
+                  "query": "ts(${prefix}.txlog.total.log.available ${condition})",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": " Bytes",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Reads",
+              "sources": [
+                {
+                  "name": "Log",
+                  "query": "mdiff(1m, ts(${prefix}.txlog.log.reads ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Writes",
+              "sources": [
+                {
+                  "name": "Log",
+                  "query": "mdiff(1m, ts(${prefix}.txlog.log.writes ${condition}))",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": " ",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 67
+        },
+        {
+          "charts": [
+            {
+              "name": "Used",
+              "sources": [
+                {
+                  "name": "Log",
+                  "query": "ts(${prefix}.txlog.total.log.used ${condition})",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": " Bytes",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Utilized",
+              "sources": [
+                {
+                  "name": "Log",
+                  "query": "ts(${prefix}.txlog.total.log.used ${condition}) / ts(${prefix}.txlog.total.log.available ${condition}) * 100",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "%",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "line",
+                "lineType": "linear",
+                "windowing": "full",
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 67
+        }
+      ]
+    },
+    {
+      "name": "DB2 Integrations",
+      "rows": [
+        {
+          "charts": [
+            {
+              "name": "Results",
+              "sources": [
+                {
+                  "name": "result",
+                  "query": "ts(${prefix}.integration.msg ${condition} and type=\"result\")",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Units",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "table",
+                "windowing": "full",
+                "showHosts": false,
+                "showLabels": false,
+                "showRawValues": false,
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "groupBySource": false,
+                "sortValuesDescending": true,
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            },
+            {
+              "name": "Errors",
+              "sources": [
+                {
+                  "name": "errors",
+                  "query": "ts(${prefix}.integration.msg ${condition} and type=\"error\")",
+                  "scatterPlotSource": "Y",
+                  "querybuilderEnabled": false,
+                  "secondaryAxis": false,
+                  "sourceDescription": ""
+                }
+              ],
+              "units": "Units",
+              "base": 1,
+              "noDefaultEvents": false,
+              "interpolatePoints": false,
+              "includeObsoleteMetrics": false,
+              "description": "",
+              "chartSettings": {
+                "type": "scatterplot",
+                "lineType": "linear",
+                "windowing": "full",
+                "showHosts": false,
+                "showLabels": false,
+                "showRawValues": false,
+                "autoColumnTags": false,
+                "tagMode": "all",
+                "numTags": 4,
+                "customTags": [],
+                "groupBySource": false,
+                "sortValuesDescending": true,
+                "y1Units": "",
+                "y0ScaleSIBy1024": false,
+                "y1ScaleSIBy1024": false,
+                "y0UnitAutoscaling": false,
+                "y1UnitAutoscaling": false,
+                "fixedLegendEnabled": false,
+                "fixedLegendUseRawStats": false,
+                "fixedLegendPosition": "RIGHT",
+                "fixedLegendDisplayStats": [
+                  "CURRENT"
+                ],
+                "fixedLegendFilterSort": "TOP",
+                "fixedLegendFilterLimit": 5,
+                "fixedLegendFilterField": "CURRENT"
+              },
+              "summarization": "MEAN"
+            }
+          ],
+          "heightFactor": 100
+        }
+      ]
+    }
+  ],
+  "parameterDetails": {
+    "condition": {
+      "hideFromView": true,
+      "description": null,
+      "allowAll": null,
+      "tagKey": null,
+      "queryValue": null,
+      "dynamicFieldType": null,
+      "reverseDynSort": null,
+      "parameterType": "LIST",
+      "label": "Condition",
+      "defaultValue": "select_db",
+      "valuesToReadableStrings": {
+        "select_db": " , source=\"${0_host}\" and database=\"${1_db}\""
+      },
+      "selectedLabel": "select_db",
+      "value": " , source=\"${0_host}\" and database=\"${1_db}\""
+    },
+    "0_host": {
+      "hideFromView": false,
+      "description": null,
+      "allowAll": null,
+      "tagKey": "PRODUCT_NAME",
+      "queryValue": "ts(${prefix}.instance.total.connections)",
+      "dynamicFieldType": "SOURCE",
+      "reverseDynSort": null,
+      "parameterType": "DYNAMIC",
+      "label": "Host",
+      "defaultValue": "Label",
+      "valuesToReadableStrings": {
+        "Label": "127.0.0.1"
+      },
+      "selectedLabel": "Label",
+      "value": "127.0.0.1"
+    },
+    "0_productname": {
+      "hideFromView": true,
+      "description": null,
+      "allowAll": null,
+      "tagKey": "product_name",
+      "queryValue": "ts(${prefix}.instance.total.connections ${condition})",
+      "dynamicFieldType": "TAG_KEY",
+      "reverseDynSort": null,
+      "parameterType": "DYNAMIC",
+      "label": "Product Name",
+      "defaultValue": "defaultQuery",
+      "valuesToReadableStrings": {
+        "defaultQuery": "DB2 v11.5"
+      },
+      "selectedLabel": "defaultQuery",
+      "value": "DB2 v11.5"
+    },
+    "1_db": {
+      "hideFromView": false,
+      "description": null,
+      "allowAll": null,
+      "tagKey": "database",
+      "queryValue": "ts(${prefix}.instance.total.connections, source=\"${0_host}\")",
+      "dynamicFieldType": "TAG_KEY",
+      "reverseDynSort": null,
+      "parameterType": "DYNAMIC",
+      "label": "Database",
+      "defaultValue": "defaultQuery",
+      "valuesToReadableStrings": {
+        "defaultQuery": "db2"
+      },
+      "selectedLabel": "defaultQuery",
+      "value": "db2"
+    },
+    "prefix": {
+      "hideFromView": true,
+      "description": null,
+      "allowAll": null,
+      "tagKey": null,
+      "queryValue": null,
+      "dynamicFieldType": null,
+      "reverseDynSort": null,
+      "parameterType": "SIMPLE",
+      "label": "Metrics Prefix",
+      "defaultValue": "Label",
+      "valuesToReadableStrings": {
+        "Label": "db2"
+      },
+      "selectedLabel": "Label",
+      "value": "db2"
+    }
+  }
+}
