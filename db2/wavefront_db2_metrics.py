@@ -31,7 +31,7 @@ proxy_port = 2878
 
 # direct data ingestion settings
 # wf_direct
-direct_url = "https://longboard.wavefront.com"
+direct_url = "https://.wavefront.com"
 direct_token = "xxxx-xxxx-xxxx-xxxx-xxxx"
 
 # prefix
