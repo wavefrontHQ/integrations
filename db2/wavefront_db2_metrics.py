@@ -44,17 +44,19 @@ schema = None
 def log(log_type, log_msg, host, db):
     msg = None
     if out_format == "wavefront":
-        msg = "db2.integration.msg 1 source={0} database=\"{1}\" type=\"{2}\" msg=\"{3}\"".format(host,
-                                                                                                    db,
-                                                                                                    log_type,
-                                                                                                    log_msg.replace(
-                                                                                                        "\"", "\\\""))
+        msg = "{0}.integration.msg 1 source={1} database=\"{2}\" type=\"{3}\" msg=\"{4}\"".format(prefix,
+                                                                                                  host,
+                                                                                                  db,
+                                                                                                  log_type,
+                                                                                                  log_msg.replace(
+                                                                                                      "\"", "\\\""))
     elif out_format == "influx":
-        msg = "db2_integration,host={0},database={1},type={2},msg={3} msg=1".format(host,
-                                                                                            db,
-                                                                                            log_type,
-                                                                                            log_msg.replace(" ",
-                                                                                                            "\\ "))
+        msg = "{0}_integration,host={1},database={2},type={3},msg={4} msg=1".format(prefix,
+                                                                                    host,
+                                                                                    db,
+                                                                                    log_type,
+                                                                                    log_msg.replace(" ",
+                                                                                                    "\\ "))
 
     if debug is False and msg is not None:
         if out_type == "telegraf":
