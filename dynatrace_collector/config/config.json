@@ -1,0 +1,6 @@
+[
+    {"family":"process","detailedSources":["Kafka JMX","ActiveMQ JMX","Apache Hadoop HDFS","Apache Hadoop YARN","Apache Spark","AppServer JMX","Cassandra JMX","Couchbase","CouchDB","Elasticsearch","HAProxy","HornetQ JMX","Jetty JMX","Kafka JMX","Memcached", "MongoDB","MS SQL","MySQL","Netflix OSS JMX","PHP-FPM","PostgreSQL","RabbitMQ","Redis","ruxit.perfmon.dotnetV4","ruxit.python.heartbeat","Solr JMX", "WebSphere PMI Appserver","WebSphere PMI Connection Pools"], "api": "entity/infrastructure/processes", "displayNameRegexPattern":".*"},
+    {"family":"host","detailedSources":["Infrastructure"], "api": "entity/infrastructure/hosts", "displayNameRegexPattern":".*"},
+    {"family":"service","detailedSources":["Services"], "api": "entity/services", "displayNameRegexPattern":".*"},
+    {"family":"application","detailedSources":["Web application"], "api": "entity/applications", "displayNameRegexPattern":".*"}
+]
