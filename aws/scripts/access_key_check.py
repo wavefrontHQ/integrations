@@ -7,7 +7,7 @@ import os
 import datetime
 import json
 import boto3
-from botocore.vendored import requests
+import requests
 
 
 # The AWS_PROFILES must also exist in your ~/.aws/credentials file
