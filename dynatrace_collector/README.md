@@ -34,6 +34,11 @@ wf-dynatrace config -b <dynatrace-base-url> -a <dynatrace-api-key> -s <wavefront
 
 This command will store the configuration data in a secure file and later that data will be used for collecting the data from Dynatrace and sending data to the Wavefront.
 
+## Get Dynatrace Collector Details
+Use below command to display the Dynatrace cluster name
+```
+wf-dynatrace info
+```
 ## Start Dynatrace Collector
 - Running collector in foreground
 ```
@@ -77,4 +82,4 @@ Configuration options:
 | displayNameRegexPattern | It filters metrics based on the entity display name. Value can be an entity display name or any regex pattern, default is `all`  |
 
 ### Troubleshooting
-Log file will be located in the `/tmp/wavefront/dynatrace/log/dynatrace.log`.
+Log file will be located in the `/var/log/wavefront/dynatrace/log/dynatrace.log`.

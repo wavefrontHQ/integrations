@@ -3,9 +3,10 @@ Setup script for the Wavefront collector tools.
 """
 
 import os
+from shutil import copyfile
+
 import setuptools
 import setuptools.command.install
-from shutil import copyfile
 from setuptools.command.install import install
 
 
@@ -20,35 +21,38 @@ try:
     LONG_DESCRIPTION = pypandoc.convert_file(source_file='README.md',
                                              format='markdown_github',
                                              to='rst',
-                                             extra_args=['-s', '--columns=1000'])
+                                             extra_args=['-s',
+                                                         '--columns=1000'])
 except (IOError, ImportError):
     LONG_DESCRIPTION = ''
 
+
 class PostInstallCommand(install):
 
-  def run(self):
-    config_dir = '/opt/wavefront/dynatrace/config/'
-    log_dir = '/tmp/wavefront/dynatrace/log/'
-    pid_dir = '/tmp/wavefront/dynatrace/pid/'
+    def run(self):
+        config_dir = '/opt/wavefront/dynatrace/config/'
+        log_dir = '/var/log/wavefront/dynatrace/log/'
+        pid_dir = '/var/run/'
 
-    if not os.path.exists(config_dir):
-        os.makedirs(config_dir)
+        if not os.path.exists(config_dir):
+            os.makedirs(config_dir)
 
-    copyfile('config/config.json', config_dir+'config.json')
+        copyfile('config/config.json', config_dir+'config.json')
 
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
+        if not os.path.exists(log_dir):
+            os.makedirs(log_dir)
 
-    open(log_dir+'dynatrace.log', 'w+')
+        open(log_dir+'dynatrace.log', 'w+')
 
-    if not os.path.exists(pid_dir):
-        os.makedirs(pid_dir)
+        if not os.path.exists(pid_dir):
+            os.makedirs(pid_dir)
 
-    install.run(self)
+        install.run(self)
+
 
 setuptools.setup(
     name='dynatrace_collector',
-    version='0.0.1',
+    version='0.0.2',
     author='Wavefront',
     author_email='mike@wavefront.com',
     description=('Dynatrace Collector'),
