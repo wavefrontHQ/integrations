@@ -31,7 +31,7 @@ class PostInstallCommand(install):
 
     def run(self):
         config_dir = '/opt/wavefront/dynatrace/config/'
-        log_dir = '/var/log/wavefront/dynatrace/log/'
+        log_dir = '/var/log/wavefront/dynatrace/'
         pid_dir = '/var/run/'
 
         if not os.path.exists(config_dir):

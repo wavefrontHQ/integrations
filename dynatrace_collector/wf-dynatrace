@@ -18,7 +18,7 @@ import requests
 
 from wavefront_sdk import WavefrontProxyClient
 
-log_dir = '/var/log/wavefront/dynatrace/log/'
+log_dir = '/var/log/wavefront/dynatrace/'
 pid_dir = '/var/run/'
 conf_dir = '/opt/wavefront/dynatrace/config/'
 

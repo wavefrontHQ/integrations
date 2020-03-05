@@ -2,7 +2,7 @@
 # The init.d script for the wavefront collector tools.
 
 PID=/var/run/dtcollector.pid
-OUT=/var/log/wavefront/dynatrace/log/dynatrace.log
+OUT=/var/log/wavefront/dynatrace/dynatrace.log
 STATUS_LOG_LINES=10
 NAME="Dynatrace Collector"
 
