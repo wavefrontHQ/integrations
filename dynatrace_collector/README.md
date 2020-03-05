@@ -82,4 +82,4 @@ Configuration options:
 | displayNameRegexPattern | It filters metrics based on the entity display name. Value can be an entity display name or any regex pattern, default is `all`  |
 
 ### Troubleshooting
-Log file will be located in the `/var/log/wavefront/dynatrace/log/dynatrace.log`.
+Log file will be located in the `/var/log/wavefront/dynatrace/dynatrace.log`.
