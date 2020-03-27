@@ -1,0 +1,1 @@
+The Wavefront Dynatrace collector collects metrics from Dynatrace and pushes to the wavefront.

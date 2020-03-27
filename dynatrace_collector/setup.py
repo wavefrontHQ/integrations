@@ -1,14 +1,12 @@
-"""
-Setup script for the Wavefront collector tools.
-"""
+"""Packaging settings."""
 
 import os
+from configparser import ConfigParser
 from shutil import copyfile
 
 import setuptools
 import setuptools.command.install
 from setuptools.command.install import install
-
 
 # The easiest way to convert the markdown to RestructuredText is to use
 # pandoc.  There is a Python frontend to that package called pypandoc.
@@ -30,14 +28,17 @@ except (IOError, ImportError):
 class PostInstallCommand(install):
 
     def run(self):
+        config = ConfigParser()
+        config.read("dynatrace_collector/dtcollector.conf")
+        log_dir = config.get('default','log_dir')
         config_dir = '/opt/wavefront/dynatrace/config/'
-        log_dir = '/var/log/wavefront/dynatrace/'
         pid_dir = '/var/run/'
 
         if not os.path.exists(config_dir):
             os.makedirs(config_dir)
 
-        copyfile('config/config.json', config_dir+'config.json')
+        copyfile('dynatrace_collector/config.json', config_dir+'config.json')
+        copyfile('dynatrace_collector/dtcollector.conf', config_dir+'dtcollector.conf')
 
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
@@ -55,18 +56,29 @@ setuptools.setup(
     version='0.0.2',
     author='Wavefront',
     author_email='mike@wavefront.com',
-    description=('Dynatrace Collector'),
+    description=('Wavefront Dynatrace Collector'),
     license='BSD',
     long_description=LONG_DESCRIPTION,
     keywords='wavefront wavefront_integration collector metrics',
-    url='https://www.wavefront.com',
+    url='https://github.com/wavefrontHQ/integrations/tree/master/dynatrace_collector',
     install_requires=['wavefront-sdk-python', 'python-daemon>=2.1.1'],
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
         'Topic :: Utilities',
-        'License :: OSI Approved :: BSD License',
+        'License :: Public Domain',
+        'Natural Language :: English',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
-    package_data={'wavefront': ['config/*']},
+    packages=setuptools.find_packages(include=['dynatrace_collector']),
+    include_package_data=True,
     cmdclass={'install': PostInstallCommand},
-    scripts=['wf-dynatrace', 'dynatrace-collector']
+    scripts=['dynatrace_collector/wf-dynatrace', 'dynatrace_collector/dynatrace-collector']
 )

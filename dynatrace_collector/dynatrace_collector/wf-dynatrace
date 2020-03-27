@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import argparse
+
 import json
 import logging
 import logging.handlers
@@ -15,35 +16,53 @@ import daemon
 import daemon.pidfile
 
 import requests
-
+from configparser import ConfigParser
 from wavefront_sdk import WavefrontProxyClient
 
-log_dir = '/var/log/wavefront/dynatrace/'
 pid_dir = '/var/run/'
 conf_dir = '/opt/wavefront/dynatrace/config/'
+config_exists = True
+
+user_config = ConfigParser()
+user_config.read(conf_dir + "dtcollector.conf")
+
+log_dir = user_config.get('default','log_dir')
+log_file_size = int(user_config.get('default','log_file_size'))
+log_backup_count = int(user_config.get('default','log_backup_count'))
+log_level = user_config.get('default','log_level')
+
 
 logger = logging.getLogger('DynatraceCollector')
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.getLevelName(log_level))
 # create file handler
 fh = logging.handlers.RotatingFileHandler(log_dir + 'dynatrace.log', mode='a',
-                                          maxBytes=10*1024*1024, backupCount=5,
-                                          encoding=None, delay=False)
+                                        maxBytes=log_file_size*1024*1024,
+                                        backupCount=log_backup_count,
+                                        encoding=None, delay=False)
+
 formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s",
                               "%Y-%m-%d %H:%M:%S")
-fh.setLevel(logging.INFO)
+#fh.setLevel(logging.INFO)
 fh.setFormatter(formatter)
 logger.addHandler(fh)
 
 try:
-    import config as cfg
+    import dtcollector_config as cfg
 except ImportError:
-    logger.warning("Run config command for configuration.")
+    logger.warning("Run config command for configuration")
+    config_exists = False
 
 
 class DynatraceDataCollector(object):
+    health_metric = "dynatrace.collector.health.service.running"
+    health_metric_sent = "dynatrace.collector.health.metric.sent"
+    health_metric_dropped = "dynatrace.collector.health.metric.dropped"
+
     pidfile = pid_dir + "dtcollector.pid"
     update_metric_def_interval = 60  # Min
-    push_metric_interval = 5  # Min
+    push_metric_interval = int(user_config.get('default','push_metric_interval'))
+    metric_sent = 0
+    metric_without_data = 0
 
     def __init__(self):
         parser = argparse.ArgumentParser(
@@ -53,7 +72,7 @@ class DynatraceDataCollector(object):
         Supported commands are:
         config   Configure env to run the script
         run      Execute the script to get the metrics
-        info     Displays Dynatrace cluster base URL
+        info     Displays Collector Configuration information
         '''
         )
         parser.add_argument('command', help='command args')
@@ -98,28 +117,39 @@ class DynatraceDataCollector(object):
         if not wavefront_proxy_metric_port:
             wavefront_proxy_metric_port = 2878
 
+        # Sanitize Dynatrace URL
+        if dynatrace_base_url[-1] == "/":
+            dynatrace_base_url = dynatrace_base_url[:-1] 
+
         cwd = os.path.dirname(os.path.realpath(__file__))
 
-        with open(cwd+"/config.py", "w+") as conf:
+        with open(cwd+"/dtcollector_config.py", "w+") as conf:
             data = 'config = {"dynatrace_base_url":"' + dynatrace_base_url +\
                    '", "dynatrace_api_key":"' + dynatrace_api_key +\
                    '", "wavefront_proxy_ip":"' + wavefront_proxy_ip +\
                    '", "wavefront_proxy_metric_port":"' +\
                    str(wavefront_proxy_metric_port) + '"}'
             conf.write(data)
-        py_compile.compile(cwd+"/config.py", cwd+"/config.pyc")
+        py_compile.compile(cwd+"/dtcollector_config.py", cwd+"/dtcollector_config.pyc")
 
-        if os.path.exists(cwd+"/config.py"):
-            os.remove(cwd+"/config.py")
+        if os.path.exists(cwd+"/dtcollector_config.py"):
+            os.remove(cwd+"/dtcollector_config.py")
         else:
             logger.warning('The file does not exist')
 
-        print('Configuration completed successfully')
+        print('Configuration completed successfully.')  
+
+    def send_health_metric(self, client, metric_name, metric_value):
+        logger.debug("Sending metric: " + metric_name)
+        client.send_metric(metric_name,
+                            metric_value,
+                            None,
+                            socket.gethostname(),  # noqa:E501
+                            None)
 
     def start_job(self):
         self.get_metric_definitions()
         self.get_metric_data_points()
-
         while len(threading.enumerate()) >= 3:
             time.sleep(5)
 
@@ -131,6 +161,17 @@ class DynatraceDataCollector(object):
         parser.add_argument('-d', '--daemon',
                             help='Run in the background as a daemon.',
                             required=False)
+
+        if not config_exists:
+            print("Run config command for configuration")
+            print("Stopping Dynatrace Collector")
+            sys.exit(1)
+
+        if self.push_metric_interval < 5:
+            print("Push metric interval can not be less than 5 Minute")
+            print("Stopping Dynatrace Collector")
+            sys.exit(1)
+
         if parser.parse_args().daemon:
             if os.path.exists(self.pidfile):
                 os.remove(self.pidfile)
@@ -142,7 +183,13 @@ class DynatraceDataCollector(object):
             self.start_job()
 
     def info(self):
-        print('This collects metrics from ' + cfg.config['dynatrace_base_url'])
+        if not config_exists:
+            print("Run config command for configuration")
+            sys.exit(1)
+        
+        print('Dynatrace URL: ' + cfg.config['dynatrace_base_url'])
+        print('Wavefront Proxy Host: ' + cfg.config['wavefront_proxy_ip'])
+        print('Wavefront Proxy Port: ' + cfg.config['wavefront_proxy_metric_port'])
 
     def call_api(self, api, params=None):
         header_dict = {"Content-Type": "application/json",
@@ -183,7 +230,7 @@ class DynatraceDataCollector(object):
         if metric_definitions:
             with open(conf_dir+'metric_definitions.json', 'w') as outfile:
                 json.dump(metric_definitions, outfile)
-
+        logger.info("Total " + str(len(metric_definitions)) + " metric definitions found.")
         timer = threading.Timer(self.update_metric_def_interval * 60.0,
                                 self.get_metric_definitions)
         timer.daemon = True
@@ -217,7 +264,7 @@ class DynatraceDataCollector(object):
             for md in metricDefinitions:
                 if md.get("detailedSource") == source:
                     metric_params = {"includeData": "true",
-                                     "relativeTime": "10mins"}
+                                     "relativeTime": str(self.push_metric_interval) + "mins"}
                     aggregation_types = md.get('aggregationTypes')
                     if aggregation_types:
                         metric_params.update({
@@ -263,26 +310,38 @@ class DynatraceDataCollector(object):
                                                                report_time,
                                                                socket.gethostname(),  # noqa:E501
                                                                point_tags)
+                                            self.metric_sent = self.metric_sent + 1
+                                            logger.debug("Sending metric: " + md.get('timeseriesId'))
                         else:
-                            logger.debug("Data not found for - " +
+                            self.metric_without_data = self.metric_without_data + 1
+                            logger.debug("Dropped metric: " +
                                          md.get('timeseriesId'))
+
+        self.send_health_metric(client, self.health_metric_sent, self.metric_sent)
+        self.send_health_metric(client, self.health_metric_dropped, self.metric_without_data)
+        logger.info("Metric sent: " + str(self.metric_sent))
+        logger.info("Metric without data points: " + str(self.metric_without_data))
 
     def get_metric_data_points(self):
         logger.info("Sending data to Wavefront")
+        self.metric_sent = 0
+        self.metric_without_data = 0
         with open(conf_dir+'metric_definitions.json') as json_file:
             data = json.load(json_file)
 
         with open(conf_dir+'config.json') as json_file:
             config = json.load(json_file)
 
+        client = self.get_wavefront_client()
+        self.send_health_metric(client, self.health_metric, 1)
+
         try:
-            client = self.get_wavefront_client()
             for item in config:
                 self.collect_entity_data(data, client, item)
         except Exception as ex:
             logger.error("Error while collecting metric data points. Error: "
                          + str(ex))
-
+        client.close()
         timer = threading.Timer(self.push_metric_interval * 60.0,
                                 self.get_metric_data_points)
         timer.daemon = True
