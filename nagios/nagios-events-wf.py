@@ -1,49 +1,42 @@
 #!/usr/bin/python
 
-import os
 import argparse
 import json
-import urllib.request, urllib.parse, urllib.error
-from urllib.request import urlopen
 import sys
+import requests
 
 
 def doMain():
     msg = args.msg[0].replace("\\n", "\r").rstrip()
-    annotations = {'severity': args.type[0], 'type': 'Nagios', 'details': msg}
+    annotations = {'severity': args.type[0],
+                   'type': 'Nagios',
+                   'details': msg}
 
-    notif = {}
+    notif = {'startTime': args.time[0],
+             'endTime': args.time[0] + 1,
+             'hosts': args.host,
+             'annotations': annotations}
     if args.S is not None:
         notif['name'] = "Nagios event on '{}' at '{}'".format(args.service, args.host[0])
     else:
         notif['name'] = "Nagios event at '{}'".format(args.host[0])
-    notif['startTime'] = args.time[0]
-    notif['endTime'] = args.time[0] + 1
-    notif['hosts'] = args.host
-    notif['annotations'] = annotations
-
-    # http_logger = urllib2.HTTPSHandler(debuglevel = 1)
-    # opener = urllib2.build_opener(http_logger) # put your other handlers here too!
-    # urllib2.install_opener(opener)
 
     url = "{}/api/v2/event".format(args.server[0])
-    print(url)
 
-    body = json.dumps(notif)
-    headers = {"Authorization": "Bearer {} ".format(args.token[0]),
-               "Content-type": "application/json",
-               "Accept": "application/json"}
+    headers = {'Content-Type': 'application/json',
+               'Content-Encoding': 'gzip',
+               'Authorization': 'Bearer ' + args.token[0]}
+    result = requests.post(url,
+                           headers=headers,
+                           data=json.dumps(notif))
 
-    req = urllib.request.Request(url, body, headers)
-    response = urllib.request.urlopen(req)
-    res_body = response.read()
-    result = json.loads(res_body)
-    if result['status'] is None or result['status']['code'] != 200:
-        print(res_body)
+    if result.status_code != 200:
+        print(result.json())
         sys.exit(-1)
     else:
         print("OK")
         sys.exit(0)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

@@ -11,24 +11,27 @@ from wavefront_sdk import WavefrontProxyClient
 
 
 def main():
-    newFileName = args.file + "." + str(int(time.time()))
+    newFileName = args.file
     count = 0
-    if not args.test:
-        logging.info("moving: ''" + args.file + "' to '" + newFileName + "'")
-        os.rename(args.file, newFileName)
-    else:
-        newFileName = args.file
-
     logging.info("processing: '" + newFileName + "'")
 
     try:
-        with open(newFileName) as f:
+        with open(newFileName, 'r+') as f:
             for line in f:
                 process(line)
                 count = count + 1
-    finally:
-        if not args.test:
-            os.remove(newFileName)
+        f.truncate(0)
+    except:
+        pass
+
+    try:
+        with open(newFileName, 'r+') as f:
+            for line in f:
+                process(line)
+                count = count + 1
+            f.truncate(0)
+    except:
+        pass
     client.send_metric("nagios.metrics.processed.per.execution", count, time.time(), "localhost", {})
 
 
@@ -52,8 +55,8 @@ def process(line):
             tags["HOSTCHECKCOMMAND"] = info["HOSTCHECKCOMMAND"]
 
         try:
-            metricName = convert_key_to_wf_metric(metricName)
             logging.info(">> metricName: " + metricName)
+            metricName = convert_key_to_wf_metric(metricName)
             client.send_metric(metricName, re.sub(r"[^0-9.]", "", value.lower()), info["TIMET"], info["HOSTNAME"], tags)
         except ValueError as e:
             print(e)
@@ -78,7 +81,7 @@ def extractInfo(line):
 
 
 def convert_key_to_wf_metric(key):
-    """A Wavefront metric name can be: 'Any lowercase, alphanumeric, dot-separated value. May also
+    """ A Wavefront metric name can be: 'Any lowercase, alphanumeric, dot-separated value. May also
     include dashes (-) or underscores (_)' """
     metric = replace_punctuation_and_whitespace(key)
     metric = remove_trailing_dots(metric)
