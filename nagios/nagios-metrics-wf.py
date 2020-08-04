@@ -23,15 +23,6 @@ def main():
         f.truncate(0)
     except:
         pass
-
-    try:
-        with open(newFileName, 'r+') as f:
-            for line in f:
-                process(line)
-                count = count + 1
-            f.truncate(0)
-    except:
-        pass
     client.send_metric("nagios.metrics.processed.per.execution", count, time.time(), "localhost", {})
 
 
