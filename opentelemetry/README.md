@@ -6,8 +6,8 @@ OpenTelemetry Collectors deployed:
 
 - Applications send data directly to a Collector configured to use fewer
  resources, aka the _agent_;
-- The Collector then sends the data to the appropriate backend, in this demo
- Jaeger, Zipkin, and Prometheus;
+- The Collector then sends the data to the appropriate backend, in this sample
+ Prometheus;
 
 This sample uses `docker-compose` and by default runs against the 
 `otel/opentelemetry-collector-dev:latest` image:
