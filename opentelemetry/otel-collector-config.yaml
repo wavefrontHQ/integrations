@@ -1,0 +1,36 @@
+receivers:
+  opencensus:
+
+exporters:
+  prometheus:
+    endpoint: "0.0.0.0:8889"
+    namespace: promexample
+    const_labels:
+      label1: value1
+  logging:
+
+
+# Alternatively, use jaeger_thrift_http with the settings below. In this case
+# update the list of exporters on the traces pipeline.
+#
+#  jaeger_thrift_http:
+#    url: http://jaeger-all-in-one:14268/api/traces
+
+processors:
+  batch:
+  queued_retry:
+
+extensions:
+  health_check:
+  pprof:
+    endpoint: :1888
+  zpages:
+    endpoint: :55679
+
+service:
+  extensions: [pprof, zpages, health_check]
+  pipelines:
+    metrics:
+      receivers: [opencensus]
+      processors: [batch]
+      exporters: [logging,prometheus]
