@@ -11,17 +11,24 @@ from wavefront_sdk import WavefrontProxyClient
 
 
 def main():
-    newFileName = args.file
+    newFileName = args.file + "." + str(int(time.time()))
     count = 0
-    logging.info("processing: '" + newFileName + "'")
-
     try:
-        with open(newFileName, 'r+') as f:
-            for line in f:
-                process(line)
-                count = count + 1
-        f.truncate(0)
-    except:
+        if not args.test:
+            logging.info("moving: ''" + args.file + "' to '" + newFileName + "'")
+            os.rename(args.file, newFileName)
+        else:
+            newFileName = args.file
+        logging.info("processing: '" + newFileName + "'")
+        try:
+            with open(newFileName) as f:
+                for line in f:
+                    process(line)
+                    count = count + 1
+        finally:
+            if not args.test:
+                os.remove(newFileName)
+    except FileNotFoundError:
         pass
     client.send_metric("nagios.metrics.processed.per.execution", count, time.time(), "localhost", {})
 
