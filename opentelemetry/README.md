@@ -1,13 +1,13 @@
 # OpenTelemetry Prometheus Collector 
 
 
-This demo presents the typical flow of observability data with
-OpenTelemetry Collectors deployed:
+This presents the typical flow of observability data with OpenTelemetry Collectors
+deployed to send metric to Wavefront Server:
 
 - Applications send data directly to a Collector configured to use fewer
  resources, aka the _agent_;
-- The Collector then sends the data to the appropriate backend, in this sample
- Prometheus;
+- The Collector then sends the data to the appropriate backend(Jaeger, Zipkin, and Prometheus), in this example
+ to Prometheus.
 
 This sample uses `docker-compose` and by default runs against the 
 `otel/opentelemetry-collector-dev:latest` image:
@@ -27,3 +27,5 @@ Notes:
 
 To clean up any docker container from the demo run `docker-compose down`.
 
+
+- Integrate the `prometheus-storage-adapter`(https://github.com/wavefrontHQ/prometheus-storage-adapter) with Prometheus backend.
