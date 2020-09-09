@@ -176,8 +176,10 @@ class DynatraceDataCollector(object):
             if os.path.exists(self.pidfile):
                 os.remove(self.pidfile)
             with daemon.DaemonContext(
+                    stdout=fh.stream,
+                    stderr=fh.stream,
                     pidfile=daemon.pidfile.PIDLockFile(self.pidfile),
-                    umask=0o002, files_preserve=[fh.stream, ]):
+                    umask=0o002, files_preserve=[fh.stream]):
                 self.start_job()
         else:
             self.start_job()
@@ -230,7 +232,7 @@ class DynatraceDataCollector(object):
         if metric_definitions:
             with open(conf_dir+'metric_definitions.json', 'w') as outfile:
                 json.dump(metric_definitions, outfile)
-        logger.info("Total " + str(len(metric_definitions)) + " metric definitions found.")
+            logger.info("Total " + str(len(metric_definitions)) + " metric definitions found.")
         timer = threading.Timer(self.update_metric_def_interval * 60.0,
                                 self.get_metric_definitions)
         timer.daemon = True
