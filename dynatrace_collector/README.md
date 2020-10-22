@@ -71,7 +71,7 @@ dynatrace-collector restart
 ```
 
 ### Metrics Configuration
-The metrics configuration file will be located in the `/opt/wavefront/dynatrace/config/config.json`, use this configuration file to enable/disable the metrics collection.
+The metrics configuration file will be located at `/opt/wavefront/dynatrace/config/config.json`, use this configuration file to enable/disable the metrics collection.
 
 Configuration options:
 
@@ -80,6 +80,19 @@ Configuration options:
 | family | Filter the metrics based on family, to disable the metric for any family remove an entire object from the array |
 | detailedSources | It filters metrics based on detailed source name. This can be found in the metric definition |
 | displayNameRegexPattern | It filters metrics based on the entity display name. Value can be an entity display name or any regex pattern, default is `all`  |
+
+### Collector Configuration
+The collector configuration file will be located at the `/opt/wavefront/dynatrace/config/dtcollector.conf`, use this configuration file to control the collector settings.
+
+Configuration options:
+
+| Options | Description |
+| -------- | ----------- |
+| log_dir | Directory to store the logs. Default: /var/log/wavefront/dynatrace/ |
+| log_backup_count | The number of log backups. Default: 5 |
+| log_level | Define the log category. Default: INFO. Valid Values are: CRITICAL, ERROR, WARNING, INFO, DEBUG  |
+| log_file_size | Logfile size in MB. Default: 10  |
+| push_metric_interval | The frequency at which the collector will collect the data from Dynatrace. Default: 5mins. Valid values are: min, 5mins, 10mins, 15mins, 30mins, hour, 2hours, 6hours, day, 3days, week, month  |
 
 ### Troubleshooting
 Log file will be located in the `/var/log/wavefront/dynatrace/dynatrace.log`.
