@@ -1,5 +1,5 @@
 ## Overview
-SLI runner is a single Go binary that, periodically executes several probes against Concourse, keeping track of the successes and failures.
+SLI runner is a single Go binary that, periodically executes several probes against Concourse, keeping track of the successes and failures. These deployment files are being used by [Concourse CI](https://docs.wavefront.com/concourse.html) integration. Detailed information about SLI runner can be found [here](https://github.com/cirocosta/slirunner).
 
 ## Prerequisites
 Concourse CI should be up and running.
@@ -14,5 +14,3 @@ SLI runner can be installed using the below methods:
     CONCOURSE-USERNAME  - Concourse Username
     CONCOURSE-PASSWORD  - Concourse Password
     ```
-
-**Note:** Detailed information about SLI runner can be found [here](https://github.com/cirocosta/slirunner)

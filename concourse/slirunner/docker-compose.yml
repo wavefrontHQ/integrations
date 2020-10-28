@@ -1,14 +1,6 @@
 # docker-compose.yml - a sample docker-compose configuration that brings
 # sli runner up and running.
 #
-# ps.: assumes that `concourse` has been brought up using the
-# `docker-compose.yml` file from `concourse/concourse`
-#
-#     git clone https://github.com/concourse/concourse concourse
-#     cd $_
-#
-#     docker-compose up -d --build
-#
 
 version: '3'
 
