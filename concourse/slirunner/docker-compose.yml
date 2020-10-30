@@ -1,0 +1,18 @@
+# docker-compose.yml - a sample docker-compose configuration that brings
+# sli runner up and running.
+#
+
+version: '3'
+
+services:
+  slirunner:
+    image: cirocosta/slirunner
+    container_name: 'slirunner'
+    ports:
+        - '9001:9001'
+    command:
+      - start
+      - --target=test
+      - --concourse-url=<CONCOURSE-URL>
+      - --username=<CONCOURSE-USERNAME>
+      - --password=<CONCOURSE-PASSWORD>
