@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+group 'com.github.jhuynh1'
+version '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    uberImplementation
+}
+
+shadowJar {
+    project.configurations.uberImplementation.canBeResolved = true
+    configurations = [project.configurations.uberImplementation]
+}
+
+dependencies {
+    implementation group: 'org.apache.logging.log4j', name: 'log4j', version: '2.13.1', ext: 'pom'
+    implementation group: 'org.apache.geode', name: 'geode-core', version: '1.11.0'
+    implementation 'io.micrometer:micrometer-registry-wavefront:latest.release'
+    uberImplementation 'io.micrometer:micrometer-registry-wavefront:latest.release'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
