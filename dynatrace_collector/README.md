@@ -92,7 +92,7 @@ Configuration options:
 | log_backup_count | The number of log backups. Default: 5 |
 | log_level | Define the log category. Default: INFO. Valid Values are: CRITICAL, ERROR, WARNING, INFO, DEBUG  |
 | log_file_size | Logfile size in MB. Default: 10  |
-| push_metric_interval | The frequency at which the collector will collect the data from Dynatrace. Default: 5mins. Valid values are: min, 5mins, 10mins, 15mins, 30mins, hour, 2hours, 6hours, day, 3days, week, month  |
+| push_metric_interval | The frequency in minutes at which the collector will collect the data from Dynatrace. Default: 5 |
 
 ### Troubleshooting
 Log file will be located in the `/var/log/wavefront/dynatrace/dynatrace.log`.

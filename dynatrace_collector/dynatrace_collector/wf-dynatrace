@@ -31,9 +31,6 @@ log_file_size = int(user_config.get('default','log_file_size'))
 log_backup_count = int(user_config.get('default','log_backup_count'))
 log_level = user_config.get('default','log_level')
 
-# Relative time supported by Dynatrace
-relative_time = {"min":1, "5mins":5, "10mins":10, "15mins":15, "30mins":30, "hour":60, "2hours":120, "6hours":360, "day":1440, "3days":4320, "week":10080, "month":43800}
-
 logger = logging.getLogger('DynatraceCollector')
 logger.setLevel(logging.getLevelName(log_level))
 # create file handler
@@ -61,10 +58,10 @@ class DynatraceDataCollector(object):
     health_metric_dropped = "dynatrace.collector.health.metric.dropped"
 
     pidfile = pid_dir + "dtcollector.pid"
-    update_metric_def_interval = 60  # Min
-    push_metric_interval = user_config.get('default','push_metric_interval')
+    push_metric_interval = int(user_config.get('default','push_metric_interval'))
     metric_sent = 0
     metric_without_data = 0
+    end_time_stamp  = None
 
     def __init__(self):
         parser = argparse.ArgumentParser(
@@ -152,13 +149,15 @@ class DynatraceDataCollector(object):
     def start_job(self):
         # Do not start service without metric definitions.
         if self.get_metric_definitions():
+            self.end_time_stamp  = int(time.time() * 1000)
             while True:
                 e = threading.Event()
                 t = threading.Thread(target=self.get_metric_data_points, args=(e,))
                 t.daemon = True
                 t.start()
-                time.sleep(relative_time.get(self.push_metric_interval) * 60)
+                time.sleep(self.push_metric_interval * 60)
                 e.set()
+                self.end_time_stamp = self.end_time_stamp + self.push_metric_interval * 60000
         else:
             logger.info("Metric definitions not found. Stopping service")
 
@@ -176,8 +175,8 @@ class DynatraceDataCollector(object):
             print("Stopping Dynatrace Collector")
             sys.exit(1)
 
-        if self.push_metric_interval not in relative_time.keys():
-            print("Invalid push metric interval " + self.push_metric_interval + ". Supported: " + " ".join(list(relative_time.keys())))
+        if self.push_metric_interval < 5:
+            print("Push metric interval can not be less than 5 Minute")
             print("Stopping Dynatrace Collector")
             sys.exit(1)
 
@@ -275,17 +274,17 @@ class DynatraceDataCollector(object):
             count = count + 1
 
     def collect_entity_data(self, metricDefinitions, client, config, stop_event):
-        params = {"includeDetails": "true"}
         if not stop_event.isSet():
-            entities = self.call_api(config.get("api"), params, stop_event)
+            entities = self.call_api(config.get("api"), {"includeDetails": "true"}, stop_event)
             if entities:
+                metric_params = {"includeData": "true",
+                 "endTimestamp": self.end_time_stamp,
+                 "startTimestamp": self.end_time_stamp - self.push_metric_interval * 60000}
                 displayRegex = re.compile(config.get("displayNameRegexPattern"))
                 for source in config.get("detailedSources"):
                     if not stop_event.isSet():
                         for md in metricDefinitions:
                             if md.get("detailedSource") == source and not stop_event.isSet():
-                                metric_params = {"includeData": "true",
-                                                "relativeTime": self.push_metric_interval}
                                 aggregation_types = md.get('aggregationTypes')
                                 if aggregation_types:
                                     metric_params.update({
