@@ -1277,19 +1277,17 @@
               "sources": [
                 {
                   "name": "table",
-                  "query": "mdiff(1m, ts(${prefix}.table.total.rows.inserted ${condition}))",
+                  "query": "rate(ts(${prefix}.table.total.rows.inserted ${condition}))",
                   "scatterPlotSource": "Y",
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
               "units": "Units",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": "",
               "chartSettings": {
                 "type": "line",
                 "lineType": "linear",
@@ -1320,19 +1318,17 @@
               "sources": [
                 {
                   "name": "table",
-                  "query": "mdiff(1m, ts(${prefix}.table.total.rows.updated ${condition}))",
+                  "query": "rate(ts(${prefix}.table.total.rows.updated ${condition}))",
                   "scatterPlotSource": "Y",
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
               "units": "Units",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": "",
               "chartSettings": {
                 "type": "line",
                 "lineType": "linear",
@@ -1363,19 +1359,17 @@
               "sources": [
                 {
                   "name": "table",
-                  "query": "mdiff(1m, ts(${prefix}.table.total.rows.read ${condition}))",
+                  "query": "rate(ts(${prefix}.table.total.rows.read ${condition}))",
                   "scatterPlotSource": "Y",
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
               "units": "Units",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": "",
               "chartSettings": {
                 "type": "line",
                 "lineType": "linear",
@@ -1406,19 +1400,17 @@
               "sources": [
                 {
                   "name": "table",
-                  "query": "mdiff(1m, ts(${prefix}.table.total.rows.deleted ${condition}))",
+                  "query": "rate(ts(${prefix}.table.total.rows.deleted ${condition}))",
                   "scatterPlotSource": "Y",
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
               "units": "Units",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
-              "description": "",
               "chartSettings": {
                 "type": "line",
                 "lineType": "linear",
@@ -1631,15 +1623,14 @@
               "sources": [
                 {
                   "name": "lock",
-                  "query": "ts(${prefix}.database.lock.waits ${condition})",
+                  "query": "mdiff(1m, ts(${prefix}.database.lock.waits ${condition}))",
                   "scatterPlotSource": "Y",
                   "querybuilderEnabled": false,
-                  "secondaryAxis": false,
                   "sourceDescription": ""
                 }
               ],
               "units": "Total",
-              "base": 1,
+              "base": 0,
               "noDefaultEvents": false,
               "interpolatePoints": false,
               "includeObsoleteMetrics": false,
@@ -2077,12 +2068,12 @@
       "reverseDynSort": null,
       "parameterType": "DYNAMIC",
       "label": "Host",
-      "defaultValue": "Label",
+      "defaultValue": "Label_2",
       "valuesToReadableStrings": {
-        "Label": "127.0.0.1"
+        "Label_2": "dcaldd86"
       },
-      "selectedLabel": "Label",
-      "value": "127.0.0.1"
+      "selectedLabel": "Label_2",
+      "value": "dcaldd86"
     },
     "0_productname": {
       "hideFromView": true,
@@ -2094,12 +2085,12 @@
       "reverseDynSort": null,
       "parameterType": "DYNAMIC",
       "label": "Product Name",
-      "defaultValue": "defaultQuery",
+      "defaultValue": "Label",
       "valuesToReadableStrings": {
-        "defaultQuery": "DB2 v11.5"
+        "Label": "DB2 v10.5.0.8"
       },
-      "selectedLabel": "defaultQuery",
-      "value": "DB2 v11.5"
+      "selectedLabel": "Label",
+      "value": "DB2 v10.5.0.8"
     },
     "1_db": {
       "hideFromView": false,
@@ -2111,12 +2102,12 @@
       "reverseDynSort": null,
       "parameterType": "DYNAMIC",
       "label": "Database",
-      "defaultValue": "defaultQuery",
+      "defaultValue": "Label",
       "valuesToReadableStrings": {
-        "defaultQuery": "db2"
+        "Label": "DSD"
       },
-      "selectedLabel": "defaultQuery",
-      "value": "db2"
+      "selectedLabel": "Label",
+      "value": "DSD"
     },
     "prefix": {
       "hideFromView": true,
