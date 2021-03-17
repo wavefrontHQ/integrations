@@ -322,8 +322,6 @@ data:
             source_workload_namespace,
             destination_workload,
             destination_workload_namespace,
-            response_code,
-            response_flags,
             le
           )
 
@@ -343,8 +341,6 @@ data:
             source_workload_namespace,
             destination_workload,
             destination_workload_namespace,
-            response_code,
-            response_flags,
             le
           )
 
@@ -364,8 +360,6 @@ data:
             source_workload_namespace,
             destination_workload,
             destination_workload_namespace,
-            response_code,
-            response_flags,
             le
           )
 
@@ -383,9 +377,7 @@ data:
             source_workload,
             source_workload_namespace,
             destination_workload,
-            destination_workload_namespace,
-            response_code,
-            response_flags
+            destination_workload_namespace
           )
 
     - name: istio_tcp_sent_bytes_total
@@ -395,14 +387,13 @@ data:
         expr: |
           sum(irate(istio_tcp_sent_bytes_total{source_workload!=""}[1m]))
           by (
+            app,
+            reporter,
+            response_flags,
             source_workload,
             source_workload_namespace,
-            destination_service,
             destination_workload,
-            destination_workload_namespace,
-            response_flags,
-            reporter,
-            app
+            destination_workload_namespace
           )
 
     - name: istio_tcp_received_bytes_total
@@ -412,14 +403,13 @@ data:
         expr: |
           sum(irate(istio_tcp_received_bytes_total{source_workload!=""}[1m]))
           by (
+            app,
+            reporter,
+            response_flags,
             source_workload,
             source_workload_namespace,
-            destination_service,
             destination_workload,
-            destination_workload_namespace,
-            response_flags,
-            reporter,
-            app
+            destination_workload_namespace
           )
 
     - name: istio_tcp_connections_opened_total
@@ -429,14 +419,13 @@ data:
         expr: |
           sum(irate(istio_tcp_connections_opened_total{source_workload!=""}[1m]))
           by (
+            app,
+            reporter,
+            response_flags,
             source_workload,
             source_workload_namespace,
-            destination_service,
             destination_workload,
-            destination_workload_namespace,
-            response_flags,
-            reporter,
-            app
+            destination_workload_namespace
           )
 
     - name: istio_tcp_connections_closed_total
@@ -446,14 +435,13 @@ data:
         expr: |
           sum(irate(istio_tcp_connections_closed_total{source_workload!=""}[1m]))
           by (
+            app,
+            reporter,
+            response_flags,
             source_workload,
             source_workload_namespace,
-            destination_service,
             destination_workload,
-            destination_workload_namespace,
-            response_flags,
-            reporter,
-            app
+            destination_workload_namespace
           )
 ---
 # Source: prometheus/templates/server/clusterrole.yaml
