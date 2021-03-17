@@ -284,196 +284,116 @@ data:
         - __meta_kubernetes_pod_phase
       scrape_interval: 5m
       scrape_timeout: 30s
+
     - job_name: federate
       scrape_interval: 15s
       honor_labels: true
       metrics_path: /federate
       params:
         'match[]':
-          - '{__name__=~"wavefront:(.*)"}'
-          - '{job=~"federate"}'
+          - '{__name__=~"federate:(.*)"}'
+          - '{job=~"federate|kubernetes-pods"}'
+
       static_configs:
       - targets:
         - prometheus:9090
       metric_relabel_configs:
       - source_labels: [__name__]
-        regex: 'wavefront:(.*)'
+        regex: 'federate:(.*)'
         target_label: __name__
         action: replace
 
   recording_rules.yml: |
     groups:
-    - name: istio.workload.istio_request_duration_milliseconds
+      # These sum(irate()) functions are in separate groups, so they run in parallel
+    - name: istio.workload.istio_request_duration_milliseconds_bucket
       interval: 10s
       rules:
 
-      - record: wavefront:istio_request_duration_milliseconds_bucket
+      - record: federate:istio_request_duration_milliseconds_bucket
         expr: |
-          sum(istio_request_duration_milliseconds_bucket{source_workload!=""})
+          sum(irate(istio_request_duration_milliseconds_bucket{source_workload!=""}[1m]))
           by (
+            app,
+            reporter,
+            response_code,
+            response_flags,
             source_workload,
             source_workload_namespace,
-            destination_service,
             destination_workload,
             destination_workload_namespace,
             response_code,
             response_flags,
-            reporter,
-            app
+            le
           )
 
-      - record: wavefront:istio_request_duration_milliseconds_count
-        expr: |
-          sum(istio_request_duration_milliseconds_count{source_workload!=""})
-          by (
-            source_workload,
-            source_workload_namespace,
-            destination_service,
-            destination_workload,
-            destination_workload_namespace,
-            response_code,
-            response_flags,
-            reporter,
-            app
-          )
-
-      - record: wavefront:istio_request_duration_milliseconds_sum
-        expr: |
-          sum(istio_request_duration_milliseconds_sum{source_workload!=""})
-          by (
-            source_workload,
-            source_workload_namespace,
-            destination_service,
-            destination_workload,
-            destination_workload_namespace,
-            response_code,
-            response_flags,
-            reporter,
-            app
-          )
-
-    - name: istio.workload.istio_request_bytes
+    - name: istio.workload.istio_request_bytes_bucket
       interval: 10s
       rules:
 
-      - record: wavefront:istio_request_bytes_bucket
+      - record: federate:istio_request_bytes_bucket
         expr: |
-          sum(istio_request_bytes_bucket{source_workload!=""})
+          sum(irate(istio_request_bytes_bucket{source_workload!=""}[1m]))
           by (
+            app,
+            reporter,
+            response_code,
+            response_flags,
             source_workload,
             source_workload_namespace,
-            destination_service,
             destination_workload,
             destination_workload_namespace,
             response_code,
             response_flags,
-            reporter,
-            app
+            le
           )
 
-      - record: wavefront:istio_request_bytes_count
-        expr: |
-          sum(istio_request_bytes_count{source_workload!=""})
-          by (
-            source_workload,
-            source_workload_namespace,
-            destination_service,
-            destination_workload,
-            destination_workload_namespace,
-            response_code,
-            response_flags,
-            reporter,
-            app
-          )
-
-      - record: wavefront:istio_request_bytes_sum
-        expr: |
-          sum(istio_request_bytes_sum{source_workload!=""})
-          by (
-            source_workload,
-            source_workload_namespace,
-            destination_service,
-            destination_workload,
-            destination_workload_namespace,
-            response_code,
-            response_flags,
-            reporter,
-            app
-          )
-
-    - name: istio.workload.istio_response_bytes
+    - name: istio.workload.istio_response_bytes_bucket
       interval: 10s
       rules:
 
-      - record: wavefront:istio_response_bytes_bucket
+      - record: federate:istio_response_bytes_bucket
         expr: |
-          sum(istio_response_bytes_bucket{source_workload!=""})
+          sum(irate(istio_response_bytes_bucket{source_workload!=""}[1m]))
           by (
+            app,
+            reporter,
+            response_code,
+            response_flags,
             source_workload,
             source_workload_namespace,
-            destination_service,
             destination_workload,
             destination_workload_namespace,
             response_code,
             response_flags,
-            reporter,
-            app
-          )
-
-      - record: wavefront:istio_response_bytes_count
-        expr: |
-          sum(istio_response_bytes_count{source_workload!=""})
-          by (
-            source_workload,
-            source_workload_namespace,
-            destination_service,
-            destination_workload,
-            destination_workload_namespace,
-            response_code,
-            response_flags,
-            reporter,
-            app
-          )
-
-      - record: wavefront:istio_response_bytes_sum
-        expr: |
-          sum(istio_response_bytes_sum{source_workload!=""})
-          by (
-            source_workload,
-            source_workload_namespace,
-            destination_service,
-            destination_workload,
-            destination_workload_namespace,
-            response_code,
-            response_flags,
-            reporter,
-            app
+            le
           )
 
     - name: istio.workload.istio_requests_total
       interval: 10s
       rules:
-      - record: wavefront:istio_requests_total
+      - record: federate:istio_requests_total
         expr: |
-          sum(istio_requests_total{source_workload!=""})
+          sum(irate(istio_requests_total{source_workload!=""}[1m]))
           by (
+            app,
+            reporter,
+            response_code,
+            response_flags,
             source_workload,
             source_workload_namespace,
-            destination_service,
             destination_workload,
             destination_workload_namespace,
             response_code,
-            response_flags,
-            reporter,
-            app
+            response_flags
           )
 
     - name: istio_tcp_sent_bytes_total
       interval: 10s
       rules:
-      - record: wavefront:istio_tcp_sent_bytes_total
+      - record: federate:istio_tcp_sent_bytes_total
         expr: |
-          sum(istio_tcp_sent_bytes_total{source_workload!=""})
+          sum(irate(istio_tcp_sent_bytes_total{source_workload!=""}[1m]))
           by (
             source_workload,
             source_workload_namespace,
@@ -488,9 +408,9 @@ data:
     - name: istio_tcp_received_bytes_total
       interval: 10s
       rules:
-      - record: wavefront:istio_tcp_received_bytes_total
+      - record: federate:istio_tcp_received_bytes_total
         expr: |
-          sum(istio_tcp_received_bytes_total{source_workload!=""})
+          sum(irate(istio_tcp_received_bytes_total{source_workload!=""}[1m]))
           by (
             source_workload,
             source_workload_namespace,
@@ -505,9 +425,9 @@ data:
     - name: istio_tcp_connections_opened_total
       interval: 10s
       rules:
-      - record: wavefront:istio_tcp_connections_opened_total
+      - record: federate:istio_tcp_connections_opened_total
         expr: |
-          sum(istio_tcp_connections_opened_total{source_workload!=""})
+          sum(irate(istio_tcp_connections_opened_total{source_workload!=""}[1m]))
           by (
             source_workload,
             source_workload_namespace,
@@ -522,9 +442,9 @@ data:
     - name: istio_tcp_connections_closed_total
       interval: 10s
       rules:
-      - record: wavefront:istio_tcp_connections_closed_total
+      - record: federate:istio_tcp_connections_closed_total
         expr: |
-          sum(istio_tcp_connections_closed_total{source_workload!=""})
+          sum(irate(istio_tcp_connections_closed_total{source_workload!=""}[1m]))
           by (
             source_workload,
             source_workload_namespace,
@@ -633,6 +553,7 @@ metadata:
     release: prometheus
     chart: prometheus-11.16.2
     heritage: Helm
+    #istio-federate: federate
   name: prometheus
   namespace: istio-system
 spec:
@@ -673,7 +594,7 @@ spec:
           image: "prom/prometheus:v2.21.0"
           imagePullPolicy: "IfNotPresent"
           args:
-            - --storage.tsdb.retention.time=15d
+            - --storage.tsdb.retention.time=15m
             - --config.file=/etc/config/prometheus.yml
             - --storage.tsdb.path=/data
             - --web.console.libraries=/etc/prometheus/console_libraries
