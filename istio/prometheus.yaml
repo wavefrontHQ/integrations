@@ -293,6 +293,7 @@ data:
         'match[]':
           - '{__name__=~"federate:(.*)"}'
           - '{job=~"federate|kubernetes-pods"}'
+          #- '{job=~"kubernetes-pods"}'
 
       static_configs:
       - targets:
@@ -312,7 +313,37 @@ data:
 
       - record: federate:istio_request_duration_milliseconds_bucket
         expr: |
-          sum(irate(istio_request_duration_milliseconds_bucket{source_workload!=""}[1m]))
+          sum(irate(istio_request_duration_milliseconds_bucket{job="kubernetes-pods"}[1m]))
+          by (
+            app,
+            reporter,
+            response_code,
+            response_flags,
+            source_workload,
+            source_workload_namespace,
+            destination_workload,
+            destination_workload_namespace,
+            le
+          )
+
+      - record: federate:istio_request_duration_milliseconds_sum
+        expr: |
+          sum(istio_request_duration_milliseconds_sum{job="kubernetes-pods"})
+          by (
+            app,
+            reporter,
+            response_code,
+            response_flags,
+            source_workload,
+            source_workload_namespace,
+            destination_workload,
+            destination_workload_namespace,
+            le
+          )
+
+      - record: federate:istio_request_duration_milliseconds_count
+        expr: |
+          sum(istio_request_duration_milliseconds_count{job="kubernetes-pods"})
           by (
             app,
             reporter,
@@ -331,7 +362,7 @@ data:
 
       - record: federate:istio_request_bytes_bucket
         expr: |
-          sum(irate(istio_request_bytes_bucket{source_workload!=""}[1m]))
+          sum(irate(istio_request_bytes_bucket{job="kubernetes-pods"}[1m]))
           by (
             app,
             reporter,
@@ -344,13 +375,69 @@ data:
             le
           )
 
-    - name: istio.workload.istio_response_bytes_bucket
-      interval: 10s
-      rules:
+      - record: federate:istio_request_bytes_sum
+        expr: |
+          sum(istio_request_bytes_sum{job="kubernetes-pods"})
+          by (
+            app,
+            reporter,
+            response_code,
+            response_flags,
+            source_workload,
+            source_workload_namespace,
+            destination_workload,
+            destination_workload_namespace,
+            le
+          )
+
+      - record: federate:istio_request_bytes_count
+        expr: |
+          sum(istio_request_bytes_count{job="kubernetes-pods"})
+          by (
+            app,
+            reporter,
+            response_code,
+            response_flags,
+            source_workload,
+            source_workload_namespace,
+            destination_workload,
+            destination_workload_namespace,
+            le
+          )
 
       - record: federate:istio_response_bytes_bucket
         expr: |
-          sum(irate(istio_response_bytes_bucket{source_workload!=""}[1m]))
+          sum(irate(istio_response_bytes_bucket{job="kubernetes-pods"}[1m]))
+          by (
+            app,
+            reporter,
+            response_code,
+            response_flags,
+            source_workload,
+            source_workload_namespace,
+            destination_workload,
+            destination_workload_namespace,
+            le
+          )
+
+      - record: federate:istio_response_bytes_sum
+        expr: |
+          sum(istio_response_bytes_sum{job="kubernetes-pods"})
+          by (
+            app,
+            reporter,
+            response_code,
+            response_flags,
+            source_workload,
+            source_workload_namespace,
+            destination_workload,
+            destination_workload_namespace,
+            le
+          )
+
+      - record: federate:istio_response_bytes_count
+        expr: |
+          sum(istio_response_bytes_count{job="kubernetes-pods"})
           by (
             app,
             reporter,
@@ -368,7 +455,7 @@ data:
       rules:
       - record: federate:istio_requests_total
         expr: |
-          sum(irate(istio_requests_total{source_workload!=""}[1m]))
+          sum(istio_requests_total{job="kubernetes-pods"})
           by (
             app,
             reporter,
@@ -380,12 +467,12 @@ data:
             destination_workload_namespace
           )
 
-    - name: istio_tcp_sent_bytes_total
+    - name: istio.workload.tcp_sent_bytes_total
       interval: 10s
       rules:
       - record: federate:istio_tcp_sent_bytes_total
         expr: |
-          sum(irate(istio_tcp_sent_bytes_total{source_workload!=""}[1m]))
+          sum(istio_tcp_sent_bytes_total{job="kubernetes-pods"})
           by (
             app,
             reporter,
@@ -396,12 +483,12 @@ data:
             destination_workload_namespace
           )
 
-    - name: istio_tcp_received_bytes_total
+    - name: istio.workload.tcp_received_bytes_total
       interval: 10s
       rules:
       - record: federate:istio_tcp_received_bytes_total
         expr: |
-          sum(irate(istio_tcp_received_bytes_total{source_workload!=""}[1m]))
+          sum(istio_tcp_received_bytes_total{job="kubernetes-pods"})
           by (
             app,
             reporter,
@@ -412,12 +499,12 @@ data:
             destination_workload_namespace
           )
 
-    - name: istio_tcp_connections_opened_total
+    - name: istio.workload.tcp_connections_opened_total
       interval: 10s
       rules:
       - record: federate:istio_tcp_connections_opened_total
         expr: |
-          sum(irate(istio_tcp_connections_opened_total{source_workload!=""}[1m]))
+          sum(istio_tcp_connections_opened_total{job="kubernetes-pods"})
           by (
             app,
             reporter,
@@ -428,12 +515,12 @@ data:
             destination_workload_namespace
           )
 
-    - name: istio_tcp_connections_closed_total
+    - name: istio.workload.tcp_connections_closed_total
       interval: 10s
       rules:
       - record: federate:istio_tcp_connections_closed_total
         expr: |
-          sum(irate(istio_tcp_connections_closed_total{source_workload!=""}[1m]))
+          sum(istio_tcp_connections_closed_total{job="kubernetes-pods"})
           by (
             app,
             reporter,
@@ -443,6 +530,88 @@ data:
             destination_workload,
             destination_workload_namespace
           )
+
+    - name: istio.federate.request_duration.histogram
+      interval: 10s
+      rules:
+      - record: federate:istio_request_duration_milliseconds_bucket_p50
+        expr: |
+          histogram_quantile(0.5, federate:istio_request_duration_milliseconds_bucket)
+
+      - record: federate:istio_request_duration_milliseconds_bucket_p75
+        expr: |
+          histogram_quantile(0.75, federate:istio_request_duration_milliseconds_bucket)
+
+      - record: federate:istio_request_duration_milliseconds_bucket_p90
+        expr: |
+          histogram_quantile(0.90, federate:istio_request_duration_milliseconds_bucket)
+
+      - record: federate:istio_request_duration_milliseconds_bucket_p95
+        expr: |
+          histogram_quantile(0.95, federate:istio_request_duration_milliseconds_bucket)
+
+      - record: federate:istio_request_duration_milliseconds_bucket_p99
+        expr: |
+          histogram_quantile(0.99, federate:istio_request_duration_milliseconds_bucket)
+
+      - record: federate:istio_request_duration_milliseconds_bucket_p999
+        expr: |
+          histogram_quantile(0.999, federate:istio_request_duration_milliseconds_bucket)
+
+    - name: istio.federate.request_bytes.histogram
+      interval: 10s
+      rules:
+      - record: federate:istio_request_bytes_bucket_p50
+        expr: |
+          histogram_quantile(0.5, federate:istio_request_bytes_bucket)
+
+      - record: federate:istio_request_bytes_bucket_p75
+        expr: |
+          histogram_quantile(0.75, federate:istio_request_bytes_bucket)
+
+      - record: federate:istio_request_bytes_bucket_p90
+        expr: |
+          histogram_quantile(0.90, federate:istio_request_bytes_bucket)
+
+      - record: federate:istio_request_bytes_bucket_p95
+        expr: |
+          histogram_quantile(0.95, federate:istio_request_bytes_bucket)
+
+      - record: federate:istio_request_bytes_bucket_p99
+        expr: |
+          histogram_quantile(0.99, federate:istio_request_bytes_bucket)
+
+      - record: federate:istio_request_bytes_bucket_p999
+        expr: |
+          histogram_quantile(0.999, federate:istio_request_bytes_bucket)
+
+    - name: istio.federate.response_bytes.histogram
+      interval: 10s
+      rules:
+      - record: federate:istio_response_bytes_bucket_p50
+        expr: |
+          histogram_quantile(0.5, federate:istio_response_bytes_bucket)
+
+      - record: federate:istio_response_bytes_bucket_p75
+        expr: |
+          histogram_quantile(0.75, federate:istio_response_bytes_bucket)
+
+      - record: federate:istio_response_bytes_bucket_p90
+        expr: |
+          histogram_quantile(0.90, federate:istio_response_bytes_bucket)
+
+      - record: federate:istio_response_bytes_bucket_p95
+        expr: |
+          histogram_quantile(0.95, federate:istio_response_bytes_bucket)
+
+      - record: federate:istio_response_bytes_bucket_p99
+        expr: |
+          histogram_quantile(0.99, federate:istio_response_bytes_bucket)
+
+      - record: federate:istio_response_bytes_bucket_p999
+        expr: |
+          histogram_quantile(0.999, federate:istio_response_bytes_bucket)
+
 ---
 # Source: prometheus/templates/server/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
