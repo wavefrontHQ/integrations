@@ -293,7 +293,6 @@ data:
         'match[]':
           - '{__name__=~"federate:(.*)"}'
           - '{job=~"federate|kubernetes-pods"}'
-          #- '{job=~"kubernetes-pods"}'
 
       static_configs:
       - targets:
@@ -306,7 +305,6 @@ data:
 
   recording_rules.yml: |
     groups:
-      # These sum(irate()) functions are in separate groups, so they run in parallel
     - name: istio.workload.istio_request_duration_milliseconds_bucket
       interval: 10s
       rules:
