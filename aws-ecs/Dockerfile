@@ -1,0 +1,23 @@
+# Telegraf agent configured for Wavefront output intended to be used as it's own deployment to collect metrics
+
+FROM telegraf:1.17.2
+
+ENV ECS_CONTAINER_METADATA_ENDPOINT=""
+
+ENV WAVEFRONT_PROXY=wavefront-proxy
+ENV WAVEFRONT_PROXY_PORT=2878
+ENV PREFIX=telegraf.
+ENV SIMPLE_FIELDS=false
+ENV METRIC_SEPARATOR=.
+ENV CONVERT_PATHS=true
+ENV USE_REGEX=false
+ENV SOURCE_OVERRIDE=address
+ENV CONVERT_BOOL=true
+
+ENV INTERVAL=60s
+
+RUN mkdir -p /etc/telegraf/telegraf.d
+
+COPY telegraf.conf /etc/telegraf/telegraf.conf
+
+CMD ["telegraf", "--config", "/etc/telegraf/telegraf.conf", "--config-directory", "/etc/telegraf/telegraf.d"]

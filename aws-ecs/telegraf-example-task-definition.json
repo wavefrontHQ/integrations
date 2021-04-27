@@ -1,0 +1,68 @@
+{
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "inferenceAccelerators": [],
+    "containerDefinitions": [
+        {
+            "name": "aws-ecs-ec2-wavefront",
+            "image": "wavefronthq/aws-ecs-wavefront:latest",
+            "memory": "150",
+            "resourceRequirements": null,
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": "8080",
+                    "containerPort": "8080",
+                    "protocol": "tcp"
+                }
+            ],
+            "environment": [
+                {
+                    "name": "ECS_CONTAINER_METADATA_ENDPOINT",
+                    "value": ""
+                },
+                {
+                    "name": "WAVEFRONT_PROXY",
+                    "value": "YOUR_WAVEFRONT_PROXY_ADDRESS"
+                },
+                {
+                    "name": "WAVEFRONT_PROXY_PORT",
+                    "value": "2878"
+                },
+                {
+                    "name": "PREFIX",
+                    "value": "telegraf."
+                },
+                {
+                    "name": "METRIC_SEPARATOR",
+                    "value": "."
+                }
+            ],
+            "environmentFiles": [],
+            "secrets": null,
+            "mountPoints": null,
+            "volumesFrom": null,
+            "hostname": null,
+            "user": null,
+            "workingDirectory": null,
+            "extraHosts": null,
+            "logConfiguration": null,
+            "ulimits": null,
+            "dockerLabels": null,
+            "dependsOn": null,
+            "repositoryCredentials": {
+                "credentialsParameter": ""
+            }
+        }
+    ],
+    "volumes": [],
+    "networkMode": null,
+    "memory": null,
+    "cpu": null,
+    "placementConstraints": [],
+    "family": "ecs-wavefront",
+    "taskRoleArn": null,
+    "executionRoleArn": null,
+    "tags": []
+}
