@@ -1,6 +1,6 @@
 # Telegraf agent configured for Wavefront output intended to be used as it's own deployment to collect metrics
 
-FROM telegraf:1.17.2
+FROM telegraf:latest
 
 ENV ECS_CONTAINER_METADATA_ENDPOINT=""
 
@@ -14,7 +14,7 @@ ENV USE_REGEX=false
 ENV SOURCE_OVERRIDE=address
 ENV CONVERT_BOOL=true
 
-ENV INTERVAL=60s
+ENV INTERVAL=10s
 
 RUN mkdir -p /etc/telegraf/telegraf.d
 
