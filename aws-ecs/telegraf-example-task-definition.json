@@ -6,7 +6,7 @@
     "containerDefinitions": [
         {
             "name": "aws-ecs-ec2-wavefront",
-            "image": "wavefronthq/aws-ecs-wavefront:latest",
+            "image": "wavefronthq/telegraf-ecs:latest",
             "memory": "150",
             "resourceRequirements": null,
             "essential": true,

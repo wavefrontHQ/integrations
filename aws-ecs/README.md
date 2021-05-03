@@ -3,7 +3,7 @@
 
 Amazon ECS, input plugin uses the Amazon ECS metadata and stats v2 or [v3][task-metadata-endpoint-v3] API endpoints to gather stats on running containers in a Task.
 
-The wavefronthq/aws-ecs-wavefront container configured with telegraf must be run in the same Task as the workload it is inspecting to export stats to Wavefront (https://wavefront.com) output plugin.
+This task makes use of telegraf-ecs plugin and export stats to Wavefront (https://wavefront.com) output plugin.
 
 This is similar to (and reuses a few pieces of) the Docker input plugin, with some ECS specific modifications for AWS metadata and stats formats.
 
@@ -19,23 +19,19 @@ Configuration (enforce v2 metadata):
 
 The amazon-ecs-agent (though it is a container running on the host) is not present in the metadata/stats endpoints.
 
-Below are the additional properties that are required for Telegraf to export stats to your local Wavefront proxy.
-
 ### Prerequisites
 1. An AWS account
 2. A Wavefront proxy installed on AWS.
 
-The docker image comprises a telegraf.conf file which is used to configure the input plugin and the output plugin which are ECS and Wavefront respectively. 
+The docker image comprises a configuration file which configures the input plugin and the output plugin which are ECS and Wavefront respectively. 
 
 ` [[inputs.ecs]]`
 
 ` [[outputs.wavefront]]`
 
-### Additional Arguments
-
 #### Required: The *ip* of your Wavefront proxy
 
-The proxy should be installed on AWS network and accessible by the Docker host machine.
+The wavefront proxy should be installed and accessible by the Docker host machine.
 
 `{`
 
