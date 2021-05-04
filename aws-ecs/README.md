@@ -5,7 +5,7 @@ Amazon ECS, input plugin uses the Amazon ECS metadata and stats v2 or [v3][task-
 
 This task makes use of telegraf-ecs plugin and export stats to Wavefront (https://wavefront.com).
 
-This docker image enables the input plugin and the output plugin which are ECS and Wavefront respectively.
+The agent running on ECS instance enables the input plugin and the output plugin which are ECS and Wavefront respectively.
 
 ```
  [[inputs.ecs]]
@@ -45,7 +45,7 @@ The Wavefront proxy port is required to connect to Wavefront through the proxy.
 }
 ```
 
-#### Optional: The *ECS_TASK_METADATA_ENDPOINT* of your Wavefront proxy
+#### Optional: The *ECS_CONTAINER_METADATA_ENDPOINT* of your Wavefront proxy
 
 To enforce the task metadata v2 endpoint, the endpoint URL should be mentioned in the Task Definition as below.
 
