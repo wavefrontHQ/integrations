@@ -5,7 +5,7 @@ Amazon ECS, input plugin uses the Amazon ECS metadata and stats v2 or [v3][task-
 
 This task makes use of telegraf-ecs plugin and export stats to Wavefront (https://wavefront.com).
 
-The agent running on ECS instance enables the input plugin and the output plugin which are ECS and Wavefront respectively.
+The telegraf agent running on ECS instance enables the input plugin and the output plugin which are ECS and Wavefront respectively.
 
 ```
  [[inputs.ecs]]
