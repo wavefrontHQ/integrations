@@ -3,7 +3,7 @@
 
 Amazon ECS, input plugin uses the Amazon ECS metadata and stats v2 or [v3][task-metadata-endpoint-v3] API endpoints to gather stats on running containers in a Task.
 
-This task makes use of telegraf-ecs plugin and export stats to Wavefront (https://wavefront.com).
+This task makes use of telegraf-ecs plugin and export stats to [Wavefront](https://wavefront.com).
 
 The telegraf agent running on ECS instance enables the input plugin and the output plugin which are ECS and Wavefront respectively.
 
@@ -12,7 +12,7 @@ The telegraf agent running on ECS instance enables the input plugin and the outp
  
  [[outputs.wavefront]]
 ```
-For further reference, please refer to the documentation - https://github.com/influxdata/telegraf/blob/release-1.18/plugins/inputs/ecs/README.md
+For further reference, please refer to the [Telegraf ECS plugin](https://github.com/influxdata/telegraf/blob/release-1.18/plugins/inputs/ecs/README.md) documentation.
 
 ### Prerequisites
 1. An AWS account
