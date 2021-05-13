@@ -1,6 +1,6 @@
 # Telegraf agent configured for Wavefront output intended to be used as it's own deployment to collect metrics
 
-FROM wavefronthq/telegraf:latest
+FROM telegraf:1.17.2
 
 ENV ECS_CONTAINER_METADATA_ENDPOINT=""
 
