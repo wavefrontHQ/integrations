@@ -6,8 +6,8 @@
     "containerDefinitions": [
         {
             "name": "aws-ecs-ec2-wavefront",
-            "image": "wavefronthq/telegraf-ecs:latest",
-            "memory": "150",
+            "image": "projects.registry.vmware.com/tanzu_observability/telegraf-ecs:latest",
+            "memory": 512,
             "resourceRequirements": null,
             "essential": true,
             "portMappings": [],
@@ -39,7 +39,8 @@
             "dependsOn": null,
             "repositoryCredentials": {
                 "credentialsParameter": ""
-            }
+            },
+            "cpu": 1024
         }
     ],
     "volumes": [],
