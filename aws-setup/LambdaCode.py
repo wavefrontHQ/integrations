@@ -1,119 +1,141 @@
-import os
-import boto3
+"""System module."""
 import json
+import boto3
 from botocore.vendored import requests
 
+
 def handler(event, context):
+    """Creates a AWS setup."""
     message = event['Records'][0]['Sns']['Message']
     res = {}
     for sub in message.split('\n'):
-      if '=' in sub:
-          #removing single quote from our input
-          g1 = [x.strip("'") for x in sub.split('=',1)]
-          res[g1[0]]=g1[1];
+        if '=' in sub:
+            # removing single quote from our input
+            data = [x.strip("'") for x in sub.split('=', 1)]
+            res[data[0]] = data[1]
 
-    name=res['StackName'];
-    resource_status= res['ResourceStatus'];
-    namespace=res['Namespace'];
-    resourceType=res['ResourceType']
+    if (
+        res['ResourceStatus'] == 'CREATE_COMPLETE'
+        and res['ResourceType'] == 'AWS::IAM::Role'
+    ):
+        # getting stack information
+        client = boto3.client('cloudformation')
+        response = client.describe_stacks(StackName=res['StackName'])
+        # parse
+        parameter_array = response['Stacks'][0]['Parameters']
+        # iterate list for set of parameters
+        parameters = {}
+        for item in parameter_array:
+            parameters[item['ParameterKey']] = item['ParameterValue']
 
-    if resource_status == 'CREATE_COMPLETE' and resourceType=='AWS::IAM::Role':
-      print('getting stack information');
-      client = boto3.client('cloudformation');
-      response = client.describe_stacks(StackName = name);
-      # parse 
-      parameter_array=response['Stacks'][0]['Parameters'];
-      #iterate list for set of parameters
-      bucketName="";
-      rolearn="";
-      prefix="";
-      accountid="";
-      region="";
-      externalid="";
-      namespaces="";
-      secretname="";
-      hostname="";
-      for item in parameter_array:
-          if item['ParameterKey']=='BucketName':
-            bucketName=item['ParameterValue'];
-          elif item['ParameterKey']=='ExternalId':
-            externalid=item['ParameterValue'];
-          elif item['ParameterKey']=='Prefix':
-            prefix=item['ParameterValue'];                      
-          elif item['ParameterKey']=='IAMRoleName':
-            rolearn=item['ParameterValue'];                      
-          elif item['ParameterKey']=='WavefrontAWSAccountId':
-            accountid=item['ParameterValue'];                      
-          elif item['ParameterKey']=='Region':
-            region=item['ParameterValue'];                      
-          elif item['ParameterKey']=='Namespace':
-            namespaces=item['ParameterValue'];                     
-          elif item['ParameterKey']=='SecretName':
-            secretname=item['ParameterValue'];
-          elif item['ParameterKey']=='Hostname':
-            hostname=item['ParameterValue'];
+        bucket_name = parameters.get('BucketName')
+        rolearn = parameters.get('IAMRoleName')
+        prefix = parameters.get('Prefix')
+        region = parameters.get('Region')
+        externalid = parameters.get('ExternalId')
+        namespaces = parameters.get('Namespace')
+        secretname = parameters.get('SecretName')
+        hostname = parameters.get('Hostname')
 
-      roleARN= "arn:aws:iam::"+namespace+":role/"+rolearn;
-      print('Sending request to cluster');
-      #make http call to cluster
+        role_arn = "arn:aws:iam::" + res['Namespace'] + ":role/" + rolearn
+        # make http call to cluster
+        data = {"roleArn": role_arn, "externalId": externalid}
+        headers = {
+            "Authorization": gßet_secret(secretname),
+            "Content-Type": "application/json"
+                        }
+        # send req to create awsmetric+ and cloudwatch
+        url_all = hostname + "/api/external/all?name=AWS"
+        requests.post(url_all, headers=headers, data=json.dumps(data))
+        integration_id = get_id(hostname, headers, role_arn)
+        # if bucket non empty, create cloudtrail also
+        cloudtrail_data = get_request_data(region,
+                                        externalid,
+                                        role_arn, prefix, bucket_name)
+        if bucket_name != "":
+            api_url = hostname+"/api/v2/cloudintegration"
+            requests.post(api_url,
+                        headers=headers,
+                        data=json.dumps(cloudtrail_data))
 
-      data={"roleArn":roleARN,"externalId":externalid}
-      
-      headers = {
-      "Authorization": getSecret(secretname),
-      "Content-Type": "application/json"
-                  }
-      #send req to create awsmetric+ and cloudwatch
-      url_all= hostname+"/api/external/all?name=AWS";
-      resp_all= requests.post(url_all,headers=headers, data=json.dumps(data));
-      print("output for Cloudwatch and AWSmetric+ creation");
-      print(resp_all);
-      id=getId(hostname,headers,roleARN, secretname);
-      
+        # update based on namespaces
+        if namespaces != "":
+            # make call for put request in AWS cloudwatch
+            url_namespace = hostname + "/api/v2/cloudintegration/" + integration_id
+            namespace_data = {
+            "name": "cloudwatch integration",
+            "service": "CLOUDWATCH",
+            "cloudWatch":
+            {
+                "baseCredentials":
+                {"externalId": externalid,
+                "roleArn": role_arn}, "namespaces": []}}
+            exclude_value = ['Backup', 'Glue', 'WAF']
+            for val in namespaces.split(","):
+                if val in exclude_value:
+                    namespace_data['cloudWatch']['namespaces'].append(val)
+                else:
+                    value = 'AWS/'+val
+                    namespace_data['cloudWatch']['namespaces'].append(value)
+            requests.put(url_namespace,
+                        headers=headers,
+                        data=json.dumps(namespace_data))
 
-      #if bucket non empty, create cloudtrail also
-      if bucketName!="" and prefix=="":
-          cloudtrail_data= {"name": "cloudtrail integration","service": "cloudTrail","cloudTrail": {"prefix":"","region": "us-west-2","baseCredentials": {"externalId": externalid,"roleArn": roleARN},"bucketName":bucketName}}
-      elif bucketName!="" and prefix!="":
-          cloudtrail_data= {"name": "cloudtrail integration","service": "cloudTrail","cloudTrail": {"prefix":prefix,"region": "us-west-2","baseCredentials": {"externalId": externalid,"roleArn": roleARN},"bucketName":bucketName}}
 
-      if bucketName!="":
-        API_URL=hostname+"/api/v2/cloudintegration";
-        r = requests.post(API_URL, headers=headers, data=json.dumps(cloudtrail_data));
-        print(r.content);
-      
-      #UPDATE based on namespaces
-      if namespaces!="":
-        #make call for put request in AWS cloudwatch
-        print("calling namespace update");
-        url_namespace= hostname+"/api/v2/cloudintegration/"+id;
-        cloudwatchNamespaceData= {"name": "cloudwatch integration","service": "CLOUDWATCH","cloudWatch": {"baseCredentials": {"externalId": externalid ,"roleArn": roleARN},"namespaces": []}}
-        splitstring=namespaces.split(",");
-        for val in splitstring:
-          if val=='Backup' or val== 'Glue' or val=='WAF':
-            cloudwatchNamespaceData['cloudWatch']['namespaces'].append(val)
-          else:
-            value='AWS/'+val;
-            cloudwatchNamespaceData['cloudWatch']['namespaces'].append(value);
-        responseNamespace= requests.put(url_namespace,headers=headers,data=json.dumps(cloudwatchNamespaceData));
+def get_id(hostname, headers, role_arn):
+    """Returns the cloudintegration Id."""
+    url_to_get_id = hostname + "/api/v2/cloudintegration"
+    response = requests.get(url_to_get_id, headers=headers)
+    json_response = response.json()
+    json_array = json_response['response']['items']
+    integration_id = ""
+    for jsons in json_array:
+        if jsons['service'].lower() == 'cloudwatch':
+            cred = jsons['cloudWatch']['baseCredentials']
+            if cred['roleArn'] == role_arn:
+                integration_id = jsons['id']
+                break
+    return integration_id
 
-def getId(hostname, headers,roleArn, secretname):
-    url_to_get_id= hostname+ "/api/v2/cloudintegration";
-    response= requests.get(url_to_get_id,headers=headers);
-    jsonResponse = response.json();
-    jsonArray=jsonResponse['response']['items']
-    id="";
-    for jsons in jsonArray:
-        if jsons['service'].lower()=='cloudwatch':
-            cred=jsons['cloudWatch']['baseCredentials'];
-            if cred['roleArn']==roleArn:
-                id=jsons['id'];
-                break;
-    return id;
 
-def getSecret(secretname):
-  secrets = boto3.client("secretsmanager");
-  apiToken = secrets.get_secret_value(SecretId=secretname);
-  print("getting secret");
-  tokenJson=json.loads(apiToken['SecretString']);
-  return tokenJson['token'];
+def get_request_data(region, externalid, role_arn, prefix, bucket_name):
+    """Returns the cloudtrail request data."""
+    cloudtrail_data = ""
+    if bucket_name != "" and prefix == "":
+        cloudtrail_data = {
+          "name": "cloudtrail integration",
+          "service": "cloudTrail",
+          "cloudTrail":
+          {
+            "prefix": "",
+            "region": region,
+            "baseCredentials":
+            {"externalId": externalid,
+             "roleArn": role_arn},
+            "bucketName": bucket_name
+          }}
+    elif bucket_name != "" and prefix != "":
+        cloudtrail_data = {
+          "name": "cloudtrail integration",
+          "service": "cloudTrail",
+          "cloudTrail":
+          {
+            "prefix": prefix,
+            "region": region,
+            "baseCredentials":
+            {"externalId": externalid,
+             "roleArn": role_arn},
+            "bucketName": bucket_name
+          }}
+    return cloudtrail_data
+
+
+def get_secret(secretname):
+    """Get the token for the Wavefront API calls.
+    Args: secretname (String)
+    Returns: String: token_json['token']"""
+    secrets = boto3.client("secretsmanager")
+    api_token = secrets.get_secret_value(SecretId=secretname)
+    print("getting secret")
+    token_json = json.loads(api_token['SecretString'])
+    return token_json['token']
