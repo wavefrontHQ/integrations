@@ -7,12 +7,10 @@ spec:
   selector:
     matchLabels:
       app: envoy
-      wavefront: envoy-deploy
   template:
     metadata:
       labels:
         app: envoy
-        wavefront: envoy-deploy # mandatory label
       # mandatory annotations to scrape envoy metrics
       annotations:
         prometheus.io/scrape: 'true'

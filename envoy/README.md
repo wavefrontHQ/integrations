@@ -16,14 +16,13 @@
 
 If you do not have the Wavefront Collector for Kubernetes installed on your Kubernetes cluster, follow these instructions to add it to your cluster by using [Helm](https://docs.wavefront.com/kubernetes.html#kubernetes-quick-install-using-helm) or performing [Manual Installation](https://docs.wavefront.com/kubernetes.html#kubernetes-manual-install).
 
-**NOTE**: The following annotations and labels are mandatory to scrape envoy metrics by Wavefront Collector
+**NOTE**: The following annotations are mandatory to scrape envoy metrics by Wavefront Collector
 `envoy-deployment.yaml`:
 ```
   template:
     metadata:
       labels:
         app: envoy
-        wavefront: envoy-deploy # mandatory label
       # mandatory annotations to scrape envoy metrics
       annotations:
         prometheus.io/scrape: 'true'
