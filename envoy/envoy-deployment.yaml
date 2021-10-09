@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: envoy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: envoy
+  template:
+    metadata:
+      labels:
+        app: envoy
+      # mandatory annotations to scrape envoy metrics
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9901'
+        prometheus.io/path: '/stats/prometheus'
+    spec:
+      containers:
+      - name: envoy
+        image: envoyproxy/envoy:v1.20-latest
+        ports:
+        - name: http
+          containerPort: 10000
+        - name: prometheus
+          containerPort: 9901
+        resources:
+          requests:
+            cpu: 10m
+            ephemeral-storage: 256Mi
+            memory: 256Mi
+        volumeMounts:
+        - name: config
+          mountPath: /etc/envoy
+      volumes:
+      - name: config
+        configMap:
+          name: envoy-configmap
