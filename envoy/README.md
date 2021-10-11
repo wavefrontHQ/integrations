@@ -37,12 +37,12 @@ If the Wavefront Collector and Proxy are already configured, you should be able 
 
 If you do not have the Wavefront Collector for Kubernetes installed on your Kubernetes cluster, follow these instructions to add it to your cluster by using [Helm](https://docs.wavefront.com/kubernetes.html#kubernetes-quick-install-using-helm) or performing [Manual Installation](https://docs.wavefront.com/kubernetes.html#kubernetes-manual-install).
 
-**NOTE**: Make sure the auto-discovery and annotation based discovery is enabled in Wavefront Collector configuration.
+**NOTE**: The auto-discovery and annotation based discovery are enabled by default in Wavefront Collector configuration.
 
 ```
 enableDiscovery: true
 ...
 ...
 discovery:
-  disable_annotation_discovery: true
+  disable_annotation_discovery: false
 ```
