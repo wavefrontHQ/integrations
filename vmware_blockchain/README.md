@@ -1,6 +1,7 @@
 ## VMware Blockchain Setup
 
-rm that enables multi-party workflows. It uses advanced techniques such as byzantine fault-tolerant state machine replication, authenticated data structures, and integration with smart contract execution engines to enable customers to build and run decentralized multi-party applications.
+VMware Blockchain is an enterprise-grade blockchain platform that enables multi-party workflows. It uses advanced techniques such as byzantine fault-tolerant state machine replication, authenticated data structures, and integration with smart contract execution engines to enable customers to build and run decentralized multi-party applications.
+
 ### Step 1. Install the Wavefront Proxy
 
 If you do not have a [Wavefront proxy](https://docs.wavefront.com/proxies.html) installed on your network, [install a proxy](/proxies/add).
@@ -15,7 +16,6 @@ Install Jinja2 packgae of version 3.0.3
   ```
   sudo pip3 install Jinja2
   ```
-
 
 ### Step 3. Download the VMware Blockchain Scripts
 
