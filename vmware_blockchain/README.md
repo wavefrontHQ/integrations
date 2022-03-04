@@ -1,7 +1,6 @@
 ## VMware Blockchain Setup
 
-[[permission type="modify-agents"]]
-
+rm that enables multi-party workflows. It uses advanced techniques such as byzantine fault-tolerant state machine replication, authenticated data structures, and integration with smart contract execution engines to enable customers to build and run decentralized multi-party applications.
 ### Step 1. Install the Wavefront Proxy
 
 If you do not have a [Wavefront proxy](https://docs.wavefront.com/proxies.html) installed on your network, [install a proxy](/proxies/add).
