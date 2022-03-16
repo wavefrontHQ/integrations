@@ -4,7 +4,7 @@ VMware Blockchain is an enterprise-grade blockchain platform that enables multi-
 
 ### Step 1. Install the Wavefront Proxy
 
-If you do not have a [Wavefront proxy](https://docs.wavefront.com/proxies.html) installed on your network, install a proxy. Navigate to Browse > Proxies, click Add new proxy, and follow the instructions.
+If you do not have a [Wavefront proxy](https://docs.wavefront.com/proxies.html) installed on your network, install a proxy. Navigate to **Browse** > **Proxies**, click **Add new proxy**, and follow the instructions.
 
 ### Step 2. Install PyYAML and Jinja2
 
