@@ -1,0 +1,10 @@
+'2878':
+  - rule: allowed-metrics
+    action: allow
+    if:
+      any:
+      {% for metric in metrics %}
+        - equals:
+            scope: metricName
+            value: "{{ metric }}"
+      {% endfor %}
