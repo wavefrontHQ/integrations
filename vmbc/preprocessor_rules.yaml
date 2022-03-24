@@ -1,0 +1,11 @@
+'2878':
+  - rule: allowed-metrics
+    action: allow
+    if:
+      any:
+        - equals:
+            scope: metricName
+            value: "vmware.blockchain.agent.concord.health.gauge"
+        - equals:
+            scope: metricName
+            value: "vmware.blockchain.agent.daml.health.gauge"
