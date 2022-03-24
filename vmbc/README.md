@@ -23,8 +23,8 @@ Download the [VMware Blockchain](https://github.com/wavefrontHQ/integrations/tre
 
 ### Step 4. Run the Blockchain Script
 
-1. Use the [VMware Blockchain script](https://github.com/wavefrontHQ/integrations/tree/master/vmbc/createRules.py) to create the metrics filter required by the Wavefront Proxy and allow only few metrics to be sent to Wavefront.
-2. Update the [metrics_list.txt](https://github.com/wavefrontHQ/integrations/tree/master/vmbc/metrics_list.txt) file with the metric names. Add one metric per line.
+1. Use the [VMware Blockchain script](https://raw.githubusercontent.com/wavefrontHQ/integrations/master/vmbc/createRules.py) to create the metrics filter required by the Wavefront Proxy and allow only few metrics to be sent to Wavefront.
+2. Update the [metrics_list.txt](https://raw.githubusercontent.com/wavefrontHQ/integrations/master/vmbc/metrics_list.txt) file with the metric names. Add one metric per line.
 3. Run the script: `./createRules.py`. The script generates the `preprocessor_rules.yaml` file.
 4. Place the `preprocessor_rules.yaml` file under the `/config/wavefront-proxy/` in the Wavefront Proxy and make sure that the `preprocessor_rules.yaml` file has the permission 644.
 5. In the `wavefront.conf`, set the parameter `preprocessorConfigFile` to `/config/wavefront-proxy/preprocessor_rules.yaml`.
