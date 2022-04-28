@@ -1,9 +1,12 @@
+#NOTE: This file is for reference purpose only.
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fluentd-config
   namespace: default
 data:
+  # conf files under data section will override exisiting conf files.
+  # Update the conf incase any default configuration is changed.
   prometheus.conf: |-
     # Prometheus metric exposed on 0.0.0.0:24231/metrics
     <source>
