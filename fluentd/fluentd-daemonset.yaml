@@ -1,0 +1,115 @@
+#NOTE: This file is for reference purpose only.
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd
+  namespace: default
+  labels:
+    k8s-app: fluentd-logging
+    version: v1
+spec:
+  selector:
+    matchLabels:
+      k8s-app: fluentd-logging
+      version: v1
+  template:
+    metadata:
+      labels:
+        k8s-app: fluentd-logging
+        version: v1
+
+      # Expose Fluentd metrics on http://localhost:24231/metrics
+      # Make sure the port is not in-use. Else use different port
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/scheme: 'http'
+        prometheus.io/port: '24231'
+        prometheus.io/path: '/metrics'
+    spec:
+      serviceAccount: fluentd
+      serviceAccountName: fluentd
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: fluentd
+        image: fluent/fluentd-kubernetes-daemonset:v1-debian-elasticsearch
+        env:
+          - name:  FLUENT_ELASTICSEARCH_HOST
+            value: "elasticsearch-logging"
+          - name:  FLUENT_ELASTICSEARCH_PORT
+            value: "9200"
+          - name: FLUENT_ELASTICSEARCH_SCHEME
+            value: "http"
+          # Option to configure elasticsearch plugin with self signed certs
+          # ================================================================
+          - name: FLUENT_ELASTICSEARCH_SSL_VERIFY
+            value: "true"
+          # Option to configure elasticsearch plugin with tls
+          # ================================================================
+          - name: FLUENT_ELASTICSEARCH_SSL_VERSION
+            value: "TLSv1_2"
+          # X-Pack Authentication
+          # =====================
+          - name: FLUENT_ELASTICSEARCH_USER
+            value: "elastic"
+          - name: FLUENT_ELASTICSEARCH_PASSWORD
+            value: "changeme"
+          # Enable if Systemd setup is there in container
+          - name: FLUENTD_SYSTEMD_CONF
+            value: 'disable'
+        resources:
+          limits:
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi
+        # Mount conf only if any change is required in corresponding conf
+        # Update same conf in ConfigMap as well
+        volumeMounts:
+        - name: fluentd-config
+          mountPath: /fluentd/etc/kubernetes.conf
+          subPath: kubernetes.conf
+        
+        - name: fluentd-config
+          mountPath: /fluentd/etc/prometheus.conf
+          subPath: prometheus.conf
+
+        - name: fluentd-config
+          mountPath: /fluentd/etc/fluent.conf
+          subPath: fluent.conf
+
+        - name: fluentd-config
+          mountPath: /fluentd/etc/tail_container_parse.conf
+          subPath: tail_container_parse.conf
+
+        - name: fluentd-config
+          mountPath: /fluentd/etc/systemd.conf
+          subPath: systemd.conf
+
+        # When actual pod logs in /var/lib/docker/containers, the following lines should be used.
+        #- name: dockercontainerlogdirectory
+        #  mountPath: /var/lib/docker/containers
+        #  readOnly: true
+        
+        # When actual pod logs in /var/log/pods, the following lines should be used.
+        - name: dockercontainerlogdirectory
+          mountPath: /var/log/pods
+          readOnly: true
+
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: fluentd-config
+        configMap:
+          name: fluentd-config
+
+      # When actual pod logs in /var/lib/docker/containers, the following lines should be used.
+      #- name: dockercontainerlogdirectory
+      #  hostPath:
+      #     path: /var/lib/docker/containers
+
+      # When actual pod logs in /var/log/pods, the following lines should be used.
+      - name: dockercontainerlogdirectory
+        hostPath:
+          path: /var/log/pods
