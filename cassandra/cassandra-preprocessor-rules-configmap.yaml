@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wavefront-proxy-preprocessor
+  namespace: default
+data:
+  rules.yaml: |
+     '2878':
+       - rule    : cassandra-metrics-allow
+         action  : allow
+         scope   : metricName
+         match   : "cassandra.(mcac|stargate|jvm).*"
