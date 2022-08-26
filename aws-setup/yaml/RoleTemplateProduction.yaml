@@ -1,0 +1,80 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: IAM role for Wavefront AWS Integration
+Parameters:
+  ExternalId:
+    Description: >-
+      External ID for the Wavefront role 
+    Type: String
+  IAMRoleName:
+    Description: Customize the name of IAM role for Wavefront AWS integration
+    Type: String  
+    Default: WavefrontIntegrationRole
+  WavefrontAWSAccountId:
+    Description: >-
+      Wavefront AWS account ID allowed to assume the integration IAM role. DO NOT CHANGE!
+    Type: String
+    Default: "301213811993"
+  WavefrontPolicy:
+    Description: >-
+      policy requirement
+    Type: String
+    Default: "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  BucketName:
+    Description: bucket name for Wavefront AWS integration
+    Type: String  
+    Default: ""
+  Prefix:
+    Description: bucket prefix for Wavefront AWS integration
+    Type: String 
+    Default: "" 
+  Region:
+    Description: bucket region for Wavefront AWS integration
+    Type: String  
+    Default: "us-west-2"
+  Namespace:
+    Description: comma separated services for Wavefront AWS integration
+    Type: String  
+    Default: ""
+  SecretName:
+    Description: name of the secret manager for storing API token for Wavefront AWS integration
+    Type: String  
+    Default: "wftoken"
+  Hostname:
+    Description: hostname for Wavefront AWS integration
+    Type: String  
+    Default: "https://nimba.wavefront.com"
+Resources:
+  WavefrontIntegrationRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Sub
+                - 'arn:aws:iam::${WavefrontAWSAccountId}:root'
+                - { WavefrontAWSAccountId: !Ref WavefrontAWSAccountId}
+            Action:
+              - 'sts:AssumeRole'
+            Condition:
+              StringEquals:
+                'sts:ExternalId': !Ref ExternalId
+      Path: /
+      RoleName: !Ref IAMRoleName
+      ManagedPolicyArns:
+        - !Ref WavefrontPolicy
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+    - Label:
+        default: Required
+      Parameters:
+        - ExternalId
+        - IAMRoleName
+Outputs:
+  IAMRoleName:
+    Description: AWS IAM Role name to be used with the Wavefront AWS Integration 
+    Value: !Ref WavefrontIntegrationRole
+    Export:
+      Name: "Wavefront-IAMRoleName"
