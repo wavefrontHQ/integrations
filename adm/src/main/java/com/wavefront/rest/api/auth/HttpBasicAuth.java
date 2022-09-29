@@ -15,10 +15,10 @@ package com.wavefront.rest.api.auth;
 
 import com.wavefront.rest.api.Pair;
 
-import com.squareup.okhttp.Credentials;
-
 import java.util.Map;
 import java.util.List;
+
+import okhttp3.Credentials;
 
 public class HttpBasicAuth implements Authentication {
   private String username;
