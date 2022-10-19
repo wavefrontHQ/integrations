@@ -16,7 +16,7 @@ spec:
         k8s-app: adm-service
     spec:
       containers:
-      - image: wavefronthq/adm-service:0.9.0
+      - image: projects.registry.vmware.com/tanzu_observability/adm-service:0.9.1
         imagePullPolicy: IfNotPresent
         name: adm-service
         ports:
