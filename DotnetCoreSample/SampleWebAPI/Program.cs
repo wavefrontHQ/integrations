@@ -1,3 +1,4 @@
+// Weather Forecast Sample Application
 using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
