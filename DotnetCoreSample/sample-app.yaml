@@ -1,0 +1,43 @@
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dotnet-core-sampleapp
+spec:
+  selector:
+    matchLabels:
+      app: dotnet-core-sampleapp
+  template:
+    metadata:
+      labels:
+        app: dotnet-core-sampleapp
+    spec:
+      containers:
+      - name: dotnet-core-sampleapp
+        #image: gangadharaswamy/dotnet-core-app:v1
+        #image: gangadharaswamy/dotnet-win:latest
+        image: gangadharaswamy/dotnet-core-testapp:v1
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+      # Based on the above base image OS, set the nodeSelector OS (windows/linux).
+      nodeSelector:
+        kubernetes.io/os: windows
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dotnet-core-sampleapp-svc
+  labels:
+    app: dotnet-core-sampleapp
+spec:
+  type: LoadBalancer
+  ports:
+  - name: dotnet-core-sampleapp
+    port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: dotnet-core-sampleapp
+```
