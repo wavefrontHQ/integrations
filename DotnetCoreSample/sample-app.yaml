@@ -13,8 +13,9 @@ spec:
     spec:
       containers:
       - name: dotnet-core-sampleapp
-        #image: gangadharaswamy/dotnet-core-app:v1
-        #image: gangadharaswamy/dotnet-win:latest
+        #Windows image: gangadharaswamy/dotnet-core-app:v1
+        #Linux image: gangadharaswamy/dotnet-win:latest
+        #Linux image:
         image: gangadharaswamy/dotnet-core-testapp:v1
         imagePullPolicy: Always
         ports:
