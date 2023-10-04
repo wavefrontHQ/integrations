@@ -25,6 +25,15 @@ define command {
     command_line  /opt/nagios/etc/wf/nagios-metrics-wf.py [PATH_PERFDATA]/host-perfdata \
                                                            --wf_proxy_addr [WAVEFRONT_PROXY_ADR] \
                                                            --wf_proxy_port [WAVEFRONT_PROXY_PORT]
+    command_line /usr/local/nagios/libexec/nagios-metrics-wf.py [PATH_PERFDATA]/host-perfdata \
+                                                           --wf_server [WAVEFRONT_URL] \
+                                                           --csp_api_token [CSP_API_TOKEN] \
+                                                           --csp_base_url [CSP_BASE_URL]
+    command_line /usr/local/nagios/libexec/nagios-metrics-wf.py [PATH_PERFDATA]/host-perfdata \
+                                                           --wf_server [WAVEFRONT_URL] \
+                                                           --csp_app_id [CSP_APP_ID] \
+                                                           --csp_app_secret [CSP_APP_SECRET] \
+                                                           --csp_base_url [CSP_BASE_URL]                                                           
 }
 
 define command {
@@ -33,6 +42,17 @@ define command {
                                                           --service \
                                                           --wf_server [WAVEFRONT_URL] \
                                                           --wf_token [WAVEFRONT_TOKEN]
+    command_line /usr/local/nagios/etc/wf/nagios-metrics-wf.py [PATH_PERFDATA]/service-perfdata \
+                                                          --service \
+                                                          --wf_server [WAVEFRONT_URL] \
+                                                          --csp_api_token [CSP_API_TOKEN] \
+                                                          --csp_base_url [CSP_BASE_URL]
+    command_line /usr/local/nagios/etc/wf/nagios-metrics-wf.py [PATH_PERFDATA]/service-perfdata \
+                                                          --service \
+                                                          --wf_server [WAVEFRONT_URL] \
+                                                          --csp_app_id [CSP_APP_ID] \
+                                                          --csp_app_secret [CSP_APP_SECRET] \
+                                                          --csp_base_url [CSP_BASE_URL]
 }
 ```
 
@@ -67,23 +87,53 @@ define contactgroup{
 
 define command{
   command_name nagios-to-wavefront-service
-  command_line /opt/nagios/etc/wf/nagios-events-wf.py -S \
+  command_line /usr/local/nagios/etc/wf/nagios-events-wf.py -S --type '$NOTIFICATIONTYPE$' \
+                                                      --host '$HOSTNAME$' \
+                                                      --service '$SERVICEDISPLAYNAME$' \
+                                                      --time '$TIMET$' \
+                                                      --msg '$SERVICEOUTPUT$\n$NOTIFICATIONAUTHOR$\n$NOTIFICATIONCOMMENT$' \
+                                                      --server [WAVEFRONT_URL] \
+                                                      --token [APIToken]                                                      
+  command_line /usr/local/nagios/libexec/nagios-events-wf.py -S \
                                                       --type '$NOTIFICATIONTYPE$' \
                                                       --host '$HOSTNAME$' \
                                                       --service '$SERVICEDISPLAYNAME$' \
                                                       --time '$TIMET$' \
                                                       --msg '$SERVICEOUTPUT$\n$NOTIFICATIONAUTHOR$\n$NOTIFICATIONCOMMENT$' \
-                                                      [WAVEFRONT_URL] \
-                                                      [WAVEFRONT_TOKEN]
+                                                      --server [WAVEFRONT_URL] \
+                                                      --csp_api_token [CSP_API_TOKEN] \
+                                                      --csp_base_url [CSP_BASE_URL]
+  command_line /usr/local/nagios/libexec/nagios-events-wf.py -S \
+                                                      --type '$NOTIFICATIONTYPE$' \
+                                                      --host '$HOSTNAME$' \
+                                                      --service '$SERVICEDISPLAYNAME$' \
+                                                      --time '$TIMET$' \
+                                                      --msg '$SERVICEOUTPUT$\n$NOTIFICATIONAUTHOR$\n$NOTIFICATIONCOMMENT$' \
+                                                      --server [WAVEFRONT_URL] \
+                                                      --csp_app_id [CSP_APP_ID] \
+                                                      --csp_app_secret [CSP_APP_SECRET] \
+                                                      --csp_base_url [CSP_BASE_URL]
 }
 
 define command{
   command_name nagios-to-wavefront-host
-  command_line /opt/nagios/etc/wf/nagios-events-wf.py --type '$NOTIFICATIONTYPE$' \
-                                                      --host '$HOSTNAME$' \
-                                                      --time '$TIMET$' \
+  command_line /usr/local/nagios/etc/wf/nagios-events-wf.py --type '$NOTIFICATIONTYPE$' \
+                                                      --host '$HOSTNAME$' --time '$TIMET$' \
                                                       --msg '$HOSTOUTPUT$' \
-                                                      [WAVEFRONT_URL] \
-                                                      [WAVEFRONT_TOKEN]
+                                                      --server [WAVEFRONT_URL] \
+                                                      --token [WAVEFRONT_TOKEN]
+  command_line /usr/local/nagios/libexec/nagios-events-wf.py --type '$NOTIFICATIONTYPE$' \
+                                                      --host '$HOSTNAME$' --time '$TIMET$' \
+                                                      --msg '$HOSTOUTPUT$' \
+                                                      --server [WAVEFRONT_URL] \
+                                                      --csp_api_token [CSP_API_TOKEN] \
+                                                      --csp_base_url [CSP_BASE_URL]
+  command_line /usr/local/nagios/libexec/nagios-events-wf.py --type '$NOTIFICATIONTYPE$' \
+                                                      --host '$HOSTNAME$' --time '$TIMET$' \
+                                                      --msg '$SERVICEOUTPUT$\n$NOTIFICATIONAUTHOR$\n$NOTIFICATIONCOMMENT$' \
+                                                      --server [WAVEFRONT_URL] \
+                                                      --csp_app_id [CSP_APP_ID] \
+                                                      --csp_app_secret [CSP_APP_SECRET] \
+                                                      --csp_base_url [CSP_BASE_URL]
 }
 ```
