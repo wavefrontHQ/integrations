@@ -56,7 +56,7 @@ def process(line):
         try:
             logging.info(">> metricName: " + metricName)
             metricName = convert_key_to_wf_metric(metricName)
-            client.send_metric(metricName, re.sub(r"[^0-9.]", "", value.lower()), info["TIMET"], info["HOSTNAME"], tags)
+            wavefront_client.send_metric(metricName, re.sub(r"[^0-9.]", "", value.lower()), info["TIMET"], info["HOSTNAME"], tags)
         except ValueError as e:
             print(e)
 
