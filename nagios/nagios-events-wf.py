@@ -22,8 +22,8 @@ def main():
     wavefront_client.send_event(name, startTime, endTime, args.host, ["env:", "test-event"], annotations)
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Sends Nagios perfdata to wavefront.')
     parser.add_argument('--server', dest="server", help='Wavefront Server URL.')
     parser.add_argument('--token', dest="token", help='Wavefront token.')
     parser.add_argument('-S', action='store_true', help='Service notification.')
@@ -42,37 +42,48 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
     logging.info(args)
-    wavefront_server = None
-    
-    if args.addr is not None and args.port is not None:
-        wavefront_server = "proxy://{}:{}".format(args.addr, args.port)
-    elif args.server is not None and args.token is not None:
-        wavefront_server = args.server[:8] + args.token + '@' + args.server[8:]
-    else:
-        wavefront_server = args.server
-
-    csp_base_url, csp_token = None, None
-    csp_app_id, csp_app_secret, csp_org_id = None, None, None
-    args_length = sum(1 for arg_value in vars(args).values() if arg_value is not None)
-
-    if args.csp_api_token is not None:
-        csp_base_url = args.csp_base_url
-        csp_token = args.csp_api_token
-    elif args.csp_app_id is not None:
-        csp_base_url = args.csp_base_url
-        csp_app_id = args.csp_app_id
-        csp_app_secret = args.csp_app_secret
-        if args_length > 5:
-            csp_org_id = args.csp_org_id
 
     client_factory = WavefrontClientFactory()
-    client_factory.add_client(url=wavefront_server,
-                              csp_base_url=csp_base_url,
-                              csp_api_token=csp_token,
-                              csp_app_id=csp_app_id,
-                              csp_app_secret=csp_app_secret,
-                              csp_org_id=csp_org_id)
+    if args.addr is not None and args.port is not None:
+        proxy_address = "proxy://{}:{}".format(args.addr, args.port)
+        client_factory.add_client(
+            url=proxy_address,
+            max_queue_size=50000,
+            batch_size=10000,
+            flush_interval_seconds=5)
+    elif args.server is not None and args.token is not None:
+        wavefront_server = args.server[:8] + args.token + '@' + args.server[8:]
+        client_factory.add_client(
+            url=wavefront_server,
+            max_queue_size=50000,
+            batch_size=10000,
+            flush_interval_seconds=5)
+    elif args.csp_base_url is not None and args.csp_api_token is not None and args.server is not None:
+        client_factory.add_client(
+            url=args.server,
+            csp_base_url=args.csp_base_url,
+            csp_api_token=args.csp_api_token,
+            csp_org_id=args.csp_org_id,
+            max_queue_size=50000,
+            batch_size=10000,
+            flush_interval_seconds=5)
+    elif args.server is not None and args.csp_base_url is not None and args.csp_app_id is not None and \
+            args.csp_app_secret is not None:
+        client_factory.add_client(
+            url=args.server,
+            csp_base_url=args.csp_base_url,
+            csp_app_id=args.csp_app_id,
+            csp_app_secret=args.csp_app_secret,
+            csp_org_id=args.csp_org_id,
+            max_queue_size=50000,
+            batch_size=10000,
+            flush_interval_seconds=5)
+    else:
+        parser.print_help()
+        exit(-1)
+
     wavefront_client = client_factory.get_client()
+    print(wavefront_client)
 
     try:
         main()
