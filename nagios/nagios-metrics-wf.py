@@ -137,7 +137,7 @@ if __name__ == "__main__":
     elif args.server is not None and args.token is not None:
         wavefront_server = args.server[:8] + args.token + '@' + args.server[8:]
         client_factory.add_client(
-            url=args.server,
+            url=wavefront_server,
             max_queue_size=50000,
             batch_size=10000,
             flush_interval_seconds=5)
