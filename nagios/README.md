@@ -65,7 +65,7 @@ define command {
 ```
 define command {
     command_name  wavefront-perf-host
-    command_line  /usr/local/nagios/libexec/nagios-metrics-wf.py [PATH_PERFDATA]//host-perfdata \
+    command_line  /usr/local/nagios/libexec/nagios-metrics-wf.py [PATH_PERFDATA]/host-perfdata \
                                                            --wf_proxy_addr [WAVEFRONT_PROXY_ADR] \
                                                            --wf_proxy_port [WAVEFRONT_PROXY_PORT]
  }
