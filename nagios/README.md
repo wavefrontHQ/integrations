@@ -43,7 +43,7 @@ define command {
 ```
 define command {
     command_name  wavefront-perf-host
-    command_line /usr/local/nagios/libexec/nagios-metrics-wf.py /usr/local/nagios/var/host-perfdata \
+    command_line /usr/local/nagios/libexec/nagios-metrics-wf.py [PATH_PERFDATA]//host-perfdata \
                                                            --wf_server [WAVEFRONT_URL] \
                                                            --csp_app_id [CSP_APP_ID] \
                                                            --csp_app_secret [CSP_APP_SECRET] \
@@ -52,7 +52,7 @@ define command {
 
 define command {
     command_name  wavefront-perf-service
-    command_line /usr/local/nagios/libexec/nagios-metrics-wf.py /usr/local/nagios/var/service-perfdata \
+    command_line /usr/local/nagios/libexec/nagios-metrics-wf.py [PATH_PERFDATA]/service-perfdata \
                                                            --service \
                                                            --wf_server [WAVEFRONT_URL] \
                                                            --csp_app_id [CSP_APP_ID] \
@@ -65,7 +65,7 @@ define command {
 ```
 define command {
     command_name  wavefront-perf-host
-    command_line  /usr/local/nagios/libexec/nagios-metrics-wf.py /usr/local/nagios/var/host-perfdata \
+    command_line  /usr/local/nagios/libexec/nagios-metrics-wf.py [PATH_PERFDATA]//host-perfdata \
                                                            --wf_proxy_addr [WAVEFRONT_PROXY_ADR] \
                                                            --wf_proxy_port [WAVEFRONT_PROXY_PORT]
  }
@@ -73,7 +73,7 @@ define command {
 
 define command {
     command_name  wavefront-perf-service
-    command_line  /usr/local/nagios/libexec/nagios-metrics-wf.py /usr/local/nagios/var/service-perfdata \
+    command_line  /usr/local/nagios/libexec/nagios-metrics-wf.py [PATH_PERFDATA]/service-perfdata \
                                                            --service \
                                                            --wf_server [WAVEFRONT_URL] \
                                                            --wf_token [WAVEFRONT_TOKEN]
