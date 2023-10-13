@@ -166,7 +166,7 @@ if __name__ == "__main__":
         exit(-1)
 
     wavefront_client = client_factory.get_client()
-    print(wavefront_client)
+    logging.info(wavefront_client)
 
     try:
         startTime = time.time()
@@ -177,6 +177,7 @@ if __name__ == "__main__":
         # If the application failed to send metrics/histograms/tracing-spans,
         # you can get the total failure count as follows:
         total_failures = wavefront_client.get_failure_count()
+        logging.info(total_failures)
 
         # On-demand buffer flush
         wavefront_client.flush_now()

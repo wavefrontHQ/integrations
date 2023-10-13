@@ -24,8 +24,8 @@ def main():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Sends Nagios perfdata to wavefront.')
-    parser.add_argument('--server', dest="server", help='Wavefront Server URL.')
-    parser.add_argument('--token', dest="token", help='Wavefront token.')
+    parser.add_argument('--wf_server', dest="server", help='Wavefront Server URL.')
+    parser.add_argument('--wf_token', dest="token", help='Wavefront token.')
     parser.add_argument('-S', action='store_true', help='Service notification.')
     parser.add_argument('--type', help='Notification type.')
     parser.add_argument('--host', help='Notification hostname.')
@@ -83,7 +83,7 @@ if __name__ == "__main__":
         exit(-1)
 
     wavefront_client = client_factory.get_client()
-    print(wavefront_client)
+    logging.info(wavefront_client)
 
     try:
         main()
@@ -91,6 +91,7 @@ if __name__ == "__main__":
         # If the application failed to send metrics/histograms/tracing-spans,
         # you can get the total failure count as follows:
         total_failures = wavefront_client.get_failure_count()
+        logging.info(total_failures)
 
         # On-demand buffer flush
         wavefront_client.flush_now()
