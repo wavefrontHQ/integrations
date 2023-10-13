@@ -14,7 +14,7 @@ def main():
     startTime = args.time
     endTime = args.time + 1
 
-    if args.S is not None:
+    if args.service is not None:
         name = "Nagios event on '{}' at '{}'".format(args.service, args.host)
     else:
         name = "Nagios event at '{}'".format(args.host)
