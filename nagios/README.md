@@ -19,7 +19,7 @@ host_perfdata_file_processing_interval=15
 host_perfdata_file_processing_command=wavefront-perf-host
 ```
 
-#### Using CSP API Token
+#### Using a VMware Cloud Services API Token
 ```
 define command {
     command_name  wavefront-perf-host
@@ -39,7 +39,7 @@ define command {
 }
 ```
 
-#### Using CSP Oauth
+#### Using the Credentials of a Server to Server OAuth App in VMware Cloud Services
 ```
 define command {
     command_name  wavefront-perf-host
@@ -61,7 +61,7 @@ define command {
 }
 ```
 
-#### Using Wavefront Ingestion
+#### Using an Operations for Applications API Token
 ```
 define command {
     command_name  wavefront-perf-host
@@ -80,14 +80,14 @@ define command {
 }
 ```
 
-Refer the configuration samples at https://github.com/wavefrontHQ/integrations/raw/master/nagios/config to send metrics using CSP API token, CSP Oauth or Wavefront API Token.
+Refer the configuration samples at https://github.com/wavefrontHQ/integrations/tree/master/nagios/config to send metrics using a VMware Cloud services API token, server to server OAuth app credentials, or an Operations for Applications API token.
 
 ### Contacts
 
 Add the below Contact and Contact group to the `contacts.cfg`.
 
 ```
-# Wavefront contact definition for event notification commands
+# Operations for Applications contact definition for event notification commands
 define contact {
   name                            wf-generic-contact
   register                        0
@@ -101,25 +101,25 @@ define contact {
   host_notification_commands      nagios-to-wavefront-host
 }
 
-# Wavefront user definition
+# Operations for Applications user definition
 define contact {
-  contact_name    wfuser
+  contact_name    operations-for-applications-user
   use             wf-generic-contact
   alias           Admin
   email           admin@example.com
   address1        +155512312
 }
 
-# Contact group for Wavefront user definition
+# Contact group for Operations for Applications user definition
 define contactgroup {
-  contactgroup_name  wavefront
-  alias              Notifications send to wavefront
-  members            wfuser
+  contactgroup_name  operations-for-applications
+  alias              Notifications send to Operations for Applications
+  members            operations-for-applications-user
 }
 ```
 
 ### Events
-#### Using CSP API Token
+#### Using a VMware Cloud Services API Token
 ```
 define command {
     command_name nagios-to-wavefront-host
@@ -144,7 +144,7 @@ define command {
 }
 ```
 
-#### Using CSP Oauth
+#### Using the Credentials of a Server to Server OAuth App in VMware Cloud Services
  ```
 define command {
     command_name nagios-to-wavefront-host
@@ -171,7 +171,7 @@ define command {
 }
  ```
 
-#### Using Wavefront Ingestion
+#### Using an Operations for Applications API Token
 ```
 define command {
     command_name nagios-to-wavefront-host
@@ -195,5 +195,5 @@ define command {
 }
 ```
 
-Refer the configuration samples at https://github.com/wavefrontHQ/integrations/raw/master/nagios/config to send events using CSP API token, CSP Oauth or Wavefront API Token.
+Refer the configuration samples at https://github.com/wavefrontHQ/integrations/tree/master/nagios/config to send events using a VMware Cloud services API token, server to server OAuth app credentials, or an Operations for Applications API token.
 

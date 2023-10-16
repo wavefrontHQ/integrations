@@ -23,9 +23,9 @@ def main():
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Sends Nagios perfdata to wavefront.')
-    parser.add_argument('--wf_server', dest="server", help='Wavefront Server URL.')
-    parser.add_argument('--wf_token', dest="token", help='Wavefront token.')
+    parser = argparse.ArgumentParser(description='Sends Nagios perfdata to Operations for Applications.')
+    parser.add_argument('--wf_server', dest="server", help='Operations for Applications server URL.')
+    parser.add_argument('--wf_token', dest="token", help='Operations for Applications API token.')
     parser.add_argument('-S', action='store_true', help='Service notification.')
     parser.add_argument('--type', help='Notification type.')
     parser.add_argument('--host', help='Notification hostname.')
@@ -34,11 +34,11 @@ if __name__ == "__main__":
     parser.add_argument('--msg', help='Notification message.')
     parser.add_argument('--wf_proxy_addr', dest="addr")
     parser.add_argument('--wf_proxy_port', dest="port")
-    parser.add_argument('--csp_base_url', dest="csp_base_url", help='Base URL of CSP console.')
-    parser.add_argument('--csp_api_token', dest="csp_api_token", help='CSP API Token for csp authentication.')
-    parser.add_argument('--csp_app_id', dest="csp_app_id", help='CSP OAuth App ID for csp authentication.')
-    parser.add_argument('--csp_app_secret', dest="csp_app_secret", help='CSP OAuth App secret for csp authentication.')
-    parser.add_argument('--csp_org_id', dest="csp_org_id", help='CSP Organization ID for csp authentication.')
+    parser.add_argument('--csp_base_url', dest="csp_base_url", help='Base URL of the VMware Cloud Services Console.')
+    parser.add_argument('--csp_api_token', dest="csp_api_token", help='VMware Cloud services API token.')
+    parser.add_argument('--csp_app_id', dest="csp_app_id", help='ID of a server to server OAuth app in VMware Cloud services.')
+    parser.add_argument('--csp_app_secret', dest="csp_app_secret", help='Secret of a server to server OAuth app in VMware Cloud services.')
+    parser.add_argument('--csp_org_id', dest="csp_org_id", help='Long ID of the VMware Cloud organization running the service. The OAuth app must be added to this organization.')
 
     args = parser.parse_args()
     logging.info(args)
