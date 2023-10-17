@@ -1,13 +1,13 @@
 #!/usr/bin/python
 
 import argparse
+import platform
 import time
 import os
 import re
 import logging
 
-from wavefront_sdk import WavefrontDirectClient
-from wavefront_sdk import WavefrontProxyClient
+from wavefront_sdk.client_factory import WavefrontClientFactory
 
 
 def main():
@@ -30,11 +30,12 @@ def main():
                 os.remove(newFileName)
     except FileNotFoundError:
         pass
-    client.send_metric("nagios.metrics.processed.per.execution", count, time.time(), "localhost", {})
+    wavefront_client.send_metric("nagios.metrics.processed.per.execution", count, time.time(), platform.node(), {})
 
 
 def process(line):
     info = extractInfo(line)
+    print(info)
 
     metrics = info["SERVICEPERFDATA"] if args.service else info["HOSTPERFDATA"]
     for metric, value in list(extractValues(metrics).items()):
@@ -55,7 +56,7 @@ def process(line):
         try:
             logging.info(">> metricName: " + metricName)
             metricName = convert_key_to_wf_metric(metricName)
-            client.send_metric(metricName, re.sub(r"[^0-9.]", "", value.lower()), info["TIMET"], info["HOSTNAME"], tags)
+            wavefront_client.send_metric(metricName, re.sub(r"[^0-9.]", "", value.lower()), info["TIMET"], info["HOSTNAME"], tags)
         except ValueError as e:
             print(e)
 
@@ -112,35 +113,75 @@ if __name__ == "__main__":
     parser.add_argument('--service', dest='service', action='store_true',
                         help='proccess "service-perfdata" (default: "host-perfdata")')
     parser.add_argument('--test', dest='test', action='store_true')
-    parser.add_argument('--wf_server', dest="server")
-    parser.add_argument('--wf_token', dest="token")
-    parser.add_argument('--wf_proxy_addr', dest="addr")
-    parser.add_argument('--wf_proxy_port', dest="port")
+    parser.add_argument('--wf_server', dest="server", help='Operations for Applications server URL.')
+    parser.add_argument('--wf_token', dest="token", help='Operations for Applications API token.')
+    parser.add_argument('--wf_proxy_addr', dest="addr", help='Wavefront Proxy address.')
+    parser.add_argument('--wf_proxy_port', dest="port", help='Wavefront Proxy port.')
+    parser.add_argument('--csp_base_url', dest= "csp_base_url", help='Base URL of the VMware Cloud Services Console.')
+    parser.add_argument('--csp_api_token', dest="csp_api_token", help='VMware Cloud services API token.')
+    parser.add_argument('--csp_app_id', dest="csp_app_id", help='ID of a server to server OAuth app in VMware Cloud services.')
+    parser.add_argument('--csp_app_secret', dest="csp_app_secret", help='Secret of a server to server OAuth app in VMware Cloud services.')
+    parser.add_argument('--csp_org_id', dest="csp_org_id", help='Long ID of the VMware Cloud organization running the service. The OAuth app must be added to this organization.')
 
     args = parser.parse_args()
     logging.info(args)
 
+    client_factory = WavefrontClientFactory()
     if args.addr is not None and args.port is not None:
-        client = WavefrontProxyClient(host=args.addr,
-                                      metrics_port=args.port,
-                                      distribution_port=40000,
-                                      tracing_port=30000)
+        proxy_address = "proxy://{}:{}".format(args.addr, args.port)
+        client_factory.add_client(
+            url=proxy_address,
+            max_queue_size=50000,
+            batch_size=10000,
+            flush_interval_seconds=5)
     elif args.server is not None and args.token is not None:
-        client = WavefrontDirectClient(server=args.server,
-                                       token=args.token,
-                                       max_queue_size=50000,
-                                       batch_size=10000,
-                                       flush_interval_seconds=15)
-        print(client)
+        wavefront_server = args.server[:8] + args.token + '@' + args.server[8:]
+        client_factory.add_client(
+            url=wavefront_server,
+            max_queue_size=50000,
+            batch_size=10000,
+            flush_interval_seconds=5)
+    elif args.csp_base_url is not None and args.csp_api_token is not None and args.server is not None:
+        client_factory.add_client(
+            url=args.server,
+            csp_base_url=args.csp_base_url,
+            csp_api_token=args.csp_api_token,
+            csp_org_id=args.csp_org_id,
+            max_queue_size=50000,
+            batch_size=10000,
+            flush_interval_seconds=5)
+    elif args.server is not None and args.csp_base_url is not None and args.csp_app_id is not None and \
+            args.csp_app_secret is not None:
+        client_factory.add_client(
+            url=args.server,
+            csp_base_url=args.csp_base_url,
+            csp_app_id=args.csp_app_id,
+            csp_app_secret=args.csp_app_secret,
+            csp_org_id=args.csp_org_id,
+            max_queue_size=50000,
+            batch_size=10000,
+            flush_interval_seconds=5)
     else:
         parser.print_help()
         exit(-1)
+
+    wavefront_client = client_factory.get_client()
+    logging.info(wavefront_client)
 
     try:
         startTime = time.time()
         main()
         endTime = time.time()
-        client.send_metric("nagios.script.execution.time", (endTime - startTime), endTime, "localhost", {})
+        wavefront_client.send_metric("nagios.script.execution.time", (endTime - startTime), endTime, platform.node(), {})
     finally:
-        client.close()
+        # If the application failed to send metrics/histograms/tracing-spans,
+        # you can get the total failure count as follows:
+        total_failures = wavefront_client.get_failure_count()
+        logging.info(total_failures)
+
+        # On-demand buffer flush
+        wavefront_client.flush_now()
+
+        # Close the sender connection
+        wavefront_client.close()
 
